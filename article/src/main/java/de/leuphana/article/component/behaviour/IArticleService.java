@@ -1,9 +1,12 @@
 package de.leuphana.article.component.behaviour;
 
-import de.leuphana.article.component.structure.Article;
+import de.leuphana.article.component.structure.Book;
+import de.leuphana.article.component.structure.CD;
 
 public interface IArticleService {
+		
+	CD saveCD(CD cd);
 	
-	Article saveArticle(Article article);
+	Book saveBook(Book book);
 
 }

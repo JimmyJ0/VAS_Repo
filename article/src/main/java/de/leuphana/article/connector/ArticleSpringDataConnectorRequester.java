@@ -1,15 +1,17 @@
 package de.leuphana.article.connector;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import de.leuphana.article.component.behaviour.ArticleService;
-import de.leuphana.article.component.structure.Article;
+import de.leuphana.article.component.structure.Book;
+import de.leuphana.article.component.structure.CD;
 
 @RestController
 @RequestMapping("/shop/article")
@@ -27,11 +29,24 @@ public class ArticleSpringDataConnectorRequester {
 	// Erhält HTML mit als JSON verpacktem Artikel vom ArticleRestConnector
 	// Ruft anschließend den Service auf und speichert den Artikel in Datenbank
 	
-	@PostMapping()
-	public ResponseEntity<Article> saveArticle(@RequestBody Article article) {
-		System.out.println("... Erhalte Artikel und ...");
+	@PostMapping("/cd")
+	public ResponseEntity<CD> saveArticle(@RequestBody CD cd) throws JsonProcessingException {
+	    if (cd instanceof CD) {
+	       articleService.saveCD(cd);
+	    } else  {
+	    	//TODO: Exception Handling
+	    }
+		return null;
+	}
+	
+	@PostMapping("/book")
+	public ResponseEntity<Book> saveArticle(@RequestBody Book book) throws JsonProcessingException {
+	    if (book instanceof Book) {
+	       articleService.saveBook(book);
 
-		// Gibt den hinzugefügten Artikel und den HttpStatus.Created zurück
-		return new ResponseEntity<Article>(articleService.saveArticle(article), HttpStatus.CREATED);
+	    } else  {
+	    	//TODO: Exception Handling
+	    }
+		return null;
 	}
 }

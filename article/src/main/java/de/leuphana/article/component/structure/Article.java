@@ -1,14 +1,12 @@
 package de.leuphana.article.component.structure;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
-@Table(name="articles")
+@MappedSuperclass
 public class Article {
 	
 	@Id
@@ -19,7 +17,7 @@ public class Article {
 	@Column(name="article_name")
 	private String name;
 	@Column(name="article_price")
-	private float price;
+	private String price;
 	
 	
 	
@@ -41,10 +39,10 @@ public class Article {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 	

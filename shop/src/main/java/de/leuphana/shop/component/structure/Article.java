@@ -1,14 +1,19 @@
 package de.leuphana.shop.component.structure;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-public class Article {
+import de.leuphana.shop.configuration.ArticleDeserializer;
+
+@JsonDeserialize(using=ArticleDeserializer.class)
+public abstract class Article {
+	
+	public Article() {
+	}
 	
 	private long id;
 	private String manufactor;
 	private String name;
-	private float price;
-	
-	
+	private String price;
 	
 	public long getId() {
 		return id;
@@ -28,10 +33,10 @@ public class Article {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 	
