@@ -1,33 +1,16 @@
-package de.leuphana.customer.component.structure;
+package de.leuphana.shop.component.structure.sales;
 
 import java.util.Map;
 
-import org.springframework.core.annotation.Order;
+//import org.springframework.core.annotation.Order;
 
-import de.leuphana.shop.component.structure.sales.Cart;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name="customers")
 public class Customer {
-	
-	private static long lastGeneratedCustomerId;
+	private static Integer lastGeneratedCustomerId = 0;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long customerId;
-	@Column(name="customer_name")
 	private String name;
-	@Column(name="customer_address")
 	private String address;
-	@Column(name="customer_cart")
 	private Cart cart;
-	//@Column(name="customer_orders")
 	//private Map<Long, Order> orders;
 
 	public String getName() {
