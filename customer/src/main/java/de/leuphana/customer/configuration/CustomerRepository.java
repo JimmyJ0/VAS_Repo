@@ -1,5 +1,9 @@
 package de.leuphana.customer.configuration;
 
-public class CustomerRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import de.leuphana.customer.component.structure.Customer;
+
+public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
 }

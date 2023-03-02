@@ -1,5 +1,9 @@
 package de.leuphana.customer.component.behaviour;
 
-public class ICustomerService {
+import de.leuphana.customer.component.structure.Customer;
+
+public interface ICustomerService {
+	
+	Customer saveCustomer(Customer customer);
 
 }

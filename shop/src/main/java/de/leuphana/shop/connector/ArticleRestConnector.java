@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import de.leuphana.shop.component.structure.Article;
+import de.leuphana.shop.component.structure.article.Article;
 
 
 @RestController
