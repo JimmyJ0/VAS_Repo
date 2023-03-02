@@ -1,10 +1,5 @@
 package de.leuphana.customer.component.structure;
 
-import java.util.Map;
-
-import org.springframework.core.annotation.Order;
-
-import de.leuphana.shop.component.structure.sales.Cart;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,8 +20,8 @@ public class Customer {
 	private String name;
 	@Column(name="customer_address")
 	private String address;
-	@Column(name="customer_cart")
-	private Cart cart;
+	//@Column(name="customer_cart")
+	//private Cart cart;
 	//@Column(name="customer_orders")
 	//private Map<Long, Order> orders;
 
@@ -62,13 +57,13 @@ public class Customer {
 		this.customerId = customerId;
 	}
 	
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+//	public Cart getCart() {
+//		return cart;
+//	}
+//
+//	public void setCart(Cart cart) {
+//		this.cart = cart;
+//	}
 
 //	public Customer(Cart cart) {
 //		this.customerId = ++lastGeneratedCustomerId;

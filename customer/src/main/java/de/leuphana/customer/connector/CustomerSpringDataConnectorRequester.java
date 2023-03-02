@@ -28,7 +28,7 @@ public class CustomerSpringDataConnectorRequester {
 	// Ruft anschließend den Service auf und speichert den Kunden in Datenbank
 	
 	@PostMapping()
-	public ResponseEntity<Customer> saveArticle(@RequestBody Customer customer) {
+	public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
 		System.out.println("... Erhalte Kunde und ...");
 
 		// Gibt den hinzugefügten Kunden und den HttpStatus.Created zurück

@@ -10,7 +10,7 @@ public class Customer {
 	private long customerId;
 	private String name;
 	private String address;
-	private Cart cart;
+	//private Cart cart;
 	//private Map<Long, Order> orders;
 
 	public String getName() {
@@ -45,13 +45,13 @@ public class Customer {
 		this.customerId = customerId;
 	}
 	
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+//	public Cart getCart() {
+//		return cart;
+//	}
+//
+//	public void setCart(Cart cart) {
+//		this.cart = cart;
+//	}
 
 //	public Customer(Cart cart) {
 //		this.customerId = ++lastGeneratedCustomerId;
