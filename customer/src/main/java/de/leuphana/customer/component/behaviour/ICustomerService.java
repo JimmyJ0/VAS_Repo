@@ -4,6 +4,7 @@ import de.leuphana.customer.component.structure.Customer;
 
 public interface ICustomerService {
 	
-	Customer saveCustomer(Customer customer);
+	Customer createCustomer(Customer customer);
+	
 
 }
