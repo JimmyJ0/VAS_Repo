@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import de.leuphana.shop.component.structure.sales.Customer;
 
 @RestController
+//shop1 müsste geändert werden
 @RequestMapping("/shop/shop1")
 public class CustomerRestConnector {
 
@@ -24,7 +25,6 @@ public class CustomerRestConnector {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.postForLocation("http://localhost:9090//shop/customer", customer);
 		
-		// Object aus der RE rausziehen um dann in Catalog abzulegen?
 		// Melded dem Clienten (Hier: Supplier, genauer dem Postman) den HttpStatusCode: CREATED 
 		return new ResponseEntity<Customer>(HttpStatus.CREATED);
 		
