@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.leuphana.customer.component.behaviour.CustomerService;
 import de.leuphana.customer.component.structure.Customer;
-import de.leuphana.customer.configuration.CustomerRepository;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerSpringDataConnectorRequester {
 	
-	//private CustomerRepository customerRepository;
 	private CustomerService customerService;
 
 	@Autowired
@@ -32,7 +30,7 @@ public class CustomerSpringDataConnectorRequester {
 		this.customerService = customerService;
 	}
 	
-	//Mit Postman können Anfragen im JSON Format direkt an den RestController geschickt werden 
+	//Mit Postman können Anfragen im JSON Format direkt an den RestController geschickt werden
 	//Wenn dies erfolgte, werden die entsprechenden Annotationen angesprochen, wie z.B. @PostMapping
 	//Dann wird die entsprechende Methode (hier: createCustomer) ausgeführt, die von CustomerService stammt 
 	//Anschließend werden auf die CRUD Operationen von JpaRepository zugegriffen, um mit der Datenbank zu kommunizieren
