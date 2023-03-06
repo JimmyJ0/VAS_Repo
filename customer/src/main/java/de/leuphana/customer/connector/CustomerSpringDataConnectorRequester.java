@@ -37,7 +37,7 @@ public class CustomerSpringDataConnectorRequester {
 	//Dann wird die entsprechende Methode (hier: createCustomer) ausgeführt, die von CustomerService stammt 
 	//Anschließend werden auf die CRUD Operationen von JpaRepository zugegriffen, um mit der Datenbank zu kommunizieren
 	
-	//POST -> http://localhost:9090/customers (Erstellung eines Kunden mit "name" und "address")
+	//POST -> http://localhost:9090/customers (Erstellung eines Kunden mit "customerId", "name" und "address")
 	@PostMapping
 	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
 		System.out.println("... Erhalte Kunde und ...");
