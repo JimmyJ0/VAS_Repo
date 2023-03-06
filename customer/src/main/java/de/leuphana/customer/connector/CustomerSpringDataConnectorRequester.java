@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.leuphana.customer.component.behaviour.CustomerService;
 import de.leuphana.customer.component.structure.Customer;
 import de.leuphana.customer.configuration.CustomerRepository;
 
@@ -22,56 +23,58 @@ import de.leuphana.customer.configuration.CustomerRepository;
 @RequestMapping("/customers")
 public class CustomerSpringDataConnectorRequester {
 	
-	private CustomerRepository customerRepository;
-//	private CustomerService customerService;
+	//private CustomerRepository customerRepository;
+	private CustomerService customerService;
 
 	@Autowired
-	public CustomerSpringDataConnectorRequester(CustomerRepository customerRepository) {
+	public CustomerSpringDataConnectorRequester(CustomerService customerService) {
 		super();
-		this.customerRepository = customerRepository;
+		this.customerService = customerService;
 	}
-
-	// 2.
-	// Erhält HTML mit als JSON verpacktem Artikel vom CustomerRestConnector
-	// Ruft anschließend den Service auf und speichert den Kunden in Datenbank
 	
+	//Mit Postman können Anfragen im JSON Format direkt an den RestController geschickt werden 
+	//Wenn dies erfolgte, werden die entsprechenden Annotationen angesprochen, wie z.B. @PostMapping
+	//Dann wird die entsprechende Methode (hier: createCustomer) ausgeführt, die von CustomerService stammt 
+	//Anschließend werden auf die CRUD Operationen von JpaRepository zugegriffen, um mit der Datenbank zu kommunizieren
+	
+	//POST -> http://localhost:9090/customers (Erstellung eines Kunden mit "name" und "address")
 	@PostMapping
 	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
 		System.out.println("... Erhalte Kunde und ...");
-		Customer savedCustomer = customerRepository.save(customer);
+		Customer savedCustomer = customerService.createCustomer(customer);
 		return ResponseEntity.created(URI.create("/customers/" + savedCustomer.getCustomerId())).body(savedCustomer);
 	}
-	
+	//GET-> http://localhost:9090/customers (gibt alle Kunden aus)
 	@GetMapping
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        return customerService.getAllCustomers();
     }
-	
+	//GET-> http://localhost:9090/customers/3 (gibt Kunde mit customerID=3 aus)
 	@GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) throws Exception {
+        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(id));
         return customerOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
-	
+	//PUT-> http://localhost:9090/customers/3 (Für Kunde mit customerId=3 können "name" und "address" mit Postman angepasst werden)
 	@PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) throws Exception {
+        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(id));
         if (customerOptional.isPresent()) {
             Customer updatedCustomer = customerOptional.get();
             updatedCustomer.setName(customer.getName());
             updatedCustomer.setAddress(customer.getAddress());
-            updatedCustomer = customerRepository.save(updatedCustomer);
+            updatedCustomer = customerService.createCustomer(updatedCustomer);
             return ResponseEntity.ok(updatedCustomer);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
+	//DELETE-> http://localhost:9090/customers/3 (löscht Kunde mit customerId=3 in der Datenbank)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) throws Exception {
+        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(id));
         if (customerOptional.isPresent()) {
-            customerRepository.delete(customerOptional.get());
+        	customerService.deleteCustomer(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
