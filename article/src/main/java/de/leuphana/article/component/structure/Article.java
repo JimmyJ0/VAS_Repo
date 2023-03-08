@@ -11,42 +11,49 @@ public class Article {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Integer articleId;
 	@Column(name="manufactor_name")
 	private String manufactor;
 	@Column(name="article_name")
 	private String name;
 	@Column(name="article_price")
-	private String price;
+	private float price;
+
 	
-	
-	
-	public long getId() {
-		return id;
+	public Article() {
 	}
-	public void setId(long id) {
-		this.id = id;
+
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
 	}
+
+	public Integer getArticleId() {
+		return articleId;
+	}
+
 	public String getManufactor() {
 		return manufactor;
 	}
+
 	public void setManufactor(String manufactor) {
 		this.manufactor = manufactor;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPrice() {
+
+	public float getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+
+	public void setPrice(float price) {
 		this.price = price;
 	}
-	
-	
-	
+
 
 }

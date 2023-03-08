@@ -8,9 +8,9 @@ public interface ICustomerService {
 	
 	Customer createCustomer(Customer customer);
 	List<Customer> getAllCustomers();
-	Customer getCustomerById(Long id) throws Exception;
-	Customer updateCustomer(Long id, Customer customer) throws Exception;
-	void deleteCustomer(Long id);
+	Customer getCustomerById(Integer customerId) throws Exception;
+	Customer updateCustomer(Integer customerId, Customer customer) throws Exception;
+	void deleteCustomer(Integer customerId);
 	
 
 }
