@@ -25,10 +25,10 @@ public class Customer {
 	private String name;
 	@Column(name="customer_address", nullable=false)
 	private String address;
-	@Column(name="customer_cart", nullable=false)
+//	@Column(name="customer_cart", nullable=false)
 	private Cart cart;
-	@Column(name="customer_orders", nullable=false)
-	private Map<Integer, Order> orders;
+//	@Column(name="customer_orders", nullable=false)
+//	private Map<Integer, Order> orders;
 	
 
 	public String getName() {
@@ -47,13 +47,13 @@ public class Customer {
 		this.address = address;
 	}
 
-	public Map<Integer, Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(Map<Integer, Order> orders) {
-		this.orders = orders;
-	}
+//	public Map<Integer, Order> getOrders() {
+//		return orders;
+//	}
+//
+//	public void setOrders(Map<Integer, Order> orders) {
+//		this.orders = orders;
+//	}
 
 	public Integer getCustomerId() {
 		return customerId;
@@ -70,14 +70,14 @@ public class Customer {
 	public void setCart(Cart cart) {
 		this.cart = cart;
 	}
-
-	public Customer(Cart cart) {
-		this.customerId = ++lastGeneratedCustomerId;
-		this.cart = cart;
-		orders = new HashMap<Integer, Order>();
-	}
-
-	public void addOrder(Order order) {
-		orders.put(order.getOrderId(), order);
-	}
+//
+//	public Customer(Cart cart) {
+//		this.customerId = ++lastGeneratedCustomerId;
+//		this.cart = cart;
+//		orders = new HashMap<Integer, Order>();
+//	}
+//
+//	public void addOrder(Order order) {
+//		orders.put(order.getOrderId(), order);
+//	}
 }
