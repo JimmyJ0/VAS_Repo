@@ -30,30 +30,30 @@ public class CustomerService implements ICustomerService{
 		return customerRepository.findAll();
 	}
 
-	public Customer getCustomerById(Long id) throws Exception {
-		Optional<Customer> customerOptional = customerRepository.findById(id);
+	public Customer getCustomerById(Integer customerId) throws Exception {
+		Optional<Customer> customerOptional = customerRepository.findById(customerId);
 		if (customerOptional.isPresent()) {
-			System.out.println("... get customer with id " + id);
+			System.out.println("... get customer with id " + customerId);
 			return customerOptional.get();
 		} else {
-			throw new Exception("... customer with id " + id + " not found.");
+			throw new Exception("... customer with id " + customerId + " not found.");
 		}
 	}
 
-	public Customer updateCustomer(Long id, Customer customer) throws Exception{
-		Optional<Customer> customerOptional = customerRepository.findById(id);
+	public Customer updateCustomer(Integer customerId, Customer customer) throws Exception{
+		Optional<Customer> customerOptional = customerRepository.findById(customerId);
 		if (customerOptional.isPresent()) {
-			customer.setCustomerId(id);
-			System.out.println("... update customer with id " + id);
+			customer.setCustomerId(customerId);
+			System.out.println("... update customer with id " + customerId);
 			return customerRepository.save(customer);
 		} else {
-			throw new Exception("... customer with id " + id + " not found.");
+			throw new Exception("... customer with id " + customerId + " not found.");
 		}
 	}
 
-	public void deleteCustomer(Long id) {
-		System.out.println("... delete customer with id " + id);
-		customerRepository.deleteById(id);
+	public void deleteCustomer(Integer customerId) {
+		System.out.println("... delete customer with id " + customerId);
+		customerRepository.deleteById(customerId);
 	}
 
 }

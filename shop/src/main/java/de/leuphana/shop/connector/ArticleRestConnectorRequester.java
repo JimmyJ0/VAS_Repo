@@ -11,13 +11,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import de.leuphana.shop.component.structure.Article;
-import de.leuphana.shop.component.structure.Book;
-import de.leuphana.shop.component.structure.CD;
+import de.leuphana.shop.structure.article.Article;
+import de.leuphana.shop.structure.article.Book;
+import de.leuphana.shop.structure.article.CD;
 
 @RestController
 @RequestMapping("/shop/shop")
-public class ArticleRestConnector {
+public class ArticleRestConnectorRequester {
 
 	// Empfängt Artikel / Subtype und mapped diesen in konkerten Typ. Leitet dann an
 	// entsprechende Methode weiter

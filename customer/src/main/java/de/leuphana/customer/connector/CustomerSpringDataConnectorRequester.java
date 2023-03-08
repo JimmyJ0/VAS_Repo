@@ -49,14 +49,14 @@ public class CustomerSpringDataConnectorRequester {
     }
 	//GET-> http://localhost:9090/customers/3 (gibt Kunde mit customerID=3 aus)
 	@GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) throws Exception {
-        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(id));
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Integer customerId) throws Exception {
+        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
         return customerOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 	//PUT-> http://localhost:9090/customers/3 (Für Kunde mit customerId=3 können "name" und "address" mit Postman angepasst werden)
 	@PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) throws Exception {
-        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(id));
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Integer customerId, @RequestBody Customer customer) throws Exception {
+        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
         if (customerOptional.isPresent()) {
             Customer updatedCustomer = customerOptional.get();
             updatedCustomer.setName(customer.getName());
@@ -69,10 +69,10 @@ public class CustomerSpringDataConnectorRequester {
     }
 	//DELETE-> http://localhost:9090/customers/3 (löscht Kunde mit customerId=3 in der Datenbank)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) throws Exception {
-        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(id));
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) throws Exception {
+        Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
         if (customerOptional.isPresent()) {
-        	customerService.deleteCustomer(id);
+        	customerService.deleteCustomer(customerId);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

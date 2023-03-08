@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import de.leuphana.shop.component.structure.sales.Customer;
+import de.leuphana.shop.structure.sales.Customer;
 
 @RestController
 //shop1 müsste geändert werden
 @RequestMapping("/shop/shop1")
-public class CustomerRestConnector {
+public class CustomerRestConnectorRequester {
 
 	
 	@PostMapping

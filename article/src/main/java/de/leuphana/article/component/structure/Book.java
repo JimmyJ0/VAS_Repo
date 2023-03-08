@@ -8,11 +8,14 @@ import jakarta.persistence.Table;
 public class Book extends Article {
 	
 	private String author;
-	private String bookCategory;
-	
+	private BookCategory bookCategory;
+
 	public Book() {
 		super();
-
+	}
+	
+	public void setArticleId(int articleId) {
+		super.setArticleId(articleId);
 	}
 
 	public String getAuthor() {
@@ -23,17 +26,12 @@ public class Book extends Article {
 		this.author = author;
 	}
 
-	public String getBookCategory() {
+	public BookCategory getBookCategory() {
 		return bookCategory;
 	}
 
-	public void setBookCategory(String bookCategory) {
+	public void setBookCategory(BookCategory bookCategory) {
 		this.bookCategory = bookCategory;
 	}
-	
-	
-	
-	
-
 
 }

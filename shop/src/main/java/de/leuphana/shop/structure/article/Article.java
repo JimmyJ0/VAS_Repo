@@ -1,41 +1,46 @@
-package de.leuphana.shop.component.structure.article;
+package de.leuphana.shop.structure.article;
 
-
-public class Article {
+//@JsonDeserialize(using=ArticleDeserializer.class)
+public abstract class Article {
 	
-	private long id;
+	private Integer articleId;
 	private String manufactor;
 	private String name;
 	private float price;
 	
-	
-	
-	public long getId() {
-		return id;
+	public Article() {
 	}
-	public void setId(long id) {
-		this.id = id;
+
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
 	}
+
+	public Integer getArticleId() {
+		return articleId;
+	}
+
 	public String getManufactor() {
 		return manufactor;
 	}
+
 	public void setManufactor(String manufactor) {
 		this.manufactor = manufactor;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public float getPrice() {
 		return price;
 	}
+
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	
-	
-	
 
 }

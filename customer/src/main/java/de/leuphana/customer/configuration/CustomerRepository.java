@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import de.leuphana.customer.component.structure.Customer;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long>{
+public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
 }
