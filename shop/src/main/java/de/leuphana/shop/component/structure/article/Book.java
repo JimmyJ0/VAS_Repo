@@ -1,4 +1,4 @@
-package de.leuphana.shop.component.structure;
+package de.leuphana.shop.component.structure.article;
 
 public class Book extends Article {
 	

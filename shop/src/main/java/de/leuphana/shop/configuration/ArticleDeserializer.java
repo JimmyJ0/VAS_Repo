@@ -8,16 +8,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-import de.leuphana.shop.component.structure.Article;
-import de.leuphana.shop.component.structure.Book;
-import de.leuphana.shop.component.structure.CD;
+import de.leuphana.shop.component.structure.article.Article;
+import de.leuphana.shop.component.structure.article.Book;
+import de.leuphana.shop.component.structure.article.CD;
 
 public class ArticleDeserializer extends StdDeserializer<Article> {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public ArticleDeserializer() {
 		super(Article.class);
@@ -27,36 +22,62 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 	public Article deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
 
 		JsonNode node = p.getCodec().readTree(p);
-		String type = node.get("type").asText();
 
 		System.out.println("ASDASD" + node.toPrettyString());
 
-		if (type.equals("cd")) {
-			CD cd = new CD();
+		JsonNode typeNode = node.get("type");
+		if (typeNode != null) {
+			String type = node.get("type").asText();
 
-			cd.setManufactor(node.get("manufactor").asText());
-			cd.setArtist(node.get("artist").asText());
-			cd.setName(node.get("name").asText());
-			cd.setPrice(node.get("price").asText());
+			if (type.equals("cd")) {
+				CD cd = new CD();
 
-			System.out.println("Deserizalied to an CD");
+				cd.setManufactor(node.get("manufactor").asText());
+				cd.setArtist(node.get("artist").asText());
+				cd.setName(node.get("name").asText());
+				cd.setPrice(node.get("price").asText());
 
-			return cd;
+				System.out.println("Deserizalied to an CD");
+
+				return cd;
+			}
+
+			else if (type.equals("book")) {
+				Book book = new Book();
+
+				book.setManufactor(node.get("manufactor").asText());
+				book.setBookCategory(node.get("bookCategory").asText());
+				book.setName(node.get("name").asText());
+				book.setPrice(node.get("price").asText());
+				book.setAuthor(node.get("author").asText());
+
+				return book;
+
+			}
+			// TODO: ExceptionHandling
+		} else {
+			
+			if(node.get("id").asText().contains("BK")) {
+				Book book = new Book();
+				book.setManufactor(node.get("manufactor").asText());
+				book.setBookCategory(node.get("bookCategory").asText());
+				book.setName(node.get("name").asText());
+				book.setPrice(node.get("price").asText());
+				book.setAuthor(node.get("author").asText());
+				
+				return book;
+			}
+			else if(node.get("id").asText().contains("CD")) {
+				CD cd = new CD();
+				cd.setManufactor(node.get("manufactor").asText());
+				cd.setArtist(node.get("artist").asText());
+				cd.setName(node.get("name").asText());
+				cd.setPrice(node.get("price").asText());
+				
+				return cd;
+			}
+			
 		}
-
-		else if (type.equals("book")) {
-			Book book = new Book();
-
-			book.setManufactor(node.get("manufactor").asText());
-			book.setBookCategory(node.get("bookCategory").asText());
-			book.setName(node.get("name").asText());
-			book.setPrice(node.get("price").asText());
-			book.setAuthor(node.get("author").asText());
-
-			return book;
-
-		}
-		// TODO: ExceptionHandling
 		return null;
 
 	}
