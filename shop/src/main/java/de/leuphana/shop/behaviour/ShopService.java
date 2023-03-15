@@ -16,11 +16,11 @@ import de.leuphana.shop.structure.sales.Customer;
 import de.leuphana.shop.structure.sales.Order;
 import de.leuphana.shop.structure.sales.OrderPosition;
 
-public class Shop {
+public class ShopService {
 	private Catalog catalog;
 	private Map<Integer, Customer> customers;
 
-	public Shop() {
+	public ShopService() {
 		customers = new HashMap<Integer, Customer>();
 		catalog = new Catalog();
 	}

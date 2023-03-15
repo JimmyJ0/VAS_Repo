@@ -13,7 +13,7 @@ public class CustomerApplication {
 	
 	@RequestMapping("/")
 	  public String home() {
-	    return "Hello World";
+	    return "Customer Service";
 	  }
 
 	public static void main(String[] args) {

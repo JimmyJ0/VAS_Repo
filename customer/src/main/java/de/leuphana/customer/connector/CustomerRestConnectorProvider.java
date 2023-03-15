@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,26 +35,26 @@ public class CustomerRestConnectorProvider {
 	//Dann wird die entsprechende Methode (hier: createCustomer) ausgeführt, die von CustomerService stammt 
 	//Anschließend werden auf die CRUD Operationen von JpaRepository zugegriffen, um mit der Datenbank zu kommunizieren
 	
-	//POST -> http://localhost:9090/customers (Erstellung eines Kunden mit "customerId", "name" und "address")
+	//POST -> http://localhost:8000/customers (Erstellung eines Kunden mit "customerId", "name" und "address")
 	@PostMapping
 	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
 		System.out.println("... Erhalte Kunde und ...");
 		Customer savedCustomer = customerService.createCustomer(customer);
 		return ResponseEntity.created(URI.create("/customers/" + savedCustomer.getCustomerId())).body(savedCustomer);
 	}
-	//GET-> http://localhost:9090/customers (gibt alle Kunden aus)
+	//GET-> http://localhost:8000/customers (gibt alle Kunden aus)
 	@GetMapping
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
     }
-	//GET-> http://localhost:9090/customers/3 (gibt Kunde mit customerID=3 aus)
-	@GetMapping("/{id}")
+	//GET-> http://localhost:8000/customers/3 (gibt Kunde mit customerID=3 aus)
+	@GetMapping("/{customerId}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Integer customerId) throws Exception {
         Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
         return customerOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
-	//PUT-> http://localhost:9090/customers/3 (Für Kunde mit customerId=3 können "name" und "address" mit Postman angepasst werden)
-	@PutMapping("/{id}")
+	//PUT-> http://localhost:8000/customers/3 (Für Kunde mit customerId=3 können "name" und "address" mit Postman angepasst werden)
+	@PutMapping("/{customerId}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Integer customerId, @RequestBody Customer customer) throws Exception {
         Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
         if (customerOptional.isPresent()) {
@@ -68,8 +67,8 @@ public class CustomerRestConnectorProvider {
             return ResponseEntity.notFound().build();
         }
     }
-	//DELETE-> http://localhost:9090/customers/3 (löscht Kunde mit customerId=3 in der Datenbank)
-    @DeleteMapping("/{id}")
+	//DELETE-> http://localhost:8000/customers/3 (löscht Kunde mit customerId=3 in der Datenbank)
+    @DeleteMapping("/{customerId}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) throws Exception {
         Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
         if (customerOptional.isPresent()) {

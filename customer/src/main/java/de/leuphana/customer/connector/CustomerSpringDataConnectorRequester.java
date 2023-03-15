@@ -26,10 +26,6 @@ public class CustomerSpringDataConnectorRequester {
         return customerRepository.findById(customerId).orElse(null);
     }
 
-    public void saveCustomer(Customer customer) {
-        customerRepository.save(customer);
-    }
-
     public void deleteCustomerById(Integer customerId) {
         customerRepository.deleteById(customerId);
     }

@@ -12,13 +12,13 @@ import de.leuphana.shop.structure.article.Article;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class ShopServiceTest {
-	private static Shop shop;
+	private static ShopService shop;
 	private static Integer customerId;
 	private static de.leuphana.shop.structure.sales.Order order;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		shop = new Shop();
+		shop = new ShopService();
 		customerId = shop.createCustomerWithCart();
 		for (Article article : shop.getCatalog().getArticles()) {
 			shop.addArticleToCart(customerId, article.getArticleId());

@@ -3,8 +3,6 @@ package de.leuphana.customer.component.structure;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.leuphana.shop.structure.sales.Cart;
-import de.leuphana.shop.structure.sales.Order;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

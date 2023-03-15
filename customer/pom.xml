@@ -8,11 +8,11 @@
 		<version>3.0.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>de.leuphana</groupId>
-	<artifactId>customer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>customer</name>
-	<description>SpringBoot First Application</description>
+		<groupId>de.leuphana</groupId>
+		<artifactId>customer</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<name>customer</name>
+		<description>SpringBoot First Application</description>
 	<properties>
 		<java.version>17</java.version>
 		 <spring-cloud.version>2022.0.1</spring-cloud.version>
@@ -47,11 +47,6 @@
 			<artifactId>shop</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>de.leuphana</groupId>
-			<artifactId>eureka-server</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -60,6 +55,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+    			<groupId>com.spotify</groupId>
+    			<artifactId>docker-maven-plugin</artifactId>
+       		 	<configuration>
+            		<imageName>springdocker</imageName>
+            		<baseImage>java</baseImage>
+            		<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+            		<resources>
+                		<resource>
+                    		<targetPath>/</targetPath>
+                    		<directory>${project.build.directory}</directory>
+                    		<include>${project.build.finalName}.jar</include>
+                		</resource>
+            		</resources>
+        		</configuration>
+    		</plugin>
 		</plugins>
 	</build>
 	<repositories>
