@@ -16,18 +16,18 @@ public class Cart {
 		numberOfArticles = 0;
 	}
 
-	public void addCartItem(Article article) {
-		Integer articleId = article.getArticleId();
-		CartItem cartItem;
-		if (cartItems.containsKey(articleId)) {
-			cartItem = cartItems.get(articleId);
-			cartItem.incrementQuantity();
-		} else {
-			cartItem = new CartItem();
-			cartItems.put(articleId, cartItem);
-		}
-		numberOfArticles++;
-	}
+//	public void addCartItem(Article article) {
+////		String id = article.getArticleId();
+//		CartItem cartItem;
+//		if (cartItems.containsKey(id)) {
+//			cartItem = cartItems.get(id);
+//			cartItem.incrementQuantity();
+//		} else {
+//			cartItem = new CartItem();
+//			cartItems.put(id, cartItem);
+//		}
+//		numberOfArticles++;
+//	}
 
 	public void deleteCartItem(int articleId) {
 		for (CartItem cartItem : cartItems.values()) {

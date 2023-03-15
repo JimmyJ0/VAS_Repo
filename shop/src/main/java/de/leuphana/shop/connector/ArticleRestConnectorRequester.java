@@ -20,15 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.leuphana.shop.component.structure.article.Article;
-import de.leuphana.shop.component.structure.article.Book;
-import de.leuphana.shop.component.structure.article.CD;
+import de.leuphana.shop.structure.article.Article;
+import de.leuphana.shop.structure.article.Book;
+import de.leuphana.shop.structure.article.CD;
 
 @RestController
 @RequestMapping("/shop/shop")
-public class ArticleRestConnector {
+public class ArticleRestConnectorRequester {
 	
 	//TODO: BADREQUESTS, ExceptionHandling und Logging implementieren
 	//TODO: Letzten beiden CRUD-Operations implementieren: GetArticleByID, DeleteArticle, UpdateArticle

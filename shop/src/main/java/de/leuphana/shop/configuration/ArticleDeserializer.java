@@ -8,9 +8,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-import de.leuphana.shop.component.structure.article.Article;
-import de.leuphana.shop.component.structure.article.Book;
-import de.leuphana.shop.component.structure.article.CD;
+import de.leuphana.shop.structure.article.Article;
+import de.leuphana.shop.structure.article.Book;
+import de.leuphana.shop.structure.article.CD;
+
 
 public class ArticleDeserializer extends StdDeserializer<Article> {
 

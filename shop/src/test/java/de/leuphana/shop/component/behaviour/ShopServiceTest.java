@@ -8,9 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.leuphana.shop.component.structure.article.Article;
-import de.leuphana.shop.component.structure.article.Book;
-import de.leuphana.shop.connector.ArticleRestConnector;
+import de.leuphana.shop.behaviour.ShopService;
+import de.leuphana.shop.connector.ArticleRestConnectorRequester;
+import de.leuphana.shop.structure.article.Article;
+import de.leuphana.shop.structure.article.Book;
+
 
 class ShopServiceTest {
 
@@ -19,7 +21,7 @@ class ShopServiceTest {
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		ArticleRestConnector arc = new ArticleRestConnector();
+		ArticleRestConnectorRequester arc = new ArticleRestConnectorRequester();
 		shopService = new ShopService(arc);
 	}
 

@@ -1,4 +1,5 @@
-package de.leuphana.shop.component.behaviour;
+package de.leuphana.shop.behaviour;
+
 
 import java.util.List;
 
@@ -6,19 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import de.leuphana.shop.component.structure.article.Article;
-import de.leuphana.shop.component.structure.article.Book;
-import de.leuphana.shop.component.structure.article.CD;
-import de.leuphana.shop.connector.ArticleRestConnector;
+
+import de.leuphana.shop.connector.ArticleRestConnectorRequester;
+import de.leuphana.shop.structure.article.Article;
+import de.leuphana.shop.structure.article.Book;
+import de.leuphana.shop.structure.article.CD;
 
 public class ShopService implements IShopService{
 	
 	//TODO: Anhand der Response Entity Exception Handling machen. 
 	
-	private ArticleRestConnector articleRestConnector;
+	private ArticleRestConnectorRequester articleRestConnector;
 	
 	@Autowired
-	public ShopService(ArticleRestConnector articleRestConnector) {
+	public ShopService(ArticleRestConnectorRequester articleRestConnector) {
 		this.articleRestConnector = articleRestConnector;
 	}
 

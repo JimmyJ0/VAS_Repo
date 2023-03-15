@@ -1,8 +1,10 @@
-package de.leuphana.shop.component.behaviour;
+package de.leuphana.shop.behaviour;
+
 
 import java.util.List;
 
-import de.leuphana.shop.component.structure.article.Article;
+import de.leuphana.shop.structure.article.Article;
+
 
 public interface IShopService {
 	

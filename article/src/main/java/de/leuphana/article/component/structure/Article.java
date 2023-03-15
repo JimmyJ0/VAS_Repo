@@ -27,19 +27,15 @@ public abstract class Article {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public String getManufactor() {
 		return manufactor;
 	}
-
 	public void setManufactor(String manufactor) {
 		this.manufactor = manufactor;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}

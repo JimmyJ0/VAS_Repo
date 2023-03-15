@@ -11,14 +11,11 @@ public class Book extends Article {
 	@Column(name = "book_id")
 	private String bookId;
 	private String author;
-	private BookCategory bookCategory;
-
+	private String bookCategory;
+	
 	public Book() {
 		super();
-	}
-	
-	public void setArticleId(int articleId) {
-		super.setArticleId(articleId);
+
 	}
 	
 	public String getBookId() {
@@ -36,11 +33,11 @@ public class Book extends Article {
 		this.author = author;
 	}
 
-	public BookCategory getBookCategory() {
+	public String getBookCategory() {
 		return bookCategory;
 	}
 
-	public void setBookCategory(BookCategory bookCategory) {
+	public void setBookCategory(String bookCategory) {
 		this.bookCategory = bookCategory;
 	}
 	
