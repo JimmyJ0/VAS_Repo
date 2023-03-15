@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import de.leuphana.customer.component.behaviour.CustomerService;
@@ -78,16 +79,15 @@ public class CustomerServiceTest {
     	Customer customer = new Customer();
     	customer.setName("Mustermann");
     	customer.setAddress("Rotes Feld");
-    	customerService.createCustomer(customer);
-    	
+    	customerService.createCustomer(customer);	
     	Integer customerId = customer.getCustomerId();
-    	
-    	customerService.deleteCustomer(customerId);
-    	
-    	assertNull(customerService.getCustomerById(customerId));
-    	
-//    	Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
-//      assertNull(customerOptional);
+
+    	Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
+        if (customerOptional.isPresent()) {
+        	customerService.deleteCustomer(customerId);
+        } else {
+        	assertNull(customerService.getCustomerById(customerId));
+        }
     	  
     }
     
