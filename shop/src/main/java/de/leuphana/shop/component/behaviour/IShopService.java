@@ -6,9 +6,15 @@ import de.leuphana.shop.component.structure.article.Article;
 
 public interface IShopService {
 	
-	public boolean insertArticle(Article article);
+	public boolean saveArticle(Article article);
 	
 	public List<Article> getArticles();
+	
+	public Article getArticleById(String id);
+	
+	public boolean updateArticle(Article article, String id);
+	
+	public boolean deleteArticleById(String id);
 	
 
 }

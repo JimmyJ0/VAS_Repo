@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,9 @@ import de.leuphana.shop.component.structure.article.CD;
 @RestController
 @RequestMapping("/shop/shop")
 public class ArticleRestConnector {
+	
+	//TODO: BADREQUESTS, ExceptionHandling und Logging implementieren
+	//TODO: Letzten beiden CRUD-Operations implementieren: GetArticleByID, DeleteArticle, UpdateArticle
 
 	// Empfängt Artikel / Subtype und mapped diesen in konkerten Typ. Leitet dann an
 	// entsprechende Methode weiter
@@ -44,10 +48,11 @@ public class ArticleRestConnector {
 			return new ResponseEntity<Article>(HttpStatus.CREATED);
 		}
 
-		return null;
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 	}
 
+	// Holt alle Artikel aus der Datenbank
 	@GetMapping()
 	public ResponseEntity<List<Article>> getArticles() {
 		HttpHeaders headers = new HttpHeaders();
@@ -62,7 +67,24 @@ public class ArticleRestConnector {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
-
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Article> getArticleById(@PathVariable String id) {
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+	    RestTemplate restTemplate = new RestTemplate();
+	    try {
+	        ResponseEntity<Article> responseEntity = restTemplate.exchange(
+	            "http://localhost:9090//shop/article/getArticleById/{id}", HttpMethod.GET,
+	            requestEntity, Article.class, id);
+	        Article article = responseEntity.getBody();
+	        return new ResponseEntity<Article>(article, HttpStatus.OK);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 }

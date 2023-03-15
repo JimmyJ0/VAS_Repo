@@ -2,38 +2,37 @@ package de.leuphana.article.component.structure;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="cds")
 public class CD extends Article {
     
-    public CD() {
-        super();
-    }
-    
-    @Column(name="artist_name")
+    @Column(name="cd_id")
+    private String cdId;
     private String artist;
     
-    public CD(String artist) {
-        this.artist = artist;
+    public CD() {
+    	super();
     }
     
-    public String getArtist() {
-        return artist;
-    }
+
+	public String getCdId() {
+		return cdId;
+	}
+
+	public void setCdId(String id) {
+		this.cdId = id;
+	}
+
+	public String getArtist() {
+		return artist;
+	}
+
+	public void setArtist(String artist) {
+		this.artist = artist;
+	}
     
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-    
-    @Override
-    @GeneratedValue(strategy=GenerationType.IDENTITY, generator="cd_seq")
-    public void setId(String id) {
-        super.setId("CD" + id);
-    }
+
     
 }
-

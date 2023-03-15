@@ -15,17 +15,16 @@ public abstract class Article {
 	public Article() {
 	}
 	
-	private long id;
 	private String manufactor;
 	private String name;
-	private String price;
+	private double price;
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
+//	public long getId() {
+//		return id;
+//	}
+//	public void setId(long id) {
+//		this.id = id;
+//	}
 	public String getManufactor() {
 		return manufactor;
 	}
@@ -38,10 +37,10 @@ public abstract class Article {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	

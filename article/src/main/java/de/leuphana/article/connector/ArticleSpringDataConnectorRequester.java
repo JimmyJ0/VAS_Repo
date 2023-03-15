@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,9 +60,17 @@ public class ArticleSpringDataConnectorRequester {
 	public ResponseEntity<List<Article>> getAllArticles() {
 		System.out.println("ARTIKEL MS EMPFÄNGT GET ANFRAGE");
 	    List<Article> articles = articleService.getArticles();
-	    ResponseEntity re = new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
-	    Object x = re.getBody();
+	    ResponseEntity<List<Article>> re = new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
 	    // Zugriff auf die Datenbank mit Hilfe von JPA Repository
 	    return re; // Rückgabe der Liste mit HTTP-Statuscode 200 OK
+	}
+	
+	@GetMapping("/getArticleById/{id}")
+	public ResponseEntity<Article> getArticleById(@PathVariable String id) {
+	    Article article = articleService.getArticleById(id);
+	    if (article == null) {
+	        return new ResponseEntity<Article>(HttpStatus.NOT_FOUND);
+	    }
+	    return new ResponseEntity<Article>(article, HttpStatus.OK);
 	}
 }

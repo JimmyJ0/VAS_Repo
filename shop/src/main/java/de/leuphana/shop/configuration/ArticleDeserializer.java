@@ -23,9 +23,8 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 
 		JsonNode node = p.getCodec().readTree(p);
 
-		System.out.println("ASDASD" + node.toPrettyString());
-
 		JsonNode typeNode = node.get("type");
+		// POST-Mapping
 		if (typeNode != null) {
 			String type = node.get("type").asText();
 
@@ -35,7 +34,7 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 				cd.setManufactor(node.get("manufactor").asText());
 				cd.setArtist(node.get("artist").asText());
 				cd.setName(node.get("name").asText());
-				cd.setPrice(node.get("price").asText());
+				cd.setPrice(node.get("price").asDouble());
 
 				System.out.println("Deserizalied to an CD");
 
@@ -48,31 +47,42 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 				book.setManufactor(node.get("manufactor").asText());
 				book.setBookCategory(node.get("bookCategory").asText());
 				book.setName(node.get("name").asText());
-				book.setPrice(node.get("price").asText());
+				book.setPrice(node.get("price").asDouble());
 				book.setAuthor(node.get("author").asText());
 
 				return book;
 
 			}
 			// TODO: ExceptionHandling
-		} else {
+		} 
+		// GET-Mapping
+		else {
+			// Hübsch machen! Krampf hier...
+			System.out.println("SHITFUCK");
+			JsonNode book2 = node.get("bookId");
+			JsonNode cd2 = node.get("cdId");
+			System.out.println(book2);
+			System.out.println(cd2);
 			
-			if(node.get("id").asText().contains("BK")) {
+			if(book2 != null) {
 				Book book = new Book();
+				book.setId(node.get("id").asLong());
+				book.setBookId(node.get("bookId").asText());
 				book.setManufactor(node.get("manufactor").asText());
 				book.setBookCategory(node.get("bookCategory").asText());
 				book.setName(node.get("name").asText());
-				book.setPrice(node.get("price").asText());
+				book.setPrice(node.get("price").asDouble());
 				book.setAuthor(node.get("author").asText());
 				
 				return book;
 			}
-			else if(node.get("id").asText().contains("CD")) {
+			else if(cd2.asText() != null) {
 				CD cd = new CD();
+				cd.setCdId(node.get("cdId").asText());
 				cd.setManufactor(node.get("manufactor").asText());
 				cd.setArtist(node.get("artist").asText());
 				cd.setName(node.get("name").asText());
-				cd.setPrice(node.get("price").asText());
+				cd.setPrice(node.get("price").asDouble());
 				
 				return cd;
 			}
@@ -81,5 +91,4 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 		return null;
 
 	}
-
 }

@@ -25,18 +25,41 @@ class ShopServiceTest {
 
 	@Test
 	void canNewArticleBeInserted() {
-		Book newBook = new Book();
-		newBook.setName("Sprechen Sie Java?");
-		newBook.setAuthor("Luci Lucifer");
-		newBook.setManufactor("Hell Factory");
-		newBook.setPrice("2.30");
-		assertTrue(shopService.insertArticle(newBook));
+		Book book = new Book();
+		book.setName("Sprechen Sie Java 2?");
+		book.setAuthor("Luci Lucifer");
+		book.setManufactor("Hell Factory");
+		book.setPrice(2.30);
+		book.setBookCategory("Fantasy");
+		assertTrue(shopService.saveArticle(book));
 	}
 	
 	@Test
 	void canIgetAllArticles() {
 		List<Article> allArticles = shopService.getArticles();
 		assertNotNull(allArticles);
+	}
+	
+	@Test
+	void canBookBeFound() {
+		Article book = shopService.getArticleById("BK1");
+		System.out.println("Found article: " + book.getName());
+		assertNotNull(book);
+		
+	}
+	
+	@Test 
+	void canCdBeFound(){
+		Article cd = shopService.getArticleById("CD1");
+		assertNotNull(cd);
+	}
+	
+	@Test
+	void canArticleBeUpdated() {
+		Book newBook = new Book();
+		newBook.setName("Sprechen Sie Java 33");
+		newBook.setPrice(3.30);
+		shopService.updateArticle(newBook, "BK1");
 	}
 
 }
