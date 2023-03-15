@@ -53,7 +53,7 @@ public class CustomerService{
 		}
 	}
 	public void deleteCustomer(Integer customerId) {
-		//System.out.println("... delete customer with id " + customerId);
+		System.out.println("... delete customer with id " + customerId);
 		customerSpringDataConnectorRequester.deleteCustomerById(customerId);
 	}
 
