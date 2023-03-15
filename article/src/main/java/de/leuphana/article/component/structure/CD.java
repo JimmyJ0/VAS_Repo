@@ -7,16 +7,22 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="cds")
 public class CD extends Article {
+    
+    @Column(name="cd_id")
+    private String cdId;
+    private String artist;
+    
+    public CD() {
+    	super();
+    }
+    
 
-	public CD() {
-		super();
+	public String getCdId() {
+		return cdId;
 	}
 
-	@Column(name="artist_name")
-	private String artist;
-
-	public CD(String artist) {
-		this.artist = artist;
+	public void setCdId(String id) {
+		this.cdId = id;
 	}
 
 	public String getArtist() {
@@ -26,5 +32,7 @@ public class CD extends Article {
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
+    
 
+    
 }

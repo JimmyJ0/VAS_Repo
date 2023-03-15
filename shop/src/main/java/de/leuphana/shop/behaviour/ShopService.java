@@ -1,122 +1,81 @@
-package de.leuphana.shop.behaviour;
+package de.leuphana.shop.component.behaviour;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import de.leuphana.shop.structure.article.Article;
-import de.leuphana.shop.structure.billing.Invoice;
-import de.leuphana.shop.structure.billing.InvoicePosition;
-import de.leuphana.shop.structure.sales.ArticleComplaintRequest;
-import de.leuphana.shop.structure.sales.Cart;
-import de.leuphana.shop.structure.sales.CartItem;
-import de.leuphana.shop.structure.sales.Catalog;
-import de.leuphana.shop.structure.sales.Customer;
-import de.leuphana.shop.structure.sales.Order;
-import de.leuphana.shop.structure.sales.OrderPosition;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ShopService {
-	private Catalog catalog;
-	private Map<Integer, Customer> customers;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-	public ShopService() {
-		customers = new HashMap<Integer, Customer>();
-		catalog = new Catalog();
+import de.leuphana.shop.component.structure.article.Article;
+import de.leuphana.shop.component.structure.article.Book;
+import de.leuphana.shop.component.structure.article.CD;
+import de.leuphana.shop.connector.ArticleRestConnector;
+
+public class ShopService implements IShopService{
+	
+	//TODO: Anhand der Response Entity Exception Handling machen. 
+	
+	private ArticleRestConnector articleRestConnector;
+	
+	@Autowired
+	public ShopService(ArticleRestConnector articleRestConnector) {
+		this.articleRestConnector = articleRestConnector;
 	}
 
-	public Integer createCustomerWithCart() {
-		Cart cart = new Cart();
-
-		Customer customer = new Customer(cart);
-
-		customers.put(customer.getCustomerId(), customer);
-
-		return customer.getCustomerId();
-	}
-
-	public Article getArticle(int articleId) {
-		// Delegation
-		return catalog.getArticle(articleId);
-	}
-
-	public Catalog getCatalog() {
-		return catalog;
-	}
-
-	public void removeArticleFromCart(Integer customerId, int articleId) {
-		// Delegation
-		Cart cart = customers.get(customerId).getCart();
-
-		cart.deleteCartItem(articleId);
-	}
-
-	public void addArticleToCart(Integer customerId, Integer articleId) {
-		Article foundArticle = getArticle(articleId);
-
-		Cart cart = customers.get(customerId).getCart();
-
-		cart.addCartItem(foundArticle);
-	}
-
-	public void decrementArticleQuantityInCart(Integer customerId,
-			Integer articleId) {
-		Cart cart = customers.get(customerId).getCart();
-
-		cart.decrementArticleQuantity(articleId);
-	}
-
-	public Order checkOutCart(int customerId) {
-
-		Customer customer = customers.get(customerId);
-		Cart cart = customer.getCart();
-
-		Order order = new Order();
-		order.setOrderId(1);
-
-
-		int i = 1;
-		
-		List<OrderPosition> orderPositions = new ArrayList<OrderPosition>();
-
-		for (CartItem cartItem : cart.getCartItems()) {
-			OrderPosition orderPosition = new OrderPosition();
-			orderPosition.setPositionId(i++);
-			orderPosition.setArticleId(cartItem.getArticleId());
-			orderPosition.setArticleQuantity(cartItem.getQuantity());
-			orderPositions.add(orderPosition);
+	@Override
+	public boolean saveArticle(Article article) {
+		try {
+			articleRestConnector.saveArticle(article);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 		}
-		order.setOrderPositions(orderPositions);
-
-		customer.addOrder(order);
-
-		return order;
-	}
-	
-	public void complainArticle(ArticleComplaintRequest articleComplaint) {
-		System.out.println(articleComplaint.toString());
+		return true;
 	}
 
-	
-	public Cart getCartForCustomer(Integer customerId) {
-		return customers.get(customerId).getCart();
+	@Override
+	public List<Article> getArticles() {
+		return articleRestConnector.getArticles().getBody();
 	}
-	
-	// =============== billing service interface =================
-	
-	public Invoice createInvoice(Order order) {
+
+	@Override
+	public Article getArticleById(String id) {
+		Article foundArticle = articleRestConnector.getArticleById(id).getBody();
 		
-		Invoice invoice = new Invoice();
-		for (OrderPosition orderPosition : order.getOrderPositions()) {
-			
-			InvoicePosition invoicePosition = new InvoicePosition();
-			invoicePosition.setArticleId(orderPosition.getArticleId());
-			invoicePosition.setArticlePrice(orderPosition.getArticlePrice());
-			invoicePosition.setArticleQuantity(orderPosition.getArticleQuantity());
-			
-			invoice.addInvoicePosition(invoicePosition);
+		return foundArticle;
+	}
+
+	// Gruselig... Aber funktioniert
+	@Override
+	public boolean updateArticle(Article article, String id) {
+		Article oldArticle = getArticleById(id);
+		if(oldArticle != null) {
+			oldArticle.setName(article.getName() == null ? oldArticle.getName() : article.getName());
+			oldArticle.setManufactor(article.getManufactor() == null ? oldArticle.getManufactor() : article.getManufactor());
+			oldArticle.setPrice(article.getPrice() == 0.0 ? oldArticle.getPrice() : article.getPrice());
+			if(article instanceof Book) {
+				((Book) oldArticle).setAuthor(((Book)article).getAuthor() == null ? ((Book)oldArticle).getAuthor() : ((Book)article).getAuthor());
+				((Book) oldArticle).setBookCategory(((Book)article).getBookCategory() == null ? ((Book)oldArticle).getBookCategory() : ((Book)article).getBookCategory());
+			}
+			else if(article instanceof CD) {
+				((CD) oldArticle).setArtist(((CD)article).getArtist() == null ? ((CD)oldArticle).getArtist() : ((CD)article).getArtist());
+			}
 		}
+		saveArticle(oldArticle);
 		
-		return invoice;
+		
+		return false;
 	}
+
+	//TODO: Delete Article
+	
+	@Override
+	public boolean deleteArticleById(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	
+	
+
 }

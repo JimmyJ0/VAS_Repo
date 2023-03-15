@@ -1,24 +1,30 @@
 package de.leuphana.shop.structure.article;
 
-//@JsonDeserialize(using=ArticleDeserializer.class)
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import de.leuphana.shop.configuration.ArticleDeserializer;
+
+@JsonDeserialize(using=ArticleDeserializer.class)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = CD.class, name = "cd"),
+    @JsonSubTypes.Type(value = Book.class, name = "book")
+})
 public abstract class Article {
-	
-	private Integer articleId;
-	private String manufactor;
-	private String name;
-	private float price;
 	
 	public Article() {
 	}
-
-	public void setArticleId(Integer articleId) {
-		this.articleId = articleId;
-	}
-
-	public Integer getArticleId() {
-		return articleId;
-	}
-
+	
+	private String manufactor;
+	private String name;
+	private double price;
+	
+//	public long getId() {
+//		return id;
+//	}
+//	public void setId(long id) {
+//		this.id = id;
+//	}
 	public String getManufactor() {
 		return manufactor;
 	}
@@ -34,12 +40,10 @@ public abstract class Article {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
-
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

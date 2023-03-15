@@ -7,28 +7,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class Article {
+public abstract class Article {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer articleId;
+	private Long id;
 	@Column(name="manufactor_name")
 	private String manufactor;
 	@Column(name="article_name")
 	private String name;
 	@Column(name="article_price")
-	private float price;
-
+	private double price;
 	
-	public Article() {
+	
+	
+	public Long getId() {
+		return id;
 	}
-
-	public void setArticleId(Integer articleId) {
-		this.articleId = articleId;
-	}
-
-	public Integer getArticleId() {
-		return articleId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getManufactor() {
@@ -46,14 +43,13 @@ public class Article {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
-
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
-
 }
+
+
