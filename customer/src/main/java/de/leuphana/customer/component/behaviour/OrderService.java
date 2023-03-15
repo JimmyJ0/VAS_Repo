@@ -7,12 +7,12 @@ import de.leuphana.customer.component.structure.Customer;
 import de.leuphana.customer.configuration.CustomerRepository;
 
 @Service
-public class CustomerService implements ICustomerService{
+public class OrderService implements ICustomerService{
 	
 private CustomerRepository customerRepository;
 	
 	@Autowired
-	public CustomerService(CustomerRepository customerRepository) {
+	public OrderService(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
 	

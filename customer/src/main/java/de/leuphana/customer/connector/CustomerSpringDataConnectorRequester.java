@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.leuphana.customer.component.behaviour.CustomerService;
+import de.leuphana.customer.component.behaviour.OrderService;
 import de.leuphana.customer.component.structure.Customer;
 
 @RestController
 @RequestMapping("/shop/customer")
 public class CustomerSpringDataConnectorRequester {
 	
-	private CustomerService customerService;
+	private OrderService customerService;
 
 	@Autowired
-	public CustomerSpringDataConnectorRequester(CustomerService customerService) {
+	public CustomerSpringDataConnectorRequester(OrderService customerService) {
 		super();
 		this.customerService = customerService;
 	}

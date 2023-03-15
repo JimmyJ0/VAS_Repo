@@ -7,6 +7,7 @@ import de.leuphana.order.component.structure.Order;
 public interface IOrderService {
 	Order createOrder(Order order);
 	Order getOrder (Long id) throws Exception;
+	//TODO getAllOrders / Vielleicht noch mit dem richtigen Status
 	//Order updateOrderStatus(Long id);
 	void deleteOrder(Long id);
 }
