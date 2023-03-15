@@ -1,7 +1,6 @@
 package de.leuphana.order.connector;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +52,15 @@ public class OrderSpringDataConnectorRequester {
 	        Optional<Order> customerOptional = Optional.of(orderService.getOrder(id));
 	        return customerOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	    }
+		
 		//PUT-> http://localhost:9090/customers/3 (Für Kunde mit customerId=3 können "name" und "address" mit Postman angepasst werden)
 		@PutMapping("/{id}")
 	    public ResponseEntity<Order> updateCustomer(@PathVariable Long id, @RequestBody Order order) throws Exception {
 	        Optional<Order> orderOptional = Optional.of(orderService.getOrder(id));
 	        if (orderOptional.isPresent()) {
 	            Order updatedCustomer = orderOptional.get();
-	            updatedCustomer.setName(order.getName());
-	            updatedCustomer.setAddress(order.getAddress());
+//	            updatedCustomer.setName(order.getName());
+//	            updatedCustomer.setAddress(order.getAddress());
 	            updatedCustomer = orderService.createOrder(updatedCustomer);
 	            return ResponseEntity.ok(updatedCustomer);
 	        } else {
@@ -80,4 +80,3 @@ public class OrderSpringDataConnectorRequester {
 	    }
 
 	}
-}
