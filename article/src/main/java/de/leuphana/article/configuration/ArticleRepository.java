@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.leuphana.article.component.structure.Article;
 import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 
-public interface ArticleRepository extends JpaRepository<Article, Integer>{
+@Transactional
+public interface ArticleRepository extends JpaRepository<Article, String>{
 	
     @Query("SELECT COUNT(b) FROM Book b")
     long countBooks();
@@ -32,8 +34,19 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>{
 	@Query("SELECT a FROM CD a WHERE a.cdId = :id")
 	Article getCdById(@Param("id") String id);
 	
-	@Modifying
-    @Query("DELETE FROM Book a WHERE a.bookId = :id")
-    boolean deleteBookById(@Param("id") String id);
+//	 SPRING-BUG (Bekannt) Müssten downgraden, ansonsten alternative delete-method:
+//    @Modifying
+//    @Query(value = "DELETE FROM books WHERE id = ?1", nativeQuery = true)
+//    void deleteBookById(@Param("id") String id);
+//	
+	
+// DELETE METHOD (By normal id)
+    @Modifying
+    @Query("DELETE FROM Book b WHERE b.id = :bookId")
+    void deleteBookById(@Param("bookId") long bookId);
+    
+    @Modifying
+    @Query("DELETE FROM CD c WHERE c.id = :cdId")
+    void deleteCdById(@Param("cdId") long cdId);
 
 }

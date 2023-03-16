@@ -32,17 +32,15 @@ import de.leuphana.shop.structure.article.CD;
 @RestController
 @RequestMapping("/shop/shop")
 public class ArticleRestConnectorRequester {
-	
+
 	private EurekaClient eurekaClient;
-	
+
 	@Autowired
 	public void setEurekaClient(EurekaClient eurekaClient) {
 		this.eurekaClient = eurekaClient;
 	}
-	
-	
-	//TODO: BADREQUESTS, ExceptionHandling und Logging implementieren
-	//TODO: Letzten beiden CRUD-Operations implementieren: GetArticleByID, DeleteArticle, UpdateArticles
+
+	// TODO: BADREQUESTS, ExceptionHandling und Logging implementieren
 
 	// Empfängt Artikel / Subtype und mapped diesen in konkerten Typ. Leitet dann an
 	// entsprechende Methode weiter
@@ -50,21 +48,20 @@ public class ArticleRestConnectorRequester {
 	public ResponseEntity<Article> saveArticle(@RequestBody Article article) throws JsonProcessingException {
 		Application app = eurekaClient.getApplication("article-service");
 		String articleServiceUrl = "http://";
-		if(app != null) {
-			InstanceInfo articleServiceInstance = app.getInstances().get(0); 
+		if (app != null) {
+			InstanceInfo articleServiceInstance = app.getInstances().get(0);
 			String address = articleServiceInstance.getIPAddr() + ":" + articleServiceInstance.getPort();
 			articleServiceUrl += address;
-		
-		
-		if (article instanceof CD) {
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.postForLocation(articleServiceUrl+"//shop/article/cd", article);
-			return new ResponseEntity<Article>(HttpStatus.CREATED);
-		} else if (article instanceof Book) {
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.postForLocation(articleServiceUrl+"//shop/article/book", article);
-			return new ResponseEntity<Article>(HttpStatus.CREATED);
-		}
+
+			if (article instanceof CD) {
+				RestTemplate restTemplate = new RestTemplate();
+				restTemplate.postForLocation(articleServiceUrl + "//shop/article/cd", article);
+				return new ResponseEntity<Article>(HttpStatus.CREATED);
+			} else if (article instanceof Book) {
+				RestTemplate restTemplate = new RestTemplate();
+				restTemplate.postForLocation(articleServiceUrl + "//shop/article/book", article);
+				return new ResponseEntity<Article>(HttpStatus.CREATED);
+			}
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -75,84 +72,80 @@ public class ArticleRestConnectorRequester {
 	public ResponseEntity<List<Article>> getArticles() {
 		Application app = eurekaClient.getApplication("article-service");
 		String articleServiceUrl = "http://";
-		if(app != null) {
-			InstanceInfo articleServiceInstance = app.getInstances().get(0); 
+		if (app != null) {
+			InstanceInfo articleServiceInstance = app.getInstances().get(0);
 			String address = articleServiceInstance.getIPAddr() + ":" + articleServiceInstance.getPort();
 			articleServiceUrl += address;
-			
-			
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON); // Server soll eine JSON zurückgeben
-		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-		RestTemplate restTemplate = new RestTemplate();
-		try {
-			ResponseEntity<List<Article>> responseEntity = restTemplate.exchange(articleServiceUrl+"//shop/article/getAllArticles", HttpMethod.GET,requestEntity, new ParameterizedTypeReference<List<Article>>() {});
-			List<Article> articles = responseEntity.getBody();
-			return new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON); // Server soll eine JSON zurückgeben
+			HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+			RestTemplate restTemplate = new RestTemplate();
+			try {
+				ResponseEntity<List<Article>> responseEntity = restTemplate.exchange(
+						articleServiceUrl + "//shop/article/getAllArticles", HttpMethod.GET, requestEntity,
+						new ParameterizedTypeReference<List<Article>>() {
+						});
+				List<Article> articles = responseEntity.getBody();
+				return new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Article> getArticleById(@PathVariable String id) {
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-	    RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+		RestTemplate restTemplate = new RestTemplate();
 		Application app = eurekaClient.getApplication("article-service");
 		String articleServiceUrl = "http://";
-	    if(app != null) {
-			InstanceInfo articleServiceInstance = app.getInstances().get(0); 
+		if (app != null) {
+			InstanceInfo articleServiceInstance = app.getInstances().get(0);
 			String address = articleServiceInstance.getIPAddr() + ":" + articleServiceInstance.getPort();
 			articleServiceUrl += address;
-			
-	    
-	    try {
-	    	String xurl = articleServiceUrl+"//shop/article/getArticleById/{id}";
 
-	        ResponseEntity<Article> responseEntity = restTemplate.exchange(
-	            articleServiceUrl+"//shop/article/getArticleById/{id}", HttpMethod.GET,
-	            requestEntity, Article.class, id);
-	        Article article = responseEntity.getBody();
-	        return new ResponseEntity<Article>(article, HttpStatus.OK);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    }
-	    return null;
+			try {
+				ResponseEntity<Article> responseEntity = restTemplate.exchange(
+						articleServiceUrl + "//shop/article/getArticleById/{id}", HttpMethod.GET, requestEntity,
+						Article.class, id);
+				Article article = responseEntity.getBody();
+				return new ResponseEntity<Article>(article, HttpStatus.OK);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	@GetMapping("/{articleid}")
 	public ResponseEntity<String> deleteArticleById(@PathVariable String articleid) {
-		  HttpHeaders headers = new HttpHeaders();
-		    headers.setContentType(MediaType.APPLICATION_JSON);
-		    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-		    RestTemplate restTemplate = new RestTemplate();
-			Application app = eurekaClient.getApplication("article-service");
-			String articleServiceUrl = "http://";
-		    if(app != null) {
-				InstanceInfo articleServiceInstance = app.getInstances().get(0); 
-				String address = articleServiceInstance.getIPAddr() + ":" + articleServiceInstance.getPort();
-				articleServiceUrl += address;
-				
-		    
-		    try {
-		    	String xurl = articleServiceUrl+"//shop/article/deleteArticleById/{articleid}";
-		        ResponseEntity<String> responseEntity = restTemplate.exchange(
-		            articleServiceUrl+"//shop/article/deleteArticleById/{articleid}", HttpMethod.GET,
-		            requestEntity, String.class, articleid);
-		        if(responseEntity.getStatusCode().equals(HttpStatus.OK)) return new ResponseEntity<String>("Article deleted!", HttpStatus.OK);
-		        
-		        
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    }
-		    return null;
-		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+		RestTemplate restTemplate = new RestTemplate();
+		Application app = eurekaClient.getApplication("article-service");
+		String articleServiceUrl = "http://";
+		if (app != null) {
+			InstanceInfo articleServiceInstance = app.getInstances().get(0);
+			String address = articleServiceInstance.getIPAddr() + ":" + articleServiceInstance.getPort();
+			articleServiceUrl += address;
+
+			try {
+				ResponseEntity<String> responseEntity = restTemplate.exchange(
+						articleServiceUrl + "//shop/article/deleteArticleById/{articleid}", HttpMethod.GET,
+						requestEntity, String.class, articleid);
+				if (responseEntity.getStatusCode().equals(HttpStatus.OK))
+					return new ResponseEntity<String>("Article deleted!", HttpStatus.OK);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+
 	}
 }

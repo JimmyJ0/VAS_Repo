@@ -83,18 +83,23 @@ public class ArticleService implements IArticleService {
 	}
 
 	public boolean deleteArticleById(String id) {
-		boolean deleted = false;
 		try {
 			if(id.startsWith("BK")) {
-				deleted = articleRepository.deleteBookById(id);
+				// Workaround because of Spring-Bug. Can't delete by String ID, just by Int
+				int bookId = Integer.valueOf(id.substring(2, id.length()));
+				articleRepository.deleteBookById(bookId);
+				return true;
 			}
 			else if(id.startsWith("CD")) {
+				int cdId = Integer.valueOf(id.substring(2, id.length()));
+				articleRepository.deleteCdById(cdId);
+				return true;
 			}
 		}
 		catch(Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
 		}
-		return deleted;
+		return false;
 	}
 
 

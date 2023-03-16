@@ -64,8 +64,8 @@ class ShopServiceTest {
 	
 	@Test 
 	void canBookDeleted(){
-		String bookId = "BK1";
-		shopService.deleteArticleById(bookId);
+		String bookId = "BK6";
+		assertTrue(shopService.deleteArticleById(bookId));
 	}
 
 }
