@@ -8,7 +8,7 @@ import de.leuphana.shop.structure.article.Article;
 
 public interface IShopService {
 	
-	public boolean saveArticle(Article article);
+	public boolean saveArticleInDB(Article article);
 	
 	public List<Article> getArticles();
 	

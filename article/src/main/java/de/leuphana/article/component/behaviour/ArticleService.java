@@ -82,5 +82,20 @@ public class ArticleService implements IArticleService {
 		
 	}
 
+	public boolean deleteArticleById(String id) {
+		boolean deleted = false;
+		try {
+			if(id.startsWith("BK")) {
+				deleted = articleRepository.deleteBookById(id);
+			}
+			else if(id.startsWith("CD")) {
+			}
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return deleted;
+	}
+
 
 }

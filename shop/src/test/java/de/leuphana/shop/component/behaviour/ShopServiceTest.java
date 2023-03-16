@@ -5,35 +5,33 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import de.leuphana.shop.behaviour.ShopService;
 import de.leuphana.shop.connector.ArticleRestConnectorRequester;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 
-
+@SpringBootTest
 class ShopServiceTest {
 
-	private static ShopService shopService;
+	@Autowired
+	ArticleRestConnectorRequester restConnector;
 	
+	@Autowired
+	private ShopService shopService;
 	
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-		ArticleRestConnectorRequester arc = new ArticleRestConnectorRequester();
-		shopService = new ShopService(arc);
-	}
-
 	@Test
 	void canNewArticleBeInserted() {
 		Book book = new Book();
-		book.setName("Sprechen Sie Java 2?");
-		book.setAuthor("Luci Lucifer");
-		book.setManufactor("Hell Factory");
-		book.setPrice(2.30);
-		book.setBookCategory("Fantasy");
-		assertTrue(shopService.saveArticle(book));
+		book.setName("Sprechen Sie Python?");
+		book.setAuthor("Mr. Gold");
+		book.setManufactor("SnakeLand");
+		book.setPrice(3.40);
+		book.setBookCategory("Horror");
+		assertTrue(shopService.saveArticleInDB(book));
 	}
 	
 	@Test
@@ -59,9 +57,15 @@ class ShopServiceTest {
 	@Test
 	void canArticleBeUpdated() {
 		Book newBook = new Book();
-		newBook.setName("Sprechen Sie Java 33");
+		newBook.setName("Sprechen Sie Java 999");
 		newBook.setPrice(3.30);
 		shopService.updateArticle(newBook, "BK1");
+	}
+	
+	@Test 
+	void canBookDeleted(){
+		String bookId = "BK1";
+		shopService.deleteArticleById(bookId);
 	}
 
 }

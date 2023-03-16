@@ -31,5 +31,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>{
 	
 	@Query("SELECT a FROM CD a WHERE a.cdId = :id")
 	Article getCdById(@Param("id") String id);
+	
+	@Modifying
+    @Query("DELETE FROM Book a WHERE a.bookId = :id")
+    boolean deleteBookById(@Param("id") String id);
 
 }

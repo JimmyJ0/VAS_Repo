@@ -4,6 +4,7 @@ package de.leuphana.shop.behaviour;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -13,19 +14,25 @@ import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
 
+@Service
 public class ShopService implements IShopService{
 	
 	//TODO: Anhand der Response Entity Exception Handling machen. 
 	
 	private ArticleRestConnectorRequester articleRestConnector;
 	
-	@Autowired
-	public ShopService(ArticleRestConnectorRequester articleRestConnector) {
-		this.articleRestConnector = articleRestConnector;
-	}
+    @Autowired
+    public void setArticleRestConnector(ArticleRestConnectorRequester articleRestConnector) {
+        this.articleRestConnector = articleRestConnector;
+    }
+	
+//	@Autowired
+//	public ShopService(ArticleRestConnectorRequester articleRestConnector) {
+//		this.articleRestConnector = articleRestConnector;
+//	}
 
 	@Override
-	public boolean saveArticle(Article article) {
+	public boolean saveArticleInDB(Article article) {
 		try {
 			articleRestConnector.saveArticle(article);
 		} catch (JsonProcessingException e) {
@@ -62,7 +69,7 @@ public class ShopService implements IShopService{
 				((CD) oldArticle).setArtist(((CD)article).getArtist() == null ? ((CD)oldArticle).getArtist() : ((CD)article).getArtist());
 			}
 		}
-		saveArticle(oldArticle);
+		saveArticleInDB(oldArticle);
 		
 		
 		return false;
@@ -71,8 +78,9 @@ public class ShopService implements IShopService{
 	//TODO: Delete Article
 	
 	@Override
-	public boolean deleteArticleById(String id) {
-		// TODO Auto-generated method stub
+	public boolean deleteArticleById(String articleid) {
+		String message = articleRestConnector.deleteArticleById(articleid).getBody();
+		if(message.equals("Article deleted!")) return true;
 		return false;
 	}
 

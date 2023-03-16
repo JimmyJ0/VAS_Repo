@@ -73,4 +73,14 @@ public class ArticleSpringDataConnectorRequester {
 	    }
 	    return new ResponseEntity<Article>(article, HttpStatus.OK);
 	}
+	
+	@GetMapping("/deleteArticleById/{articleid}")
+	public ResponseEntity<String> deleteArticleById(@PathVariable String articleid) {
+	    boolean successfullDeleted = articleService.deleteArticleById(articleid);
+	    if (successfullDeleted) {
+	        return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+	    }
+	    return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
 }
