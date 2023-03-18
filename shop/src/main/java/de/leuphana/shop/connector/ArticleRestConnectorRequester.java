@@ -40,6 +40,9 @@ public class ArticleRestConnectorRequester {
 		this.eurekaClient = eurekaClient;
 	}
 
+	
+	
+
 	// TODO: BADREQUESTS, ExceptionHandling und Logging implementieren
 
 	// Empfängt Artikel / Subtype und mapped diesen in konkerten Typ. Leitet dann an
@@ -148,4 +151,24 @@ public class ArticleRestConnectorRequester {
 		return null;
 
 	}
+	
+	@GetMapping("/pinging")
+	public boolean pinging() {
+		try {
+		RestTemplate template = new RestTemplate();
+		ResponseEntity<String> a = template.getForEntity("http://localhost:9000/shop/article/ping", String.class);
+		if(a.getBody().equals("ARTICLE SERVICE PINGED")) {
+			return true;
+		}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
+
+	
+	
 }

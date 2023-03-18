@@ -2,6 +2,7 @@ package de.leuphana.article.connector;
 
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ import de.leuphana.article.component.structure.CD;
 @RestController
 @RequestMapping("/shop/article")
 public class ArticleSpringDataConnectorRequester {
+	
+	org.slf4j.Logger log = LoggerFactory.getLogger(ArticleSpringDataConnectorRequester.class);
 
 	private ArticleService articleService;
 
@@ -82,5 +85,14 @@ public class ArticleSpringDataConnectorRequester {
 	    }
 	    return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 	}
+	
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+    	log.info("PING PING PING");
+    	System.out.println("PING");
+    	System.out.println("PING");
+        return new ResponseEntity<String>("ARTICLE SERVICE PINGED",HttpStatus.OK);
+
+    }
 	
 }

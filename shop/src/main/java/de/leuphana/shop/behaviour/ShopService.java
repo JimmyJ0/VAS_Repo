@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-
 import de.leuphana.shop.connector.ArticleRestConnectorRequester;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
@@ -75,14 +74,21 @@ public class ShopService implements IShopService{
 		return false;
 	}
 
-	//TODO: Delete Article
-	
 	@Override
 	public boolean deleteArticleById(String articleid) {
 		String message = articleRestConnector.deleteArticleById(articleid).getBody();
 		if(message.equals("Article deleted!")) return true;
 		return false;
 	}
+
+	public boolean ping() {
+		if(articleRestConnector.pinging()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 
 
 	

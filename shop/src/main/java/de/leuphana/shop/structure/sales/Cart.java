@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.leuphana.shop.structure.article.Article;
-
 public class Cart {
 	
 	private Map<Integer, CartItem> cartItems;

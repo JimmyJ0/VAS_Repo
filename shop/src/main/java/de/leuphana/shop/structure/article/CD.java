@@ -9,6 +9,10 @@ public class CD extends Article {
 		super();
 	}
 
+	public String getCdId() {
+		return cdId;
+	}
+
 	public CD(String artist) {
 		this.artist = artist;
 	}

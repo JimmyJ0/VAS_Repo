@@ -15,7 +15,7 @@ import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 
 @SpringBootTest
-class ShopServiceTest {
+class ShopServiceTest{
 
 	@Autowired
 	ArticleRestConnectorRequester restConnector;
@@ -67,5 +67,11 @@ class ShopServiceTest {
 		String bookId = "BK6";
 		assertTrue(shopService.deleteArticleById(bookId));
 	}
+	
+	@Test 
+	void pingShit(){
+		shopService.ping();
+	}
+	
 
 }
