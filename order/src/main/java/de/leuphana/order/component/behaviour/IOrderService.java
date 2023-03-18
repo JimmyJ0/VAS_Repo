@@ -2,9 +2,11 @@ package de.leuphana.order.component.behaviour;
 
 import de.leuphana.order.component.structure.Order;
 
+import java.util.List;
+
 public interface IOrderService {
-	Order createOrder(Order order);
-	Order getOrder (Long id) throws Exception;
-	//Order updateOrderStatus(Long id);
-	void deleteOrder(Long id);
+    Order createOrder(Order order);
+    Order getOrder(Long id) throws Exception;
+    List<Order> getAllOrders(); // Add this method
+    void deleteOrder(Long id);
 }

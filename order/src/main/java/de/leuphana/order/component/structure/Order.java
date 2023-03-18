@@ -22,7 +22,7 @@ public class Order{
 	private Long customerId;
 	
 	@Column(name = "OrderDate", nullable = false)
-	private LocalDate orderDate;
+	private LocalDate orderDate = LocalDate.now();
 	
 	@OneToMany(mappedBy = "order")
     private List<OrderPosition> orderPositions;
@@ -53,5 +53,10 @@ public class Order{
 
 	public void setOrderPositions(List<OrderPosition> orderPositions) {
 		this.orderPositions = orderPositions;
+	}
+
+	public Object getOrderDate() {
+		// TODO Auto-generated method stub
+		return this.orderDate;
 	}
 }
