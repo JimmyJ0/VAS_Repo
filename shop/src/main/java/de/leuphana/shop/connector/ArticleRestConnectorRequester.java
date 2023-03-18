@@ -101,7 +101,6 @@ public class ArticleRestConnectorRequester {
 		if (responseEntity.getStatusCode() == HttpStatus.OK)
 			return true;
 		return false;
-
 	}
 
 	@GetMapping("/pinging")

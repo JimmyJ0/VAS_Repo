@@ -61,8 +61,6 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 			// Hübsch machen! Krampf hier...
 			JsonNode book2 = node.get("bookId");
 			JsonNode cd2 = node.get("cdId");
-			System.out.println(book2);
-			System.out.println(cd2);
 			
 			if(book2 != null) {
 				Book book = new Book();
