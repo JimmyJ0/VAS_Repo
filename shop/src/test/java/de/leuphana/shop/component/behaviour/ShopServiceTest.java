@@ -26,7 +26,7 @@ class ShopServiceTest{
 	@Test
 	void canNewArticleBeInserted() {
 		Book book = new Book();
-		book.setName("Sprechen Sie Python?");
+		book.setName("Sprechen Sie PHP?");
 		book.setAuthor("Mr. Gold");
 		book.setManufactor("SnakeLand");
 		book.setPrice(3.40);
@@ -64,14 +64,9 @@ class ShopServiceTest{
 	
 	@Test 
 	void canBookDeleted(){
-		String bookId = "BK6";
+		String bookId = "BK2";
 		assertTrue(shopService.deleteArticleById(bookId));
 	}
-	
-	@Test 
-	void pingShit(){
-		shopService.ping();
-	}
-	
+
 
 }
