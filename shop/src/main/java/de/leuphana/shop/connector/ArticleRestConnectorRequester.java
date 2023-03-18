@@ -31,7 +31,7 @@ public class ArticleRestConnectorRequester {
 	// Empfängt Artikel / Subtype und mapped diesen in konkerten Typ. Leitet dann an
 	// entsprechende Methode weiter
 	// Sendet einen Artikel an den article-ms.
-	@PostMapping()
+	@PostMapping("/saveArticle")
 	public boolean saveArticle(@RequestBody Article article) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -57,7 +57,7 @@ public class ArticleRestConnectorRequester {
 	}
 
 	// Holt alle Artikel aus der Datenbank
-	@GetMapping()
+	@GetMapping("/getArticles")
 	public List<Article> getArticles() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -73,7 +73,7 @@ public class ArticleRestConnectorRequester {
 
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("article/{id}")
 	public Article getArticleById(@PathVariable String id) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -88,7 +88,7 @@ public class ArticleRestConnectorRequester {
 		return null;
 	}
 
-	@GetMapping("/{articleid}")
+	@GetMapping("deleteArticle/{articleid}")
 	public boolean deleteArticleById(@PathVariable String articleid) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -103,18 +103,5 @@ public class ArticleRestConnectorRequester {
 		return false;
 	}
 
-	@GetMapping("/pinging")
-	public boolean pinging() {
-		try {
-			RestTemplate template = new RestTemplate();
-			ResponseEntity<String> a = template.getForEntity("http://localhost:9000/shop/article/ping", String.class);
-			if (a.getBody().equals("ARTICLE SERVICE PINGED")) {
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
 
 }
