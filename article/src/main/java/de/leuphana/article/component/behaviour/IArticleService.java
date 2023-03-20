@@ -8,9 +8,9 @@ import de.leuphana.article.component.structure.CD;
 
 public interface IArticleService {
 		
-	CD saveCD(CD cd);
+	boolean saveCD(CD cd);
 	
-	Book saveBook(Book book);
+	boolean saveBook(Book book);
 	
 	List<Article> getArticles();
 

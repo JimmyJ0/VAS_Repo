@@ -2,15 +2,14 @@ package de.leuphana.shop.connector;
 
 import java.util.List;
 
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-// Das gleiche wie Controller?
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,71 +18,90 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
 
+@EnableDiscoveryClient
 @RestController
 @RequestMapping("/shop/shop")
 public class ArticleRestConnectorRequester {
-	
-	//TODO: BADREQUESTS, ExceptionHandling und Logging implementieren
-	//TODO: Letzten beiden CRUD-Operations implementieren: GetArticleByID, DeleteArticle, UpdateArticle
+	// TODO: ExceptionHandling und Logging implementieren
 
 	// Empfängt Artikel / Subtype und mapped diesen in konkerten Typ. Leitet dann an
 	// entsprechende Methode weiter
-	@PostMapping()
-	public ResponseEntity<Article> saveArticle(@RequestBody Article article) throws JsonProcessingException {
+	// Sendet einen Artikel an den article-ms.
+	@PostMapping("/saveArticle")
+	public boolean saveArticle(@RequestBody Article article) {
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON); // Teilt Server mit, dass body in JSON
 
 		if (article instanceof CD) {
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.postForLocation("http://localhost:9090//shop/article/cd", article);
-			return new ResponseEntity<Article>(HttpStatus.CREATED);
-		} else if (article instanceof Book) {
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.postForLocation("http://localhost:9090//shop/article/book", article);
-			return new ResponseEntity<Article>(HttpStatus.CREATED);
+			HttpEntity<CD> payload = new HttpEntity<CD>((CD) article);
+			ResponseEntity<String> response = restTemplate.exchange("http://localhost:9000/shop/article/cd",
+					HttpMethod.POST, payload, String.class);
+			if (response.getStatusCode() == HttpStatus.CREATED)
+				return true;
 		}
 
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+		else if (article instanceof Book) {
+			HttpEntity<Book> payload = new HttpEntity<Book>((Book) article);
+			ResponseEntity<String> response = restTemplate.exchange("http://localhost:9000/shop/article/book",
+					HttpMethod.POST, payload, String.class);
+			if (response.getStatusCode() == HttpStatus.CREATED)
+				return true;
+		}
+		// Fehlgeschlagen
+		return false;
 	}
 
 	// Holt alle Artikel aus der Datenbank
-	@GetMapping()
-	public ResponseEntity<List<Article>> getArticles() {
+	@GetMapping("/getArticles")
+	public List<Article> getArticles() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON); // Server soll eine JSON zurückgeben
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
-		try {
-			ResponseEntity<List<Article>> responseEntity = restTemplate.exchange("http://localhost:9090//shop/article/getAllArticles", HttpMethod.GET,requestEntity, new ParameterizedTypeReference<List<Article>>() {});
-			List<Article> articles = responseEntity.getBody();
-			return new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		ResponseEntity<List<Article>> response = restTemplate.exchange(
+				"http://localhost:9000/shop/article/getAllArticles", HttpMethod.GET, requestEntity,
+				new ParameterizedTypeReference<List<Article>>() {
+				});
+		if (response.getStatusCode() == HttpStatus.OK)
+			return response.getBody();
+		return null;
+
 	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Article> getArticleById(@PathVariable String id) {
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-	    RestTemplate restTemplate = new RestTemplate();
-	    try {
-	        ResponseEntity<Article> responseEntity = restTemplate.exchange(
-	            "http://localhost:9090//shop/article/getArticleById/{id}", HttpMethod.GET,
-	            requestEntity, Article.class, id);
-	        Article article = responseEntity.getBody();
-	        return new ResponseEntity<Article>(article, HttpStatus.OK);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return null;
+
+	@GetMapping("article/{id}")
+	public Article getArticleById(@PathVariable String id) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+		RestTemplate restTemplate = new RestTemplate();
+
+		ResponseEntity<Article> response = restTemplate.exchange(
+				"http://localhost:9000/shop/article/getArticleById/{id}", HttpMethod.GET, requestEntity, Article.class,
+				id);
+		if (response.getStatusCode() == HttpStatus.OK)
+			return response.getBody();
+		return null;
 	}
+
+	@GetMapping("deleteArticle/{articleid}")
+	public boolean deleteArticleById(@PathVariable String articleid) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+		RestTemplate restTemplate = new RestTemplate();
+
+		ResponseEntity<String> responseEntity = restTemplate.exchange(
+				"http://localhost:9000/shop/article/deleteArticleById/{articleid}", HttpMethod.GET, requestEntity,
+				String.class, articleid);
+		if (responseEntity.getStatusCode() == HttpStatus.OK)
+			return true;
+		return false;
+	}
+
+
 }

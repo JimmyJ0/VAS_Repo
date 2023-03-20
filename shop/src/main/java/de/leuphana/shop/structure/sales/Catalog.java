@@ -1,10 +1,8 @@
 package de.leuphana.shop.structure.sales;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import de.leuphana.shop.structure.article.Article;
-import de.leuphana.shop.structure.article.Book;
 
 public class Catalog {
 

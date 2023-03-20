@@ -59,11 +59,8 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 		// GET-Mapping
 		else {
 			// Hübsch machen! Krampf hier...
-			System.out.println("SHITFUCK");
 			JsonNode book2 = node.get("bookId");
 			JsonNode cd2 = node.get("cdId");
-			System.out.println(book2);
-			System.out.println(cd2);
 			
 			if(book2 != null) {
 				Book book = new Book();

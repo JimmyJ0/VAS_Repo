@@ -1,5 +1,7 @@
 package de.leuphana.customer.component.structure;
 
+
+import de.leuphana.shop.structure.sales.Cart;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
