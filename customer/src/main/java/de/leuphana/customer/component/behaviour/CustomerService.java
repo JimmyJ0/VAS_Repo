@@ -27,7 +27,7 @@ public class CustomerService{
 	}
 	@Transactional(readOnly = true)
 	public Customer getCustomerById(Integer customerId) throws Exception {
-		Optional<Customer> customerOptional = Optional.of(customerSpringDataConnectorRequester.getCustomerById(customerId));
+		Optional<Customer> customerOptional = Optional.ofNullable(customerSpringDataConnectorRequester.getCustomerById(customerId));
 		if (customerOptional.isPresent()) {
 			System.out.println("... get customer with id " + customerId);
 			return customerOptional.get();
@@ -36,7 +36,7 @@ public class CustomerService{
 		}
 	}
 	public Customer updateCustomer(Integer customerId, Customer customer) throws Exception{
-		Optional<Customer> customerOptional = Optional.of(customerSpringDataConnectorRequester.getCustomerById(customerId));
+		Optional<Customer> customerOptional = Optional.ofNullable(customerSpringDataConnectorRequester.getCustomerById(customerId));
 		if (customerOptional.isPresent()) {
 			customer.setCustomerId(customerId);
 			System.out.println("... update customer with id " + customerId);

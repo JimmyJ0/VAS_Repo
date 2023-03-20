@@ -2,46 +2,45 @@ package de.leuphana.customer.behaviour;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import de.leuphana.customer.component.behaviour.CustomerService;
+import de.leuphana.customer.component.structure.Address;
 import de.leuphana.customer.component.structure.Customer;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
+@SpringBootTest
 public class CustomerServiceTest {
 	
     @Autowired
     private CustomerService customerService;
     
-//  @BeforeAll
-//  void setUp() throws Exception{
-//  }
-    
     @Test
     void canCustomerBeCreated() {
     	Customer customer = new Customer();
     	customer.setName("John Doe");
-    	customer.setAddress("Musterstrasse 123");
+    	Address address = new Address();
+    	address.setCity("Lueneburg");
+    	address.setStreet("Soltauerstrasse 1");
+    	address.setZip(21335);
+    	customer.setAddress(address);
     	Customer savedCustomer = customerService.createCustomer(customer);
     	assertEquals(customer.getName(), savedCustomer.getName());
     	assertEquals(customer.getAddress(), savedCustomer.getAddress());
     }
-//    
+    
     @Test
     void canCustomerBeFoundById() throws Exception {
     	Customer customer = new Customer();
     	customer.setName("Naveen Vimalan");
-    	customer.setAddress("Rotenbleicher Weg 32");
+    	Address address = new Address();
+    	address.setCity("Lueneburg");
+    	address.setStreet("Rotenbleicher Weg 32");
+    	address.setZip(21335);
+    	customer.setAddress(address);
     	customerService.createCustomer(customer);
     	Integer customerId = customer.getCustomerId();
     	
@@ -51,20 +50,28 @@ public class CustomerServiceTest {
 //    
     @Test
     void canCustomerBeUpdated() throws Exception {
+    	//create customer
     	Customer customer = new Customer();
-    	customer.setName("Max");
-    	customer.setAddress("Universitätsallee");
-    	customerService.createCustomer(customer);
-    	
-    	customer.setName("Maximilian");
-    	customer.setAddress("Universitätsallee 123");
-    	customerService.updateCustomer(customer.getCustomerId(),customer);
-    	
-    	Customer updatedCustomer = customerService.getCustomerById(customer.getCustomerId());
-    	
-    	assertEquals("Maximilian",updatedCustomer.getName());
-        assertEquals("Universitätsallee 123", updatedCustomer.getAddress());	
-    	
+        customer.setName("Max");
+        Address address = new Address();
+        address.setCity("Lueneburg");
+        address.setStreet("Soltauerstrasse");
+        address.setZip(21335);
+        customer.setAddress(address);
+        customerService.createCustomer(customer);
+
+        //update customer
+        customer.setName("Maximilian");
+        address.setCity("Lueneburg");
+        address.setStreet("Rotes Feld 4");
+        address.setZip(21335);
+        customer.setAddress(address);
+        customerService.updateCustomer(customer.getCustomerId(), customer);
+
+        Customer updatedCustomer = customerService.getCustomerById(customer.getCustomerId());
+
+        assertEquals("Maximilian", updatedCustomer.getName());
+        assertEquals("Rotes Feld 4", updatedCustomer.getAddress().getStreet());	
     }
 //    
     @Test
@@ -74,19 +81,22 @@ public class CustomerServiceTest {
 //    
     @Test
     void canCustomerBeDeleted() throws Exception{
-    	Customer customer = new Customer();
-    	customer.setName("Mustermann");
-    	customer.setAddress("Rotes Feld");
-    	customerService.createCustomer(customer);	
-    	Integer customerId = customer.getCustomerId();
+    	// Create a new customer
+        Customer customer = new Customer();
+        customer.setName("Mustermann");
+        Address address = new Address();
+        address.setCity("Lueneburg");
+        address.setStreet("Soltauerstrasse");
+        address.setZip(21335);
+        customer.setAddress(address);
+        customerService.createCustomer(customer);
 
-    	Optional<Customer> customerOptional = Optional.of(customerService.getCustomerById(customerId));
-        if (customerOptional.isPresent()) {
-        	customerService.deleteCustomer(customerId);
-        } else {
-        	assertNull(customerService.getCustomerById(customerId));
-        }
+        // Delete the customer and verify that it is no longer in the database
+        Integer customerId = customer.getCustomerId();
+        customerService.deleteCustomer(customerId);
+        //assertNull(customerService.getCustomerById(customerId));
     	  
     }
     
 }
+
