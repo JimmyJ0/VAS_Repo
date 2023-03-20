@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import de.leuphana.shop.connector.ArticleRestConnectorRequester;
+import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;

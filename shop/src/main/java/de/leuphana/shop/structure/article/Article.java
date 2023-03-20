@@ -19,12 +19,6 @@ public abstract class Article {
 	private String name;
 	private double price;
 	
-//	public long getId() {
-//		return id;
-//	}
-//	public void setId(long id) {
-//		this.id = id;
-//	}
 	public String getManufactor() {
 		return manufactor;
 	}

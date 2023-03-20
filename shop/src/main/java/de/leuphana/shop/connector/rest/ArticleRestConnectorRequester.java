@@ -1,4 +1,4 @@
-package de.leuphana.shop.connector;
+package de.leuphana.shop.connector.rest;
 
 import java.util.List;
 
@@ -102,6 +102,7 @@ public class ArticleRestConnectorRequester {
 			return true;
 		return false;
 	}
+	
 
 
 }

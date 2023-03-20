@@ -16,7 +16,6 @@ public class CD extends Article {
     	super();
     }
     
-
 	public String getCdId() {
 		return cdId;
 	}
@@ -32,7 +31,5 @@ public class CD extends Article {
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
-    
-
-    
+        
 }

@@ -1,4 +1,4 @@
-package de.leuphana.shop.connector;
+package de.leuphana.shop.connector.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

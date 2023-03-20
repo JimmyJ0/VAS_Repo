@@ -1,4 +1,4 @@
-package de.leuphana.article.connector;
+package de.leuphana.article.connector.rest;
 
 import java.util.List;
 
