@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.client.RestTemplate;
 
 import de.leuphana.customer.component.behaviour.CustomerService;
 import de.leuphana.customer.component.structure.Address;
@@ -66,7 +67,7 @@ public class CustomerServiceTest {
         address.setStreet("Rotes Feld 4");
         address.setZip(21335);
         customer.setAddress(address);
-        customerService.updateCustomer(customer.getCustomerId(), customer);
+        customerService.updateCustomerById(customer.getCustomerId(), customer);
 
         Customer updatedCustomer = customerService.getCustomerById(customer.getCustomerId());
 
@@ -93,7 +94,7 @@ public class CustomerServiceTest {
 
         // Delete the customer and verify that it is no longer in the database
         Integer customerId = customer.getCustomerId();
-        customerService.deleteCustomer(customerId);
+        customerService.deleteCustomerById(customerId);
         //assertNull(customerService.getCustomerById(customerId));
     	  
     }
