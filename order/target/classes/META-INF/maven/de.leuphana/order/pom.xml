@@ -24,90 +24,45 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.1.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-    		<groupId>org.springframework.cloud</groupId>
-    		<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-    		<version>4.0.0</version>
-		</dependency>
-		<dependency>
-      		<groupId>org.springframework.cloud</groupId>
-      		<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-      		<version>4.0.0</version>
-    		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-    		<groupId>com.h2database</groupId>
-    		<artifactId>h2</artifactId>
-    		<version>1.4.197</version>
-    		<scope>runtime</scope>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-    		<groupId>com.fasterxml.jackson.datatype</groupId>
-    		<artifactId>jackson-datatype-jsr310</artifactId>
-    		<version>2.9.6</version>
+    		<groupId>org.springframework.cloud</groupId>
+    		<artifactId>spring-cloud-starter-sleuth</artifactId>
+    		<version>2.2.8.RELEASE</version>
+    		<scope>test</scope>
 		</dependency>
 		<dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-validator</artifactId>
-    <version>8.0.0.Final</version>
-</dependency>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
-    <version>2.2.10.RELEASE</version>
-</dependency>
+    		<groupId>org.springframework.cloud</groupId>
+    		<artifactId>spring-cloud-starter-zipkin</artifactId>
+    		<version>2.2.8.RELEASE</version>
+    		<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				</plugin>
-			<plugin>
-    			<groupId>com.spotify</groupId>
-    			<artifactId>docker-maven-plugin</artifactId>
-       		 	<configuration>
-            		<imageName>springdocker</imageName>
-            		<baseImage>java</baseImage>
-            		<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
-            		<resources>
-                		<resource>
-                    		<targetPath>/</targetPath>
-                    		<directory>${project.build.directory}</directory>
-                    		<include>${project.build.finalName}.jar</include>
-                		</resource>
-            		</resources>
-        		</configuration>
-    		</plugin>
+			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>netflix-candidates</id>
-			<name>Netflix Candidates</name>
-			<url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 </project>

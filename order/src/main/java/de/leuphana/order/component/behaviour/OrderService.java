@@ -12,7 +12,7 @@ import de.leuphana.order.configuration.OrderRepository;
 @Service
 public class OrderService implements IOrderService {
 
-    private final OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
