@@ -54,7 +54,7 @@ public class CustomerService{
 			return customerOptional.get();
 
 		}catch(Exception e) {
-			LOGGER.error("Error retrieving customer with id{}", customerId, e);
+			LOGGER.error("Error retrieving customer with id {}", customerId, e);
 			throw e;
 		} 
 
@@ -69,7 +69,7 @@ public class CustomerService{
 			customer.setAddress(customer.getAddress());
 			return customerSpringDataConnectorRequester.createCustomer(customer);
 		}catch(Exception e) {
-			LOGGER.error("Error updating customer with id{}", customerId, e);
+			LOGGER.error("Error updating customer with id {}", customerId, e);
 			throw e;
 		} 
 
@@ -83,7 +83,7 @@ public class CustomerService{
 			LOGGER.info("Customer with id {}", customerId, "deleted successfully");
 
 		}catch(Exception e) {
-			LOGGER.error("Error deleting customer with id{}", customerId, e);
+			LOGGER.error("Error deleting customer with id {}", customerId, e);
 			throw e;
 		} 
 	}

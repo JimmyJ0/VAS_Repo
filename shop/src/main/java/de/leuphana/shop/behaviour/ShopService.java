@@ -1,27 +1,36 @@
 package de.leuphana.shop.behaviour;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import de.leuphana.shop.connector.ArticleRestConnectorRequester;
+import de.leuphana.shop.connector.CustomerRestConnectorRequester;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
+import de.leuphana.shop.structure.sales.Customer;
 
 @Service
 public class ShopService implements IShopService {
 
-	// TODO: Anhand der Response Entity Exception Handling machen.
+	private static Logger LOGGER = LoggerFactory.getLogger(CustomerRestConnectorRequester.class);
 
+	// TODO: Anhand der Response Entity Exception Handling machen.
 	private ArticleRestConnectorRequester articleRestConnector;
+	private CustomerRestConnectorRequester customerRestConnectorRequester;
 
 	@Autowired
 	public void setArticleRestConnector(ArticleRestConnectorRequester articleRestConnector) {
 		this.articleRestConnector = articleRestConnector;
+	}
+	@Autowired
+	public void setCustomerRestConnector(CustomerRestConnectorRequester customerRestConnectorRequester) {
+		this.customerRestConnectorRequester = customerRestConnectorRequester;
 	}
 
 	@Override
@@ -77,5 +86,72 @@ public class ShopService implements IShopService {
 			return true;
 		return false;
 	}
+	
+	@Override
+	public Customer createCustomer(Customer customer) {
+		try {
+			LOGGER.info("Creating customer: {}", customer);
+			Customer createdCustomer = customerRestConnectorRequester.createCustomer(customer);
+			LOGGER.info("Customer created successfully: {}", createdCustomer);
+			return createdCustomer;
+		} catch (Exception e) {
+			LOGGER.error("Error creating customer: {}", customer, e);
+			throw e;
+		}
+	}
+	@Override
+	public List<Customer> getAllCustomers() {
+		try {
+			LOGGER.info("Getting all customers");
+			List<Customer> customers = customerRestConnectorRequester.getAllCustomers();
+			LOGGER.info("Retrieved {} customers", customers.size());
+			return customers;
+		}catch (Exception e) {
+			LOGGER.error("Error retrieving customer: {}", e);
+			throw e;
+		} 
+	}
+	@Override
+	public Customer getCustomerById(Integer customerId) throws Exception {
+		try {
+			LOGGER.info("Getting customer with id {}", customerId);
+			Customer getCustomer = customerRestConnectorRequester.getCustomerById(customerId);
+			LOGGER.info("Retrieved customer with id {}", customerId);
+			return getCustomer;
+
+		}catch(Exception e) {
+			LOGGER.error("Error retrieving customer with id {}", customerId, e);
+			throw e;
+		} 
+
+	}
+
+	@Override
+	public Customer updateCustomerById(Integer customerId, Customer customer) throws Exception{
+		try {
+			LOGGER.info("Updating customer with id {}", customerId);
+			Customer updatedCustomer = customerRestConnectorRequester.updateCustomerById(customerId, customer);
+			LOGGER.info("Updated customer with id {}", customerId);
+			return updatedCustomer;
+		}catch(Exception e) {
+			LOGGER.error("Error updating customer with id {}", customerId, e);
+			throw e;
+		} 
+
+	}
+
+	@Override
+	public void deleteCustomerById(Integer customerId) throws Exception{
+		try {
+			LOGGER.info("Deleting customer with id {}", customerId);
+			customerRestConnectorRequester.deleteCustomerById(customerId);
+			LOGGER.info("Customer with id {}", customerId, "deleted successfully");
+
+		}catch(Exception e) {
+			LOGGER.error("Error deleting customer with id {}", customerId, e);
+			throw e;
+		} 
+	}
+
 
 }
