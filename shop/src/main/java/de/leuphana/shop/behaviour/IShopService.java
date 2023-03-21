@@ -19,15 +19,15 @@ public interface IShopService {
 	
 	public boolean deleteArticleById(String id);
 
-	Customer createCustomer(Customer customer);
+	public Customer createCustomer(Customer customer);
 
-	List<Customer> getAllCustomers();
+	public List<Customer> getAllCustomers();
 
-	Customer getCustomerById(Integer customerId) throws Exception;
+	public Customer getCustomerById(Integer customerId);
 
-	Customer updateCustomerById(Integer customerId, Customer customer) throws Exception;
+	public Customer updateCustomerById(Integer customerId, Customer customer);
 
-	void deleteCustomerById(Integer customerId) throws Exception;
+	public void deleteCustomerById(Integer customerId);
 	
 
 }

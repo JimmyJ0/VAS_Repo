@@ -18,7 +18,6 @@ import de.leuphana.shop.structure.sales.Customer;
 @Service
 public class ShopService implements IShopService {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(CustomerRestConnectorRequester.class);
 
 	// TODO: Anhand der Response Entity Exception Handling machen.
 	private ArticleRestConnectorRequester articleRestConnector;
@@ -79,79 +78,40 @@ public class ShopService implements IShopService {
 		return false;
 	}
 
-	@Override
+
 	public boolean deleteArticleById(String articleid) {
 		boolean success = articleRestConnector.deleteArticleById(articleid);
 		if (success)
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public Customer createCustomer(Customer customer) {
-		try {
-			LOGGER.info("Creating customer: {}", customer);
-			Customer createdCustomer = customerRestConnectorRequester.createCustomer(customer);
-			LOGGER.info("Customer created successfully: {}", createdCustomer);
-			return createdCustomer;
-		} catch (Exception e) {
-			LOGGER.error("Error creating customer: {}", customer, e);
-			throw e;
-		}
+		return customerRestConnectorRequester.createCustomer(customer);
+
 	}
 	@Override
 	public List<Customer> getAllCustomers() {
-		try {
-			LOGGER.info("Getting all customers");
-			List<Customer> customers = customerRestConnectorRequester.getAllCustomers();
-			LOGGER.info("Retrieved {} customers", customers.size());
-			return customers;
-		}catch (Exception e) {
-			LOGGER.error("Error retrieving customer: {}", e);
-			throw e;
-		} 
+		return customerRestConnectorRequester.getAllCustomers();
+
 	}
 	@Override
-	public Customer getCustomerById(Integer customerId) throws Exception {
-		try {
-			LOGGER.info("Getting customer with id {}", customerId);
-			Customer getCustomer = customerRestConnectorRequester.getCustomerById(customerId);
-			LOGGER.info("Retrieved customer with id {}", customerId);
-			return getCustomer;
-
-		}catch(Exception e) {
-			LOGGER.error("Error retrieving customer with id {}", customerId, e);
-			throw e;
-		} 
+	public Customer getCustomerById(Integer customerId){
+		return customerRestConnectorRequester.getCustomerById(customerId);
 
 	}
 
 	@Override
-	public Customer updateCustomerById(Integer customerId, Customer customer) throws Exception{
-		try {
-			LOGGER.info("Updating customer with id {}", customerId);
-			Customer updatedCustomer = customerRestConnectorRequester.updateCustomerById(customerId, customer);
-			LOGGER.info("Updated customer with id {}", customerId);
-			return updatedCustomer;
-		}catch(Exception e) {
-			LOGGER.error("Error updating customer with id {}", customerId, e);
-			throw e;
-		} 
+	public Customer updateCustomerById(Integer customerId, Customer customer){
+		return customerRestConnectorRequester.updateCustomerById(customerId, customer);
 
 	}
 
 	@Override
-	public void deleteCustomerById(Integer customerId) throws Exception{
-		try {
-			LOGGER.info("Deleting customer with id {}", customerId);
-			customerRestConnectorRequester.deleteCustomerById(customerId);
-			LOGGER.info("Customer with id {}", customerId, "deleted successfully");
+	public void deleteCustomerById(Integer customerId){
+		customerRestConnectorRequester.deleteCustomerById(customerId);
 
-		}catch(Exception e) {
-			LOGGER.error("Error deleting customer with id {}", customerId, e);
-			throw e;
-		} 
 	}
-
 
 }

@@ -19,19 +19,19 @@ public class CustomerServiceTest {
     @Autowired
     private CustomerService customerService;
     
-//    @Test
-//    void canCustomerBeCreated() {
-//    	Customer customer = new Customer();
-//    	customer.setName("John Doe");
-//    	Address address = new Address();
-//    	address.setCity("Lueneburg");
-//    	address.setStreet("Soltauerstrasse 1");
-//    	address.setZip(21335);
-//    	customer.setAddress(address);
-//    	Customer savedCustomer = customerService.createCustomer(customer);
-//    	assertEquals(customer.getName(), savedCustomer.getName());
-//    	assertEquals(customer.getAddress(), savedCustomer.getAddress());
-//    }
+    @Test
+    void canCustomerBeCreated() {
+    	Customer customer = new Customer();
+    	customer.setName("John Doe");
+    	Address address = new Address();
+    	address.setCity("Lueneburg");
+    	address.setStreet("Soltauerstrasse 1");
+    	address.setZip(21335);
+    	customer.setAddress(address);
+    	Customer savedCustomer = customerService.createCustomer(customer);
+    	assertEquals(customer.getName(), savedCustomer.getName());
+    	assertEquals(customer.getAddress(), savedCustomer.getAddress());
+    }
 //    
 //    @Test
 //    void canCustomerBeFoundById() throws Exception {

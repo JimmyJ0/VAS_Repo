@@ -23,7 +23,6 @@ import org.springframework.web.client.RestTemplate;
 
 import de.leuphana.shop.structure.sales.Customer;
 
-@EnableDiscoveryClient
 @RestController
 @RequestMapping("/shop/shop")
 public class CustomerRestConnectorRequester {
@@ -37,7 +36,7 @@ public class CustomerRestConnectorRequester {
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<Customer> response = restTemplate.exchange(
-				"http://localhost:9000//shop/customers/createCustomer", HttpMethod.POST, requestEntity,
+				"http://localhost:9000/shop/customers/createCustomer", HttpMethod.POST, requestEntity,
 				Customer.class, customer);
 		try {
 			LOGGER.info("Creating customer: {}", customer);
@@ -58,7 +57,7 @@ public class CustomerRestConnectorRequester {
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<Customer>> response = restTemplate.exchange(
-				"http://localhost:9000//shop/customers/getAllCustomers", HttpMethod.GET, requestEntity, 
+				"http://localhost:9000/shop/customers/getAllCustomers", HttpMethod.GET, requestEntity, 
 				new ParameterizedTypeReference<List<Customer>>() {
 				});
 		try {
@@ -74,13 +73,13 @@ public class CustomerRestConnectorRequester {
 	}
 
 	@GetMapping("/gestCustomerById/{customerId}")
-	public Customer getCustomerById(@PathVariable Integer customerId) throws Exception {
+	public Customer getCustomerById(@PathVariable Integer customerId){
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<Customer> response = restTemplate.exchange(
-				"http://localhost:9000//shop/customers/gestCustomerById/{customerId}", HttpMethod.GET, requestEntity,
+				"http://localhost:9000/shop/customers/gestCustomerById/{customerId}", HttpMethod.GET, requestEntity,
 				Customer.class, customerId);
 		try {
 			LOGGER.info("Getting customer with id {}", customerId);
@@ -95,13 +94,13 @@ public class CustomerRestConnectorRequester {
 	}
 
 	@PutMapping("/updateCustomerById/{customerId}")
-	public Customer updateCustomerById(@PathVariable Integer customerId, @RequestBody Customer customer) throws Exception {
+	public Customer updateCustomerById(@PathVariable Integer customerId, @RequestBody Customer customer){
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<Customer> response = restTemplate.exchange(
-				"http://localhost:9000//shop/customers/updateCustomerById/{customerId}", HttpMethod.PUT, requestEntity,
+				"http://localhost:9000/shop/customers/updateCustomerById/{customerId}", HttpMethod.PUT, requestEntity,
 				Customer.class, customerId);
 		try {
 			LOGGER.info("Updating customer with id {}", customerId);
@@ -115,13 +114,13 @@ public class CustomerRestConnectorRequester {
 	}
 
 	@DeleteMapping("/deleteCustomerById/{customerId}")
-	public void deleteCustomerById(@PathVariable Integer customerId) throws Exception {
+	public void deleteCustomerById(@PathVariable Integer customerId){
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<Customer> response =restTemplate.exchange(
-				"http://localhost:9000//shop/customers/deleteCustomerById/{customerId}", HttpMethod.DELETE, requestEntity,
+				"http://localhost:9000/shop/customers/deleteCustomerById/{customerId}", HttpMethod.DELETE, requestEntity,
 				Customer.class, customerId);
 		try {
 			LOGGER.info("Deleting customer with id {}", customerId);
