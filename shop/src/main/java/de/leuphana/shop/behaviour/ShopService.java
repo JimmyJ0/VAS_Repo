@@ -86,29 +86,29 @@ public class ShopService implements IShopService {
 		return false;
 	}
 
-	@Override
+
 	public Customer createCustomer(Customer customer) {
 		return customerRestConnectorRequester.createCustomer(customer);
 
 	}
-	@Override
+
 	public List<Customer> getAllCustomers() {
 		return customerRestConnectorRequester.getAllCustomers();
 
 	}
-	@Override
+
 	public Customer getCustomerById(Integer customerId){
 		return customerRestConnectorRequester.getCustomerById(customerId);
 
 	}
 
-	@Override
+
 	public Customer updateCustomerById(Integer customerId, Customer customer){
 		return customerRestConnectorRequester.updateCustomerById(customerId, customer);
 
 	}
 
-	@Override
+
 	public void deleteCustomerById(Integer customerId){
 		customerRestConnectorRequester.deleteCustomerById(customerId);
 

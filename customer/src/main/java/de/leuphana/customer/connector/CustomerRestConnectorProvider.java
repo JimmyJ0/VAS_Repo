@@ -32,28 +32,24 @@ public class CustomerRestConnectorProvider {
 		return customerService.createCustomer(customer);
 	}
 	
-	@GetMapping("/getAllCustomers")
+	@GetMapping("/getCustomers")
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
-	@GetMapping("/gestCustomerById/{customerId}")
+	@GetMapping("/getCustomerById/{customerId}")
     public Customer getCustomerById(@PathVariable Integer customerId) throws Exception {
         return customerService.getCustomerById(customerId);
     }
 
 	@PutMapping("/updateCustomerById/{customerId}")
-    public Customer updateCustomer(@PathVariable Integer customerId, @RequestBody Customer customer) throws Exception {
-		customer.setCustomerId(customerId);
-		customer.setName(customer.getName());
-		customer.setAddress(customer.getAddress());
-		customer = customerService.updateCustomerById(customerId, customer);
-        return customer;
+    public Customer updateCustomerById(@PathVariable Integer customerId, @RequestBody Customer customer) throws Exception {
+		return customerService.updateCustomerById(customerId, customer);
         
     }
 
 	@DeleteMapping("/deleteCustomerById/{customerId}")
-    public void deleteCustomer(@PathVariable Integer customerId) throws Exception {
+    public void deleteCustomerById(@PathVariable Integer customerId) throws Exception {
         customerService.deleteCustomerById(customerId);
         
     }

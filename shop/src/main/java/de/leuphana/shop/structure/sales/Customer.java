@@ -6,31 +6,29 @@ public class Customer {
 
 	private Integer customerId;
 	private String name;
-//	@Column(name="customer_cart", nullable=false)
 //	private Cart cart;
-//	@Column(name="customer_orders", nullable=false)
 //	private Map<Integer, Order> orders;
-	
+
 	public Customer() {
 
 	}
-	
+
 	public Integer getCustomerId() {
 		return customerId;
 	}
-	
+
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name){
 		this.name = name;
 	}
-	
+
 	private Address address;
 
 	public Address getAddress() {
@@ -41,7 +39,6 @@ public class Customer {
 		this.address = address;
 	}
 
-	
 //	public Map<Integer, Order> getOrders() {
 //		return orders;
 //	}
@@ -49,12 +46,11 @@ public class Customer {
 //	public void setOrders(Map<Integer, Order> orders) {
 //		this.orders = orders;
 //	}
-	
+//
 //	public void addOrder(Order order) {
-//	orders.put(order.getOrderId(), order);
-//}
-
-	
+//		orders.put(order.getOrderId(), order);
+//	}
+//
 //	public Cart getCart() {
 //		return cart;
 //	}
