@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.leuphana.shop.structure.article.Article;
-import de.leuphana.shop.structure.article.Book;
 
 @RestController
 @RequestMapping("/shop/shop/article")
@@ -23,7 +22,7 @@ public class KafkaArticleController {
 	
 	@PostMapping("/saveArticle2")
 	public ResponseEntity<String> saveArticle2(@RequestBody Article article) {
-		articleKafkaProducer.sendArticle((Book) article);
+		articleKafkaProducer.sendArticle(article);
 		return ResponseEntity.ok("JSON SEND");
 		
 		
