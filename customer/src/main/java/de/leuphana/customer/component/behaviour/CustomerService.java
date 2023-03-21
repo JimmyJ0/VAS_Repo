@@ -14,7 +14,7 @@ import de.leuphana.customer.component.structure.Customer;
 import de.leuphana.customer.connector.CustomerSpringDataConnectorRequester;
 
 @Service
-public class CustomerService{
+public class CustomerService implements ICustomerService{
 
 	private static Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 	 
@@ -47,7 +47,7 @@ public class CustomerService{
 		} 
 	}
 	@Transactional
-	public Customer getCustomerById(Integer customerId) throws Exception {
+	public Customer getCustomerById(Integer customerId){
 		Optional<Customer> customerOptional = Optional.ofNullable(customerSpringDataConnectorRequester.getCustomerById(customerId));
 		try {
 			LOGGER.info("Getting customer with id {}", customerId);
@@ -61,7 +61,7 @@ public class CustomerService{
 	}
 
 	@Transactional
-	public Customer updateCustomerById(Integer customerId, Customer customer) throws Exception{
+	public Customer updateCustomerById(Integer customerId, Customer customer){
 		try {
 			LOGGER.info("Updating customer with id {}", customerId);
 			customer.setCustomerId(customerId);
