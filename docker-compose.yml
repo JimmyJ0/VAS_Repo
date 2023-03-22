@@ -1,0 +1,59 @@
+version: '3'
+services:
+  mariadb:
+    image: mariadb
+    container_name: mariadb-container
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=mydb
+      - MARIADB_USER=myuser
+      - MARIADB_PASSWORD=mypassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-container
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - "8081:80"
+           
+  api-gateway:
+    build: ./api-gateway
+    image: api-gateway-image
+    container_name: api-gateway-container
+    ports:
+      - "9000:9000"
+
+  eureka-server:
+    build: ./eureka-server
+    image: eureka-server-image
+    container_name: eureka-server-container
+    ports:
+      - "8761:8761"
+
+  order:
+    build: ./order
+    restart: always
+    image: order-image
+    container_name: order-container
+    ports:
+      - "9091:9091"
+  article:
+    build: ./article
+    restart: always
+    image: article-image
+    container_name: article-container
+    ports:
+      - "9090:9090"
+      
+volumes:
+  mariadb_data:
+    driver: local

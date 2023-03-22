@@ -3,5 +3,5 @@ FROM openjdk:17
 
 # Set the working directory inside the container
 VOLUME /tmp
-COPY target/*.jar customer-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","/customer-0.0.1-SNAPSHOT.jar"]
+COPY target/*.jar api-gateway-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/api-gateway-0.0.1-SNAPSHOT.jar"]
