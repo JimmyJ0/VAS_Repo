@@ -18,6 +18,13 @@ public class KafkaTopicConfig {
 		return TopicBuilder.name("cd_topic").build();
 	}
 	
+	@Bean
+	public NewTopic articleTopic() {
+		return TopicBuilder.name("article_topic").build();
+	}
+	
+	
+	
 	
 	
 }

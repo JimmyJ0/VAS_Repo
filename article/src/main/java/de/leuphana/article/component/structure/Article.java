@@ -12,6 +12,10 @@ public abstract class Article {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name="article_type")
+	private String articleType;
+	
 	@Column(name="manufactor_name")
 	private String manufactor;
 	@Column(name="article_name")
@@ -19,7 +23,13 @@ public abstract class Article {
 	@Column(name="article_price")
 	private double price;
 	
-	
+	public String getArticleType() {
+		return articleType;
+	}
+
+	public void setArticleType(String articleType) {
+		this.articleType = articleType;
+	}
 	
 	public Long getId() {
 		return id;

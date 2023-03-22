@@ -1,4 +1,4 @@
-package de.leuphana.shop.connector.controller.kafka;
+package de.leuphana.shop.connector.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.leuphana.shop.structure.article.Article;
 
 @RestController
-@RequestMapping("/shop/shop/article")
+@RequestMapping("/shop/article")
 public class KafkaArticleController {
 	
 	private ArticleKafkaProducer articleKafkaProducer;
@@ -20,12 +20,17 @@ public class KafkaArticleController {
 		this.articleKafkaProducer = articleKafkaProducer;
 	}
 	
-	@PostMapping("/saveArticle2")
-	public ResponseEntity<String> saveArticle2(@RequestBody Article article) {
+	@PostMapping("/saveArticle")
+	public ResponseEntity<String> saveArticle(@RequestBody Article article) {
 		articleKafkaProducer.sendArticle(article);
-		return ResponseEntity.ok("JSON SEND");
-		
-		
+		return ResponseEntity.ok("article sent");
+	}
+	
+	
+	@PostMapping("/deleteArticle")
+	public ResponseEntity<String> deleteArticle(@RequestBody Article article) {
+		articleKafkaProducer.deleteArticle(article);
+		return ResponseEntity.ok("article deleted");
 	}
 
 }

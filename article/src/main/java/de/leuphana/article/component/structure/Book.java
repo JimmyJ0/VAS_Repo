@@ -8,8 +8,8 @@ import jakarta.persistence.Table;
 @Table(name="books")
 public class Book extends Article {
 	
-	@Column(name = "book_id")
-	private String bookId;
+//	@Column(name = "book_id")
+//	private String bookId;
 	private String author;
 	private String bookCategory;
 	
@@ -18,12 +18,12 @@ public class Book extends Article {
 
 	}
 	
-	public String getBookId() {
-		return bookId;
-	}
-	public void setBookId(String id) {
-		this.bookId = id;
-	}
+//	public String getBookId() {
+//		return bookId;
+//	}
+//	public void setBookId(String id) {
+//		this.bookId = id;
+//	}
 
 	public String getAuthor() {
 		return author;

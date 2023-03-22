@@ -15,6 +15,7 @@ public abstract class Article {
 	public Article() {
 	}
 	
+	private String articleType;
 	private String manufactor;
 	private String name;
 	private double price;
@@ -39,6 +40,14 @@ public abstract class Article {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public String getArticleType() {
+		return articleType;
+	}
+
+	public void setArticleType(String articleType) {
+		this.articleType = articleType;
 	}
 
 }

@@ -3,7 +3,7 @@ package de.leuphana.shop.structure.article;
 public class Book extends Article {
 
 	private Long id;
-	private String bookId;
+//	private String bookId;
 	private String author;
 	private String bookCategory;
 
@@ -12,13 +12,13 @@ public class Book extends Article {
 
 	}
 
-	public String getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(String bookId) {
-		this.bookId = bookId;
-	}
+//	public String getBookId() {
+//		return bookId;
+//	}
+//
+//	public void setBookId(String bookId) {
+//		this.bookId = bookId;
+//	}
 
 	public Long getId() {
 		return id;

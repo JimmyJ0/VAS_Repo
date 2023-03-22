@@ -8,21 +8,21 @@ import jakarta.persistence.Table;
 @Table(name="cds")
 public class CD extends Article {
     
-    @Column(name="cd_id")
-    private String cdId;
+//    @Column(name="cd_id")
+//    private String cdId;
     private String artist;
     
     public CD() {
     	super();
     }
     
-	public String getCdId() {
-		return cdId;
-	}
-
-	public void setCdId(String id) {
-		this.cdId = id;
-	}
+//	public String getCdId() {
+//		return cdId;
+//	}
+//
+//	public void setCdId(String id) {
+//		this.cdId = id;
+//	}
 
 	public String getArtist() {
 		return artist;

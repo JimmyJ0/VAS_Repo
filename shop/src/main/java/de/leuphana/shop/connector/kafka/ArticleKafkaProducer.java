@@ -1,4 +1,4 @@
-package de.leuphana.shop.connector.controller.kafka;
+package de.leuphana.shop.connector.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,21 +17,30 @@ public class ArticleKafkaProducer {
 
 	@Autowired
 	private KafkaTemplate<String, Article> kafkaTemplate;
-	
+
 	public ArticleKafkaProducer(KafkaTemplate<String, Article> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;
 	}
-	
-	public void sendArticle(Article article) {
-		LOG.info(String.format("Message sent -> %s", article.getName()));
-		if(article instanceof Book) {
-			kafkaTemplate.send("book_topic", article);
-		}
-		else if(article instanceof CD) {
-			kafkaTemplate.send("cd_topic", article);
-		}
-		
 
+	public boolean sendArticle(Article article) {
+		if (article != null) {
+			LOG.info(String.format("Message sent -> %s", article.getName()));
+			if (article instanceof Book) {
+				kafkaTemplate.send("book_topic", article);
+			} else if (article instanceof CD) {
+				kafkaTemplate.send("cd_topic", article);
+			}
+			return true;
+		}
+		return false;
 	}
 	
+	public boolean deleteArticle(Article article) {
+		if(article != null) {
+			kafkaTemplate.send("article_topic", article);
+			return true;
+		}
+		return false;
+	}
+
 }

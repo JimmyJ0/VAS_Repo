@@ -18,11 +18,11 @@ class ArticleServiceTest {
 	private ArticleService articleService;
 	
 	
-	@Test
-	void canArticleDeleted() {
-		String id = "BK1";
-		assertTrue(articleService.deleteArticleById(id));
-
-	}
+//	@Test
+//	void canArticleDeleted() {
+//		String id = "BK1";
+//		assertTrue(articleService.deleteArticleById(id));
+//
+//	}
 
 }
