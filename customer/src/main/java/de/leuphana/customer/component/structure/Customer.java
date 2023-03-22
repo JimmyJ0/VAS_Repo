@@ -1,6 +1,5 @@
 package de.leuphana.customer.component.structure;
 
-import de.leuphana.shop.structure.sales.Cart;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +21,7 @@ public class Customer {
 	@Column(name="customer_address", nullable=false)
 	private String address;
 //	@Column(name="customer_cart", nullable=false)
-	private Cart cart;
+//	private Cart cart;
 //	@Column(name="customer_orders", nullable=false)
 //	private Map<Integer, Order> orders;
 	
@@ -68,11 +67,11 @@ public class Customer {
 		this.customerId = customerId;
 	}
 	
-	public Cart getCart() {
-		return cart;
-	}
+//	public Cart getCart() {
+//		return cart;
+//	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+//	public void setCart(Cart cart) {
+//		this.cart = cart;
+//	}
 }
