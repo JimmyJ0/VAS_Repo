@@ -54,6 +54,14 @@ services:
     ports:
       - "9090:9090"
       
+  shop:
+    build: ./shop
+    restart: always
+    image: shop-image
+    container_name: shop-container
+    ports:
+      - "8004:8004"
+      
 volumes:
   mariadb_data:
     driver: local
