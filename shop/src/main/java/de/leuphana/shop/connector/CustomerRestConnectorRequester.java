@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import de.leuphana.shop.structure.sales.Customer;
@@ -32,36 +34,46 @@ public class CustomerRestConnectorRequester {
 
 	@PostMapping("/createCustomer")
 	public Customer createCustomer(@RequestBody Customer customer) {
-		RestTemplate restTemplate = new RestTemplate();
+	    RestTemplate restTemplate = new RestTemplate();
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<Customer> requestEntity = new HttpEntity<>(customer, headers);
-	    Customer createdCustomer = restTemplate.postForObject(
-	        "http://localhost:9000/shop/customers/createCustomer", requestEntity, Customer.class);
-	    LOGGER.info("Created customer with ID {}", createdCustomer.getCustomerId());
-	    return createdCustomer;
+	    try {
+	        Customer createdCustomer = restTemplate.postForObject(
+	                "http://localhost:9000/shop/customers/createCustomer", requestEntity, Customer.class);
+	        LOGGER.info("Created customer with ID {}", createdCustomer.getCustomerId());
+	        return createdCustomer;
+	    } catch (HttpClientErrorException | HttpServerErrorException e) {
+	        LOGGER.error("Error creating customer", e);
+	        throw e;
+	    } catch (Exception e) {
+	        LOGGER.error("Unexpected error occurred while creating customer", e);
+	        throw e;
+	    }
 	}
 
 	@GetMapping("/getCustomers")
 	public List<Customer> getAllCustomers() {
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-		ResponseEntity<List<Customer>> response = restTemplate.exchange(
-				"http://localhost:9000/shop/customers/getCustomers", HttpMethod.GET, requestEntity, 
-				new ParameterizedTypeReference<List<Customer>>() {
-				});
-		try {
-			LOGGER.info("Getting all customers");
-			List<Customer> customers = response.getBody();
-			LOGGER.info("Retrieved {} customers", customers.size());
-			return customers;
-		}catch(Exception e) {
-			LOGGER.error("Error retrieving all customers", e);
-			throw e;
-		} 
-
+	    RestTemplate restTemplate = new RestTemplate();
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+	    ResponseEntity<List<Customer>> response = restTemplate.exchange(
+	        "http://localhost:9000/shop/customers/getCustomers", HttpMethod.GET, requestEntity, 
+	        new ParameterizedTypeReference<List<Customer>>() {
+	        });
+	    try {
+	        LOGGER.info("Getting all customers");
+	        List<Customer> customers = response.getBody();
+	        LOGGER.info("Retrieved {} customers", customers.size());
+	        return customers;
+	    } catch (HttpClientErrorException | HttpServerErrorException e) {
+	        LOGGER.error("Error retrieving all customers", e);
+	        throw e;
+	    } catch (Exception e) {
+	        LOGGER.error("Unexpected error occurred while retrieving all customers", e);
+	        throw e;
+	    }
 	}
 
 	@GetMapping("/getCustomerById/{customerId}")
@@ -78,10 +90,13 @@ public class CustomerRestConnectorRequester {
 			Customer customerById = response.getBody();
 			LOGGER.info("Retrieved customer with id {}", customerId);
 			return customerById;
-		}catch(Exception e) {
+		} catch(HttpClientErrorException | HttpServerErrorException e) {
 			LOGGER.error("Error retrieving customer with id {}", customerId, e);
 			throw e;
-		} 
+		} catch (Exception e) {
+	        LOGGER.error("Unexpected error occurred while retrieving customer with id {}", customerId, e);
+	        throw e;
+	    } 
 
 	}
 
@@ -99,31 +114,34 @@ public class CustomerRestConnectorRequester {
 	        Customer updatedCustomer = response.getBody();
 	        LOGGER.info("Updated customer with id {}", customerId);
 	        return updatedCustomer;
-	    }catch(Exception e) {
+	    } catch(HttpClientErrorException | HttpServerErrorException e) {
 	        LOGGER.error("Error updating customer with id {}", customerId, e);
+	        throw e;
+	    } catch (Exception e) {
+	        LOGGER.error("Unexpected error occurred while updating customer with id {}", customerId, e);
 	        throw e;
 	    } 
 	}
 
 	@DeleteMapping("/deleteCustomerById/{customerId}")
 	public void deleteCustomerById(@PathVariable Integer customerId){
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<Integer> requestEntity = new HttpEntity<>(customerId, headers);
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Customer> response =restTemplate.exchange(
-				"http://localhost:9000/shop/customers/deleteCustomerById/{customerId}", HttpMethod.DELETE, requestEntity,
-				Customer.class, customerId);
-		try {
-			LOGGER.info("Deleting customer with id {}", customerId);
-			response.getBody();
-			LOGGER.info("Customer with id {}", customerId, "deleted successfully");
-
-		}catch(Exception e) {
-			LOGGER.error("Error deleting customer with id {}", customerId, e);
-			throw e;
-		} 
-
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    HttpEntity<Integer> requestEntity = new HttpEntity<>(customerId, headers);
+	    RestTemplate restTemplate = new RestTemplate();
+	    try {
+	        LOGGER.info("Deleting customer with id {}", customerId);
+	        restTemplate.exchange(
+	            "http://localhost:9000/shop/customers/deleteCustomerById/{customerId}", HttpMethod.DELETE, requestEntity,
+	            Void.class, customerId);
+	        LOGGER.info("Customer with id {} deleted successfully", customerId);
+	    } catch (HttpClientErrorException | HttpServerErrorException e) {
+	        LOGGER.error("Error deleting customer with id {}", customerId, e);
+	        throw e;
+	    } catch (Exception e) {
+	        LOGGER.error("Unexpected error occurred while deleting customer with id {}", customerId, e);
+	        throw e;
+	    }
 	}
 
 }

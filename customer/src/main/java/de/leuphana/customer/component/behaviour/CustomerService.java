@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.leuphana.customer.component.structure.Customer;
 import de.leuphana.customer.connector.CustomerSpringDataConnectorRequester;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CustomerService implements ICustomerService{
@@ -29,7 +30,7 @@ public class CustomerService implements ICustomerService{
 			Customer createdCustomer = customerSpringDataConnectorRequester.createCustomer(customer);
 			LOGGER.info("Customer created successfully: {}", createdCustomer);
 			return createdCustomer;
-		} catch (Exception e) {
+		} catch (EntityNotFoundException e) {
 			LOGGER.error("Error creating customer: {}", customer, e);
 			throw e;
 		}
@@ -41,7 +42,7 @@ public class CustomerService implements ICustomerService{
 			List<Customer> customers = customerSpringDataConnectorRequester.getAllCustomers();
 			LOGGER.info("Retrieved {} customers", customers.size());
 			return customers;
-		}catch (Exception e) {
+		}catch (EntityNotFoundException e) {
 			LOGGER.error("Error retrieving customer: {}", e);
 			throw e;
 		} 
@@ -53,7 +54,7 @@ public class CustomerService implements ICustomerService{
 			LOGGER.info("Getting customer with id {}", customerId);
 			return customerOptional.get();
 
-		}catch(Exception e) {
+		}catch(EntityNotFoundException e) {
 			LOGGER.error("Error retrieving customer with id {}", customerId, e);
 			throw e;
 		} 
@@ -61,18 +62,14 @@ public class CustomerService implements ICustomerService{
 	}
 
 	@Transactional
-	public Customer updateCustomerById(Integer customerId, Customer customer){
-		try {
-			LOGGER.info("Updating customer with id {}", customerId);
-			customer.setCustomerId(customerId);
-			customer.setName(customer.getName());
-			customer.setAddress(customer.getAddress());
-			return customerSpringDataConnectorRequester.createCustomer(customer);
-		}catch(Exception e) {
-			LOGGER.error("Error updating customer with id {}", customerId, e);
-			throw e;
-		} 
-
+	public Customer updateCustomerById(Integer customerId, Customer updatedCustomer){
+	    try {
+	        LOGGER.info("Updating customer with id {}", customerId);
+	        return customerSpringDataConnectorRequester.updateCustomerById(customerId, updatedCustomer);
+	    }catch(EntityNotFoundException e) {
+	        LOGGER.error("Error updating customer with id {}", customerId, e);
+	        throw e;
+	    } 
 	}
 
 	@Transactional
@@ -82,7 +79,7 @@ public class CustomerService implements ICustomerService{
 			customerSpringDataConnectorRequester.deleteCustomerById(customerId);
 			LOGGER.info("Customer with id {}", customerId, "deleted successfully");
 
-		}catch(Exception e) {
+		}catch(EntityNotFoundException e) {
 			LOGGER.error("Error deleting customer with id {}", customerId, e);
 			throw e;
 		} 

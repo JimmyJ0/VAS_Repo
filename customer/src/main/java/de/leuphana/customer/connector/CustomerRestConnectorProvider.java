@@ -38,18 +38,18 @@ public class CustomerRestConnectorProvider {
     }
 
 	@GetMapping("/getCustomerById/{customerId}")
-    public Customer getCustomerById(@PathVariable Integer customerId) throws Exception {
+    public Customer getCustomerById(@PathVariable Integer customerId){
         return customerService.getCustomerById(customerId);
     }
 
 	@PutMapping("/updateCustomerById/{customerId}")
-    public Customer updateCustomerById(@PathVariable Integer customerId, @RequestBody Customer customer) throws Exception {
+    public Customer updateCustomerById(@PathVariable Integer customerId, @RequestBody Customer customer){
 		return customerService.updateCustomerById(customerId, customer);
         
     }
 
 	@DeleteMapping("/deleteCustomerById/{customerId}")
-    public void deleteCustomerById(@PathVariable Integer customerId) throws Exception {
+    public void deleteCustomerById(@PathVariable Integer customerId){
         customerService.deleteCustomerById(customerId);
         
     }
