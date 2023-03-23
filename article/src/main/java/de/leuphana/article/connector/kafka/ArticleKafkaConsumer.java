@@ -26,15 +26,11 @@ public class ArticleKafkaConsumer {
     
 
     @KafkaListener(topics = {"book_topic", "cd_topic"}, groupId = "article_group")
-    public void receiveBook(Article article) {
+    public void receiveArticle(Article article) {
     	if(article instanceof Book) {
-        	LOG.info(article.getClass().toString());
-            LOG.info(String.format("Received book message: %s", ((Book) article).getAuthor()));
             articleService.saveBook((Book) article);
     	}
     	else if(article instanceof CD) {
-        	LOG.info(article.getClass().toString());
-            LOG.info(String.format("Received cd message: %s", ((CD) article).getArtist()));
             articleService.saveCD((CD) article);
     	}
     }
@@ -42,11 +38,9 @@ public class ArticleKafkaConsumer {
     @KafkaListener(topics ="article_topic", groupId = "article_group")
     public void delete(Article article) {
     	if(article instanceof Book) {
-        	LOG.info("DELETE " + article.getClass().toString());
             articleService.deleteArticle((Book)article);
     	}
     	else if(article instanceof CD) {
-    		LOG.info("DELETE " + article.getClass().toString());
             articleService.deleteArticle((CD)article);
     	}
     }

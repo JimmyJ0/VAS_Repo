@@ -28,6 +28,7 @@ class ShopServiceTest{
 	@Test
 	void canNewArticleBeInserted() {
 		Book book = new Book();
+		book.setArticleType("book");
 		book.setName("Sprechen Sie Delphi?");
 		book.setAuthor("Mr. Gold");
 		book.setManufactor("SnakeLand");
@@ -60,17 +61,19 @@ class ShopServiceTest{
 	void canArticleBeUpdated() {
 		shopService.getArticles();
 		
+		canNewArticleBeInserted();
+		
 		Book newBook = new Book();
 		newBook.setArticleType("book");
 		newBook.setName("Sprechen Sie Java 999");
 		newBook.setPrice(3.30);
-		shopService.updateArticle(newBook, 2l);
+		shopService.updateArticle(newBook, 1l);
 	}
 	
 	@Test 
 	void canBookDeleted(){
 		shopService.getArticles();
-		assertTrue(shopService.deleteArticleById("BK1"));
+		assertTrue(shopService.deleteArticleById("BK2"));
 	}
 
 

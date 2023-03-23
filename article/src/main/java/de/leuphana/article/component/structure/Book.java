@@ -1,6 +1,5 @@
 package de.leuphana.article.component.structure;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -8,8 +7,6 @@ import jakarta.persistence.Table;
 @Table(name="books")
 public class Book extends Article {
 	
-//	@Column(name = "book_id")
-//	private String bookId;
 	private String author;
 	private String bookCategory;
 	
@@ -17,13 +14,6 @@ public class Book extends Article {
 		super();
 
 	}
-	
-//	public String getBookId() {
-//		return bookId;
-//	}
-//	public void setBookId(String id) {
-//		this.bookId = id;
-//	}
 
 	public String getAuthor() {
 		return author;
@@ -41,12 +31,4 @@ public class Book extends Article {
 		this.bookCategory = bookCategory;
 	}
 	
-//	@PrePersist
-//	protected void onCreate() {
-//		if (bookId == null) {
-//			bookId = entityManager.createQuery("SELECT COUNT(b) FROM Book b", Long.class).getSingleResult();
-//		}
-//	}
-	
-
 }

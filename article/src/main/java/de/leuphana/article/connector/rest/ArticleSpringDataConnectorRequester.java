@@ -28,24 +28,6 @@ public class ArticleSpringDataConnectorRequester {
 		this.articleService = articleService;
 	}
 
-	// 2.
-	// Erhält HTML mit als JSON verpacktem Artikel vom ArticleRestConnector
-	// Ruft anschließend den Service auf und speichert den Artikel in Datenbank
-
-//	@PostMapping("/cd")
-//	public ResponseEntity<String> saveArticle(@RequestBody CD cd) throws JsonProcessingException {
-//		if (articleService.saveCD(cd))
-//			return new ResponseEntity<String>("CD saved: " + cd.getName(), HttpStatus.CREATED);
-//		return new ResponseEntity<String>("Failed to save:" + cd.getName(), HttpStatus.BAD_REQUEST);
-//	}
-//
-//	@PostMapping("/book")
-//	public ResponseEntity<String> saveArticle(@RequestBody Book book) throws JsonProcessingException {
-//		if (articleService.saveBook(book))
-//			return new ResponseEntity<String>("Book saved: " + book.getName(), HttpStatus.CREATED);
-//		return new ResponseEntity<String>("Failed to save:" + book.getName(), HttpStatus.BAD_REQUEST);
-//	}
-
 	@GetMapping("/getAllArticles")
 	public ResponseEntity<List<Article>> getAllArticles() {
 		List<Article> articles = articleService.getArticles();
@@ -62,15 +44,5 @@ public class ArticleSpringDataConnectorRequester {
 		}
 		return new ResponseEntity<Article>(HttpStatus.BAD_REQUEST);
 	}
-
-//	@GetMapping("/deleteArticleById/{articleid}")
-//	public ResponseEntity<String> deleteArticleById(@PathVariable String articleid) {
-//		boolean successfullDeleted = articleService.deleteArticleById(articleid);
-//		if (successfullDeleted) {
-//			return new ResponseEntity<String>("Article deleted", HttpStatus.OK);
-//		}
-//		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-//	}
-
 
 }

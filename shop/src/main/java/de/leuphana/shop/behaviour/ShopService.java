@@ -44,7 +44,6 @@ public class ShopService implements SupplierServices {
 	@Override
 	public boolean saveArticleInDB(Article article) {
 		ResponseEntity<String> response = kafkaController.saveArticle(article);
-		
 		if(response.getBody().equals("article sent")) {
 			return true;
 		}
@@ -104,7 +103,8 @@ public class ShopService implements SupplierServices {
 		LOG.info("ABOUT TO DELETE");
 		Article articleToDelete = catalog.get(articleid);
 		if(articleToDelete != null) {
-			kafkaController.deleteArticle(articleToDelete);
+			ResponseEntity<String> response = kafkaController.deleteArticle(articleToDelete);
+			if(response.getBody().equals("article deleted"))return true;
 		}
 		return false;
 	}

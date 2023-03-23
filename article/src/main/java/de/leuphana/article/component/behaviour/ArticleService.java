@@ -29,6 +29,7 @@ public class ArticleService implements IArticleService {
 
 	@Override
 	public boolean saveCD(CD cd) {
+		LOG.info("SAVE CD!!!");
 		// CD already exists in DB: Update
 //		if (articleRepository.getCdById(cd.getCdId()) != null) {
 //			CD updatedCd = articleRepository.save(cd);
@@ -49,6 +50,7 @@ public class ArticleService implements IArticleService {
 
 	@Override
 	public boolean saveBook(Book book) {
+		LOG.info("SAVE BOOK");
 		// Book already exists in DB: Update
 //		if (articleRepository.getBookById(book.getBookId()) != null) {
 //			Book updatedBook = articleRepository.save(book);
