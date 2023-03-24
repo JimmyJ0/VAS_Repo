@@ -46,6 +46,7 @@ services:
     container_name: order-container
     ports:
       - "9091:9091"
+     
   article:
     build: ./article
     restart: always
@@ -69,6 +70,11 @@ services:
     container_name: customer-container
     ports:
       - "8000:8000"
+      
+  zipkin-server:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
       
 volumes:
   mariadb_data:
