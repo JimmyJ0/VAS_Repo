@@ -11,14 +11,14 @@ import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
 
 @Service
-public class ArticleKafkaProducer {
+public class ShopKafkaProducer {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ArticleKafkaProducer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ShopKafkaProducer.class);
 
 	@Autowired
 	private KafkaTemplate<String, Article> kafkaTemplate;
 
-	public ArticleKafkaProducer(KafkaTemplate<String, Article> kafkaTemplate) {
+	public ShopKafkaProducer(KafkaTemplate<String, Article> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;
 	}
 

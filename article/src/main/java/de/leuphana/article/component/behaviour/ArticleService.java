@@ -13,58 +13,44 @@ import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 import de.leuphana.article.configuration.ArticleRepository;
 import de.leuphana.article.connector.kafka.ArticleKafkaConsumer;
+import de.leuphana.article.connector.kafka.ArticleKafkaController;
 
 @Service
 public class ArticleService implements IArticleService {
 
 	private ArticleRepository articleRepository;
+	private ArticleKafkaController articleKafkaController;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ArticleKafkaConsumer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ArticleKafkaConsumer.class);
 
-	
 	@Autowired
-	public ArticleService(ArticleRepository articleRepository) {
+	public ArticleService(ArticleRepository articleRepository,ArticleKafkaController articleKafkaController) {
 		this.articleRepository = articleRepository;
+		this.articleKafkaController = articleKafkaController;
 	}
+	
+	public void messageShop() {
+		articleKafkaController.sendMessage("The article database has been updated");
+	}
+	
 
 	@Override
 	public boolean saveCD(CD cd) {
-		LOG.info("SAVE CD!!!");
-		// CD already exists in DB: Update
-//		if (articleRepository.getCdById(cd.getCdId()) != null) {
-//			CD updatedCd = articleRepository.save(cd);
-//			if (updatedCd != null)
-//				return true;
-//		}
-		// CD doesn't exist in DB: Create
-		
-			long lastCdId = articleRepository.countCds() + 1;
-//			cd.setCdId("CD" + String.valueOf(lastCdId));
-			CD newCd = articleRepository.save(cd);
-			if (newCd != null)
-				return true;
-		
-
+		CD newCd = articleRepository.save(cd);
+		if (newCd != null) {
+			messageShop();
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean saveBook(Book book) {
-		LOG.info("SAVE BOOK");
-		// Book already exists in DB: Update
-//		if (articleRepository.getBookById(book.getBookId()) != null) {
-//			Book updatedBook = articleRepository.save(book);
-//			if (updatedBook != null)
-//				return true;
-//		}
-		// Book doesn't exist in DB: Create
-	
-			long lastBookId = articleRepository.countBooks() + 1;
-//			book.setBookId("BK" + String.valueOf(lastBookId));
-			Book newBook = articleRepository.save(book);
-			if (newBook != null)
-				return true;
-		
+		Book newBook = articleRepository.save(book);
+		if (newBook != null) {
+			messageShop();
+			return true;
+		}
 		return false;
 	}
 
@@ -82,42 +68,37 @@ public class ArticleService implements IArticleService {
 		return null;
 	}
 
-	public Article getArticleById(String articleType, String articleId) {
-		Article article = null;
-		
-		switch(articleType) {
-		case "book": article = articleRepository.getBookById(Long.valueOf(articleId));break;
-		case "cd": article = articleRepository.getCdById(Long.valueOf(articleId));break;
+	@Override
+	public Article<?> getArticleById(String articleType, String articleId) {
+		Article<?> article = null;
+
+		switch (articleType) {
+		case "book":
+			article = articleRepository.getBookById(Long.valueOf(articleId));
+			break;
+		case "cd":
+			article = articleRepository.getCdById(Long.valueOf(articleId));
+			break;
 		}
-		
-		
-		
-//		if (id.startsWith("BK")) {
-//			article = articleRepository.getBookById(id);
-//		} else if (id.startsWith("CD")) {
-//			article = articleRepository.getCdById(id);
-//		}
 		return article;
 
 	}
 
-	public boolean deleteArticle(Article article) {
-		if(article instanceof Book) articleRepository.deleteBookById(article.getId());
-		
-		return true;
-		
-//		LOG.info("DELETE ARTICLE BY ID: " + id);
-//		if (id.startsWith("BK")) {
-//			// Workaround because of Spring-Bug. Can't delete by String ID, just by Int
-//			int bookId = Integer.valueOf(id.substring(2, id.length()));
-//			articleRepository.deleteBookById(bookId);
-//			return true;
-//		} else if (id.startsWith("CD")) {
-//			int cdId = Integer.valueOf(id.substring(2, id.length()));
-//			articleRepository.deleteCdById(cdId);
-//			return true;
-//		}
-//		return true;
+	@Override
+	public boolean deleteArticle(Article<?> article) {
+		if (article instanceof Book) {
+			articleRepository.deleteBookById(article.getId());
+			messageShop();
+			return true;
+		}
+		if (article instanceof CD) {
+			articleRepository.deleteCdById(article.getId());
+			messageShop();
+			return true;
+		}
+		return false;
+
 	}
+
 
 }

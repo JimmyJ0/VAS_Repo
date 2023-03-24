@@ -5,7 +5,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="books")
-public class Book extends Article {
+public class Book extends Article<String> {
 	
 	private String author;
 	private String bookCategory;

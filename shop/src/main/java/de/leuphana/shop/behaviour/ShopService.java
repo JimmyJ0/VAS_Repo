@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import de.leuphana.shop.connector.kafka.KafkaArticleController;
+import de.leuphana.shop.connector.kafka.ShopKafkaController;
 import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
 import de.leuphana.shop.services.SupplierServices;
 import de.leuphana.shop.structure.article.Article;
@@ -23,7 +23,7 @@ public class ShopService implements SupplierServices {
     private static final Logger LOG = LoggerFactory.getLogger(ShopService.class);
 
 	private ArticleRestConnectorRequester articleRestConnector;
-	private KafkaArticleController kafkaController;
+	private ShopKafkaController kafkaController;
 	
 	private HashMap<String, Article> catalog = new HashMap<>();
 
@@ -33,13 +33,20 @@ public class ShopService implements SupplierServices {
 	}
 	
 	@Autowired
-	public void setKafkaArticleController(KafkaArticleController kafkaController) {
+	public void setKafkaArticleController(ShopKafkaController kafkaController) {
 		this.kafkaController = kafkaController;
 	}
 
 	public HashMap<String,Article> getCatalog(){
 		return this.catalog;
 	}
+	
+	
+	public void receiveInfo(String message) {
+		LOG.info(message);
+		System.out.println(message);
+	}
+
 
 	@Override
 	public boolean saveArticleInDB(Article article) {
@@ -108,5 +115,6 @@ public class ShopService implements SupplierServices {
 		}
 		return false;
 	}
+
 
 }

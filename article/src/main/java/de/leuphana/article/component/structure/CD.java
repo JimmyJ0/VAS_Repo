@@ -5,7 +5,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="cds")
-public class CD extends Article {
+
+public class CD extends Article<String>{
     
     private String artist;
     

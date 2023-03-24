@@ -11,25 +11,25 @@ import de.leuphana.shop.structure.article.Article;
 
 @RestController
 @RequestMapping("/shop/article")
-public class KafkaArticleController {
+public class ShopKafkaController {
 	
-	private ArticleKafkaProducer articleKafkaProducer;
+	private ShopKafkaProducer shopKafkaProducer;
 	
 	@Autowired
-	public KafkaArticleController(ArticleKafkaProducer articleKafkaProducer) {
-		this.articleKafkaProducer = articleKafkaProducer;
+	public ShopKafkaController(ShopKafkaProducer articleKafkaProducer) {
+		this.shopKafkaProducer = articleKafkaProducer;
 	}
 	
 	@PostMapping("/saveArticle")
 	public ResponseEntity<String> saveArticle(@RequestBody Article article) {
-		articleKafkaProducer.sendArticle(article);
+		shopKafkaProducer.sendArticle(article);
 		return ResponseEntity.ok("article sent");
 	}
 	
 	
 	@PostMapping("/deleteArticle")
 	public ResponseEntity<String> deleteArticle(@RequestBody Article article) {
-		articleKafkaProducer.deleteArticle(article);
+		shopKafkaProducer.deleteArticle(article);
 		return ResponseEntity.ok("article deleted");
 	}
 

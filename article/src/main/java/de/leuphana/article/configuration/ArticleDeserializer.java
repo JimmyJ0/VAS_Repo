@@ -17,30 +17,9 @@ import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 
 public class ArticleDeserializer implements Deserializer<Object> {
-//public class ArticleDeserializer implements Deserializer<Article>{
 
 	private static final Logger LOG = LoggerFactory.getLogger(ArticleDeserializer.class);
 
-//    @Override
-//    public Article deserialize(String topic, byte[] data) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        Article article = null;
-//        try {
-//            String json = new String(data, "UTF-8");
-//            if (topic.equals("book_topic")) {
-//                article = mapper.readValue(json, Book.class);
-//            } else if (topic.equals("cd_topic")) {
-//                article = mapper.readValue(json, CD.class);
-//            } 
-//            else if(topic.equals("article_topic")) {
-//            	article = mapper.readValue(json, Article.class);
-//            }
-//            
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return article;
-//    }
 	@Override
 	public Object deserialize(String topic, byte[] data) {
 		ObjectMapper mapper = new ObjectMapper();
