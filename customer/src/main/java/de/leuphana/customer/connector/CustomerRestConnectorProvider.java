@@ -2,7 +2,6 @@ package de.leuphana.customer.connector;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +15,11 @@ import de.leuphana.customer.component.behaviour.CustomerService;
 import de.leuphana.customer.component.structure.Customer;
 
 @RestController
-@RequestMapping("/shop/customers")
+@RequestMapping("/shop/customer")
 public class CustomerRestConnectorProvider {
 	
 	private CustomerService customerService;
 	
-	@Autowired
 	public CustomerRestConnectorProvider(CustomerService customerService) {
 		super();
 		this.customerService = customerService;

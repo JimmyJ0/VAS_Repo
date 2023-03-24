@@ -2,7 +2,7 @@ package de.leuphana.shop.structure.sales;
 
 public class Customer {
 
-	private static Integer lastGeneratedCustomerId = 0;
+	//private static Integer lastGeneratedCustomerId = 0;
 
 	private Integer customerId;
 	private String name;
@@ -39,6 +39,10 @@ public class Customer {
 		this.address = address;
 	}
 
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", name=" + name + ", address=" + address + "]";
+	}
 //	public Map<Integer, Order> getOrders() {
 //		return orders;
 //	}

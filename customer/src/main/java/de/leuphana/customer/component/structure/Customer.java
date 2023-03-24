@@ -25,9 +25,6 @@ public class Customer {
 	private String name;
 	@Column(name="address_id",insertable=false,updatable=false)
 	private Integer addressId;
-//	@Column(name="customer_cart", nullable=false)
-//	private Cart cart;
-//	@Column(name="customer_orders", nullable=false)
 //	private Map<Integer, Order> orders;
 	
 //	public Customer(Cart cart) {
@@ -64,6 +61,12 @@ public class Customer {
 		this.address = address;
 	}
 
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", name=" + name + ", addressId=" + addressId + ", address="
+				+ address + "]";
+	}
+
 	
 //	public Map<Integer, Order> getOrders() {
 //		return orders;
@@ -77,12 +80,4 @@ public class Customer {
 //	orders.put(order.getOrderId(), order);
 //}
 
-	
-//	public Cart getCart() {
-//		return cart;
-//	}
-//
-//	public void setCart(Cart cart) {
-//		this.cart = cart;
-//	}
 }

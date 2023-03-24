@@ -18,8 +18,9 @@ public interface IShopService {
 	public boolean updateArticle(Article article, String id);
 	
 	public boolean deleteArticleById(String id);
-
-	public Customer createCustomer(Customer customer);
+	
+	//mit KafkaController implementieren
+//	public Customer createCustomer(Customer customer);
 
 	public List<Customer> getAllCustomers();
 
@@ -27,7 +28,8 @@ public interface IShopService {
 
 	public Customer updateCustomerById(Integer customerId, Customer customer);
 
-	public void deleteCustomerById(Integer customerId);
+	//mit KafkaController implementieren
+//	public void deleteCustomerById(Integer customerId);
 	
 
 }

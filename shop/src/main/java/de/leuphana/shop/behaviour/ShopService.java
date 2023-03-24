@@ -86,11 +86,12 @@ public class ShopService implements IShopService {
 		return false;
 	}
 
+	// Customer CRUD methods
 
-	public Customer createCustomer(Customer customer) {
-		return customerRestConnectorRequester.createCustomer(customer);
-
-	}
+//	public Customer createCustomer(Customer customer) {
+//		return customerRestConnectorRequester.createCustomer(customer);
+//
+//	}
 
 	public List<Customer> getAllCustomers() {
 		return customerRestConnectorRequester.getAllCustomers();
@@ -109,9 +110,9 @@ public class ShopService implements IShopService {
 	}
 
 
-	public void deleteCustomerById(Integer customerId){
-		customerRestConnectorRequester.deleteCustomerById(customerId);
-
-	}
+//	public void deleteCustomerById(Integer customerId){
+//		customerRestConnectorRequester.deleteCustomerById(customerId);
+//
+//	}
 
 }
