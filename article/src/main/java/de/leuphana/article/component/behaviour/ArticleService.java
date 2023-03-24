@@ -12,7 +12,7 @@ import de.leuphana.article.component.structure.Article;
 import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 import de.leuphana.article.configuration.ArticleRepository;
-import de.leuphana.article.connector.kafka.ArticleKafkaConsumer;
+import de.leuphana.article.connector.kafka.ShopKafkaConsumer;
 import de.leuphana.article.connector.kafka.ArticleKafkaController;
 
 @Service
@@ -21,7 +21,7 @@ public class ArticleService implements IArticleService {
 	private ArticleRepository articleRepository;
 	private ArticleKafkaController articleKafkaController;
 
-	private static final Logger LOG = LoggerFactory.getLogger(ArticleKafkaConsumer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ShopKafkaConsumer.class);
 
 	@Autowired
 	public ArticleService(ArticleRepository articleRepository,ArticleKafkaController articleKafkaController) {
@@ -85,7 +85,7 @@ public class ArticleService implements IArticleService {
 	}
 
 	@Override
-	public boolean deleteArticle(Article<?> article) {
+	public boolean deleteArticle(Article article) {
 		if (article instanceof Book) {
 			articleRepository.deleteBookById(article.getId());
 			messageShop();

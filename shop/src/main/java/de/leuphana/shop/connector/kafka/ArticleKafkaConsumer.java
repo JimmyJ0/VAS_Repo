@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import de.leuphana.shop.behaviour.ShopService;
 
 @Service
-public class ShopKafkaConsumer {
+public class ArticleKafkaConsumer {
 
 	private ShopService shopService;
 
 	@Autowired
-	public ShopKafkaConsumer(ShopService shopService) {
+	public ArticleKafkaConsumer(ShopService shopService) {
 		this.shopService = shopService;
 	}
 	

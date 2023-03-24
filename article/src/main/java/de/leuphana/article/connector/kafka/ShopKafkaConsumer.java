@@ -12,14 +12,14 @@ import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 
 @Service
-public class ArticleKafkaConsumer {
+public class ShopKafkaConsumer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ArticleKafkaConsumer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ShopKafkaConsumer.class);
     
 	private ArticleService articleService;
 
 	@Autowired
-	public ArticleKafkaConsumer(ArticleService articleService) {
+	public ShopKafkaConsumer(ArticleService articleService) {
 		super();
 		this.articleService = articleService;
 	}

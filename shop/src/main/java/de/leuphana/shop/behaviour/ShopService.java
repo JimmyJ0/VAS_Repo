@@ -107,7 +107,6 @@ public class ShopService implements SupplierServices {
 
 	@Override
 	public boolean deleteArticleById(String articleid) {
-		LOG.info("ABOUT TO DELETE");
 		Article articleToDelete = catalog.get(articleid);
 		if(articleToDelete != null) {
 			ResponseEntity<String> response = kafkaController.deleteArticle(articleToDelete);
