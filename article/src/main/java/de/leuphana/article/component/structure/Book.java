@@ -1,28 +1,18 @@
 package de.leuphana.article.component.structure;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="books")
-public class Book extends Article {
+public class Book extends Article<String> {
 	
-	@Column(name = "book_id")
-	private String bookId;
 	private String author;
 	private String bookCategory;
 	
 	public Book() {
 		super();
 
-	}
-	
-	public String getBookId() {
-		return bookId;
-	}
-	public void setBookId(String id) {
-		this.bookId = id;
 	}
 
 	public String getAuthor() {
@@ -41,12 +31,4 @@ public class Book extends Article {
 		this.bookCategory = bookCategory;
 	}
 	
-//	@PrePersist
-//	protected void onCreate() {
-//		if (bookId == null) {
-//			bookId = entityManager.createQuery("SELECT COUNT(b) FROM Book b", Long.class).getSingleResult();
-//		}
-//	}
-	
-
 }

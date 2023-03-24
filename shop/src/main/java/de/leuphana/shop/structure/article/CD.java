@@ -3,14 +3,18 @@ package de.leuphana.shop.structure.article;
 public class CD extends Article {
 
 	private String artist;
-	private String cdId;
+	private Long id;
 	
-	public CD() {
-		super();
+	public Long getId() {
+		return id;
 	}
 
-	public String getCdId() {
-		return cdId;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public CD() {
+		super();
 	}
 
 	public CD(String artist) {
@@ -23,11 +27,6 @@ public class CD extends Article {
 
 	public void setArtist(String artist) {
 		this.artist = artist;
-	}
-
-	public void setCdId(String id) {
-		cdId = id;
-		
 	}
 
 }

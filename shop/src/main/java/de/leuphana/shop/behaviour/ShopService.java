@@ -1,62 +1,92 @@
 package de.leuphana.shop.behaviour;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import de.leuphana.shop.connector.ArticleRestConnectorRequester;
-import de.leuphana.shop.connector.CustomerRestConnectorRequester;
+import de.leuphana.shop.connector.kafka.ShopKafkaController;
+import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
+import de.leuphana.shop.services.SupplierServices;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
 import de.leuphana.shop.structure.sales.Customer;
 
 @Service
-public class ShopService implements IShopService {
+public class ShopService implements SupplierServices {
 
+	// TODO: Anhand der Response Entity Exception Handling machen.
+    private static final Logger LOG = LoggerFactory.getLogger(ShopService.class);
 
 	// TODO: Anhand der Response Entity Exception Handling machen.
 	private ArticleRestConnectorRequester articleRestConnector;
-	private CustomerRestConnectorRequester customerRestConnectorRequester;
+	private ShopKafkaController kafkaController;
+	
+	private HashMap<String, Article> catalog = new HashMap<>();
 
 	@Autowired
 	public void setArticleRestConnector(ArticleRestConnectorRequester articleRestConnector) {
 		this.articleRestConnector = articleRestConnector;
 	}
+	
 	@Autowired
-	public void setCustomerRestConnector(CustomerRestConnectorRequester customerRestConnectorRequester) {
-		this.customerRestConnectorRequester = customerRestConnectorRequester;
+	public void setKafkaArticleController(ShopKafkaController kafkaController) {
+		this.kafkaController = kafkaController;
 	}
+
+	public HashMap<String,Article> getCatalog(){
+		return this.catalog;
+	}
+	
+	
+	public void receiveInfo(String message) {
+		LOG.info(message);
+		System.out.println(message);
+	}
+
 
 	@Override
 	public boolean saveArticleInDB(Article article) {
-		return articleRestConnector.saveArticle(article);
+		ResponseEntity<String> response = kafkaController.saveArticle(article);
+		if(response.getBody().equals("article sent")) {
+			return true;
+		}
+		return false;
 	}
-
+	
 	@Override
-	public List<Article> getArticles() {
-		List<Article> articles = articleRestConnector.getArticles();
-		if (articles != null)
-			return articles;
-		return null;
-	}
-
-	@Override
-	public Article getArticleById(String id) {
-		Article foundArticle = articleRestConnector.getArticleById(id);
+	public Article getArticleByIdFromDB(String articleType, Long id) {
+		Article foundArticle = articleRestConnector.getArticleById(articleType, String.valueOf(id));
 		if (foundArticle != null)
 			return foundArticle;
 		return null;
 	}
 
+	@Override
+	public Map<String, Article> getArticles() {
+		for(Article article: articleRestConnector.getArticles()) {
+			String catalogId = article instanceof Book ? "BK"+String.valueOf(((Book)article).getId()): "CD"+String.valueOf(((CD)article).getId());
+			catalog.put(catalogId, article);
+		}
+		return catalog;
+	}
+
+
+
 	// Creepy, but working
 	@Override
-	public boolean updateArticle(Article article, String id) {
-		Article oldArticle = getArticleById(id);
+	public boolean updateArticle(Article article, Long id) {
+		Article oldArticle = null;
+		switch(article.getArticleType()) {
+		case "book": oldArticle = catalog.get("BK"+String.valueOf(id));break;
+		case "cd": oldArticle = catalog.get("CD"+String.valueOf(id));break;
+			}
+		
 		if (oldArticle != null) {
 			oldArticle.setName(article.getName() == null ? oldArticle.getName() : article.getName());
 			oldArticle.setManufactor(
@@ -73,16 +103,17 @@ public class ShopService implements IShopService {
 						: ((CD) article).getArtist());
 			}
 		}
-		if (saveArticleInDB(oldArticle))
-			return true;
+		if (saveArticleInDB(oldArticle)) return true;
 		return false;
 	}
 
 
 	public boolean deleteArticleById(String articleid) {
-		boolean success = articleRestConnector.deleteArticleById(articleid);
-		if (success)
-			return true;
+		Article articleToDelete = catalog.get(articleid);
+		if(articleToDelete != null) {
+			ResponseEntity<String> response = kafkaController.deleteArticle(articleToDelete);
+			if(response.getBody().equals("article deleted"))return true;
+		}
 		return false;
 	}
 

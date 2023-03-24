@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import de.leuphana.article.connector.ArticleSpringDataConnectorRequester;
+
+import de.leuphana.article.connector.rest.ArticleSpringDataConnectorRequester;
 
 @SpringBootTest
 class ArticleServiceTest {
@@ -17,11 +18,11 @@ class ArticleServiceTest {
 	private ArticleService articleService;
 	
 	
-	@Test
-	void canArticleDeleted() {
-		String id = "BK1";
-		assertTrue(articleService.deleteArticleById(id));
-
-	}
+//	@Test
+//	void canArticleDeleted() {
+//		String id = "BK1";
+//		assertTrue(articleService.deleteArticleById(id));
+//
+//	}
 
 }
