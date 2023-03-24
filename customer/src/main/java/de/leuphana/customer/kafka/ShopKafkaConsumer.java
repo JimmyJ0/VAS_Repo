@@ -23,7 +23,7 @@ public class ShopKafkaConsumer {
 	}
 
 
-	@KafkaListener(topics = "customer-send-topic", groupId = "customer-group")
+	@KafkaListener(topics = "customer-send-topic", groupId = "shop_group")
     public void receiveCustomer(Customer customer) {
         try {
             LOGGER.info("Received customer: {}", customer);
@@ -34,7 +34,7 @@ public class ShopKafkaConsumer {
         }
     }
 
-    @KafkaListener(topics = "customer-delete-topic", groupId = "customer-group")
+    @KafkaListener(topics = "customer-delete-topic", groupId = "shop_group")
     public void deleteCustomer(Integer customerId) {
         try {
         	LOGGER.info("Deleting customer with ID: {}", customerId);

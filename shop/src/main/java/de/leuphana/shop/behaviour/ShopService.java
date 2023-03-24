@@ -1,6 +1,7 @@
 package de.leuphana.shop.behaviour;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import de.leuphana.shop.connector.kafka.ShopKafkaController;
 import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
+import de.leuphana.shop.connector.rest.CustomerRestConnectorRequester;
 import de.leuphana.shop.services.SupplierServices;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
@@ -26,12 +28,19 @@ public class ShopService implements SupplierServices {
 	// TODO: Anhand der Response Entity Exception Handling machen.
 	private ArticleRestConnectorRequester articleRestConnector;
 	private ShopKafkaController kafkaController;
+	private CustomerRestConnectorRequester customerRestConnectorRequester;
+
 	
 	private HashMap<String, Article> catalog = new HashMap<>();
 
 	@Autowired
 	public void setArticleRestConnector(ArticleRestConnectorRequester articleRestConnector) {
 		this.articleRestConnector = articleRestConnector;
+	}
+	
+	@Autowired
+	public void setCustomerRestConnector(CustomerRestConnectorRequester customerRestConnectorRequester) {
+		this.customerRestConnectorRequester = customerRestConnectorRequester;
 	}
 	
 	@Autowired

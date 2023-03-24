@@ -25,7 +25,7 @@ public class ShopKafkaConsumer {
 	}
     
 
-    @KafkaListener(topics = {"book_topic", "cd_topic"}, groupId = "article_group")
+    @KafkaListener(topics = {"book_topic", "cd_topic"}, groupId = "shop_group")
     public void receiveArticle(Article article) {
     	if(article instanceof Book) {
             articleService.saveBook((Book) article);
@@ -35,7 +35,7 @@ public class ShopKafkaConsumer {
     	}
     }
     
-    @KafkaListener(topics ="article_topic", groupId = "article_group")
+    @KafkaListener(topics ="article_topic", groupId = "shop_group")
     public void delete(Article article) {
     	if(article instanceof Book) {
             articleService.deleteArticle((Book)article);
