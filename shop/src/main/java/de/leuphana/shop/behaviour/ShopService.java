@@ -1,27 +1,35 @@
 package de.leuphana.shop.behaviour;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import de.leuphana.shop.connector.ArticleRestConnectorRequester;
+import de.leuphana.shop.connector.CustomerRestConnectorRequester;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
+import de.leuphana.shop.structure.sales.Customer;
 
 @Service
 public class ShopService implements IShopService {
 
-	// TODO: Anhand der Response Entity Exception Handling machen.
 
+	// TODO: Anhand der Response Entity Exception Handling machen.
 	private ArticleRestConnectorRequester articleRestConnector;
+	private CustomerRestConnectorRequester customerRestConnectorRequester;
 
 	@Autowired
 	public void setArticleRestConnector(ArticleRestConnectorRequester articleRestConnector) {
 		this.articleRestConnector = articleRestConnector;
+	}
+	@Autowired
+	public void setCustomerRestConnector(CustomerRestConnectorRequester customerRestConnectorRequester) {
+		this.customerRestConnectorRequester = customerRestConnectorRequester;
 	}
 
 	@Override
@@ -70,12 +78,41 @@ public class ShopService implements IShopService {
 		return false;
 	}
 
-	@Override
+
 	public boolean deleteArticleById(String articleid) {
 		boolean success = articleRestConnector.deleteArticleById(articleid);
 		if (success)
 			return true;
 		return false;
 	}
+
+	// Customer CRUD methods
+
+//	public Customer createCustomer(Customer customer) {
+//		return customerRestConnectorRequester.createCustomer(customer);
+//
+//	}
+
+	public List<Customer> getAllCustomers() {
+		return customerRestConnectorRequester.getAllCustomers();
+
+	}
+
+	public Customer getCustomerById(Integer customerId){
+		return customerRestConnectorRequester.getCustomerById(customerId);
+
+	}
+
+
+	public Customer updateCustomerById(Integer customerId, Customer customer){
+		return customerRestConnectorRequester.updateCustomerById(customerId, customer);
+
+	}
+
+
+//	public void deleteCustomerById(Integer customerId){
+//		customerRestConnectorRequester.deleteCustomerById(customerId);
+//
+//	}
 
 }
