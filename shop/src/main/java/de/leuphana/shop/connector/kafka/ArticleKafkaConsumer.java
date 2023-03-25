@@ -16,7 +16,7 @@ public class ArticleKafkaConsumer {
 		this.shopService = shopService;
 	}
 	
-	 @KafkaListener(topics ="article_database", groupId = "article_group")
+	 @KafkaListener(topics ="article_database", groupId = "shop_group")
 	 public void sendMessage(String message) {
 		 shopService.receiveInfo(message);
 	 }

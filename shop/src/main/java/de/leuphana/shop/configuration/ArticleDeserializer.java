@@ -46,7 +46,7 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 			else if (type.equals("book")) {
 				Book book = new Book();
 				book.setArticleType(node.get("articleType").asText());
-				book.setId(node.get("id").asLong());
+//				book.setId(node.get("id").asLong());
 				book.setManufactor(node.get("manufactor").asText());
 				book.setBookCategory(node.get("bookCategory").asText());
 				book.setName(node.get("name").asText());

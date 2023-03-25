@@ -2,6 +2,8 @@ version: '3'
 services:
   mariadb:
     image: mariadb
+    networks:
+     - vas_repo_shop-network
     container_name: mariadb-container
     restart: always
     environment:
@@ -17,6 +19,8 @@ services:
       
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    networks:
+     - vas_repo_shop-network
     container_name: phpmyadmin-container
     environment:
       - PMA_HOST=mariadb
@@ -28,6 +32,8 @@ services:
   api-gateway:
     build: ./api-gateway
     image: api-gateway-image
+    networks:
+     - vas_repo_shop-network
     container_name: api-gateway-container
     ports:
       - "9000:9000"
@@ -35,82 +41,92 @@ services:
   eureka-server:
     build: ./eureka-server
     image: eureka-server-image
+    networks:
+     - vas_repo_shop-network
     container_name: eureka-server-container
     ports:
       - "8761:8761"
 
-  order:
-    build: ./order
-    restart: always
-    image: order-image
-    container_name: order-container
-    ports:
-      - "9091:9091"
+#  order:
+#    build: ./order
+#    restart: always
+#    image: order-image
+#    container_name: order-container
+#   ports:
+#      - "9091:9091"
      
   article:
     build: ./article
-    restart: always
+    restart: on-failure
     image: article-image
+    networks:
+     - vas_repo_shop-network
     container_name: article-container
     ports:
-      - "9090:9090"
+      - "9090:9090" 
+    environment:
+    - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    - SPRING_KAFKA_CONSUMER_GROUP_ID=shop_group
+    depends_on:
+    - kafka
       
   shop:
     build: ./shop
-    restart: always
+    restart: on-failure
     image: shop-image
+    networks:
+     - vas_repo_shop-network
     container_name: shop-container
     ports:
       - "8004:8004"
-      
-  customer:
-    build: ./customer
-    restart: always
-    image: customer-image
-    container_name: customer-container
-    ports:
-      - "8000:8000"
+    environment:
+    - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    - SPRING_KAFKA_CONSUMER_GROUP_ID=shop_group
+    depends_on:
+    - kafka
+    
+ 
+#  customer:
+#    build: ./customer
+#    restart: always
+#    image: customer-image
+#    container_name: customer-container
+#    ports:
+#      - "8000:8000"
       
   zipkin-server:
     image: openzipkin/zipkin
+    networks:
+     - vas_repo_shop-network
     ports:
       - "9411:9411"
-  
+      
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.0
-    hostname: zookeeper
-    container_name: zookeeper-container
+    image: wurstmeister/zookeeper
+    networks:
+     - vas_repo_shop-network
+    container_name: zookeeper
     ports:
       - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  kafka-server:
-    image: confluentinc/cp-kafka:7.0.0
-    hostname: kafka-server
-    container_name: kafka-container
-    depends_on:
-      - zookeeper
+  kafka:
+    image: wurstmeister/kafka
+    networks:
+     - vas_repo_shop-network
+    container_name: kafka
     ports:
       - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-server:29092,PLAINTEXT_HOST://kafka-server:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
-      KAFKA_CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-      KAFKA_JMX_PORT: 9991
-      KAFKA_JMX_HOSTNAME: kafka-server
-      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-
+      KAFKA_CONSUMER_GROUP: shop_group
+    
       
 volumes:
   mariadb_data:
     driver: local
+
+networks:
+  vas_repo_shop-network:
+    external: true
