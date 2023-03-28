@@ -1,22 +1,14 @@
 package de.leuphana.shop.structure.article;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class Book extends Article {
 
-	private Long id;
 	private String author;
 	private String bookCategory;
 
 	public Book() {
 		super();
-
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getAuthor() {

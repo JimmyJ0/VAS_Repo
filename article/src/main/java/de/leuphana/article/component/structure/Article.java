@@ -7,11 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class Article<U> {
+public abstract class Article{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	protected Long articleId;
 
 	@Column(name = "article_type")
 	private String articleType;
@@ -31,12 +31,12 @@ public abstract class Article<U> {
 		this.articleType = articleType;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getArticleId() {
+		return articleId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setArticleId(Long id) {
+		this.articleId = id;
 	}
 
 	public String getManufactor() {

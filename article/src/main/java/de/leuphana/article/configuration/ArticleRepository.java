@@ -14,13 +14,13 @@ import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 
 @Transactional
-public interface ArticleRepository extends JpaRepository<Article, String>{
+public interface ArticleRepository extends JpaRepository<Article, Long>{
 	
     @Query("SELECT COUNT(b) FROM Book b")
-    long countBooks();
+    Long countBooks();
 	
     @Query("SELECT COUNT(c) FROM CD c")
-    long countCds();
+    Long countCds();
 	
 	@Query("SELECT b FROM Book b")  
 	List<Book> getAllBooks(Class<Book> c);
@@ -36,10 +36,10 @@ public interface ArticleRepository extends JpaRepository<Article, String>{
 	
     @Modifying
     @Query("DELETE FROM Book b WHERE b.id = :bookId")
-    void deleteBookById(@Param("bookId") long bookId);
+    void deleteBookById(@Param("bookId") Long bookId);
     
     @Modifying
     @Query("DELETE FROM CD c WHERE c.id = :cdId")
-    void deleteCdById(@Param("cdId") long cdId);
+    void deleteCdById(@Param("cdId") Long cdId);
 
 }

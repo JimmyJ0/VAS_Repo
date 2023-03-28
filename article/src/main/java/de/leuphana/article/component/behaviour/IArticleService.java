@@ -13,9 +13,9 @@ public interface IArticleService {
 	boolean saveBook(Book book);
 	
 	List<Article> getArticles();
-	
-	public boolean deleteArticle(Article<?> article);
-	
-	public Article<?> getArticleById(String articleType, String articleId);
+		
+	public Article getArticleById(String articleType, Long articleId);
+
+	boolean deleteArticle(String articleType, Long id);
 
 }

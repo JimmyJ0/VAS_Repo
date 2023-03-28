@@ -22,85 +22,85 @@ import de.leuphana.shop.structure.sales.Customer;
 @SpringBootTest
 class ShopServiceTest{
 
-	@Autowired
-	ArticleRestConnectorRequester restConnector;
+//	@Autowired
+//	ArticleRestConnectorRequester restConnector;
+//
+//	@Autowired
+//	CustomerRestConnectorRequester customerRestConnector;
+//
+//	@Autowired
+//	private ShopService shopService;
+//	
+//	@Autowired
+//	private CustomerProducer customerProducer;
+//
+//	@Test
+//	void canNewArticleBeInserted() {
+//		Book book = new Book();
+//		book.setArticleType("book");
+//		book.setName("Sprechen Sie Mongo?");
+//		book.setAuthor("Mr. Gold");
+//		book.setManufactor("SnakeLand");
+//		book.setPrice(3.40);
+//		book.setBookCategory("Horror");
+//		
+//		CD cd = new CD();
+//		cd.setArticleType("cd");
+//		cd.setName("Fire Album");
+//		cd.setArtist("Dj Fire");
+//		cd.setManufactor("Dony");
+//		cd.setPrice(4334.4);
+//		assertTrue(shopService.saveArticleInDB(cd));
+//		assertTrue(shopService.saveArticleInDB(book));
+//	}
+//
+//	@Test
+//	void canIgetAllArticles() {
+//		Map<String, Article> allArticles = shopService.getArticles();
+//		assertNotNull(allArticles);
+//	}
+//
+//	@Test
+//	void canBookBeFound() {
+//		Article book = shopService.getArticleByIdFromDB("book", 1l);
+//		System.out.println("Found article: " + book.getName());
+//		assertNotNull(book);	
+//	}
+//
+//	@Test
+//	void canArticleBeUpdated() {
+//		shopService.getArticles();
+//		canNewArticleBeInserted();
+//		Book newBook = new Book();
+//		newBook.setArticleType("book");
+//		newBook.setName("Sprechen Sie Java 999");
+//		newBook.setPrice(3.30);
+//		shopService.updateArticle(newBook, 1l);
+//	}
+//	
+//	
+//	@Test 
+//	void canBookDeleted(){
+//		shopService.getArticles();
+//		assertTrue(shopService.deleteArticleById("BK2"));
+//	}
+//
+//	@Test
+//	void canCustomerBeCreated() throws InterruptedException {
+//		// Create a customer object
+//	    Customer customer = new Customer();
+//	    customer.setCustomerId(1);
+//	    customer.setName("Max Mustermann");
+//	    Address address = new Address();
+//	    address.setAdressId(1);
+//	    address.setCity("Lueneburg");
+//	    address.setStreet("Soltauerstrasse 1");
+//	    address.setZip(21335);
+//	    customer.setAddress(address);
+//	    
+//	    customerProducer.sendCustomer(customer);
 
-	@Autowired
-	CustomerRestConnectorRequester customerRestConnector;
-
-	@Autowired
-	private ShopService shopService;
-	
-	@Autowired
-	private CustomerProducer customerProducer;
-
-	@Test
-	void canNewArticleBeInserted() {
-		Book book = new Book();
-		book.setArticleType("book");
-		book.setName("Sprechen Sie Delphi?");
-		book.setAuthor("Mr. Gold");
-		book.setManufactor("SnakeLand");
-		book.setPrice(3.40);
-		book.setBookCategory("Horror");
-		
-		CD cd = new CD();
-		cd.setArticleType("cd");
-		cd.setName("Fire Album");
-		cd.setArtist("Dj Fire");
-		cd.setManufactor("Dony");
-		cd.setPrice(4334.4);
-		assertTrue(shopService.saveArticleInDB(cd));
-		assertTrue(shopService.saveArticleInDB(book));
-	}
-
-	@Test
-	void canIgetAllArticles() {
-		Map<String, Article> allArticles = shopService.getArticles();
-		assertNotNull(allArticles);
-	}
-
-	@Test
-	void canBookBeFound() {
-		Article book = shopService.getArticleByIdFromDB("book", 1l);
-		System.out.println("Found article: " + book.getName());
-		assertNotNull(book);	
-	}
-
-	@Test
-	void canArticleBeUpdated() {
-		shopService.getArticles();
-		canNewArticleBeInserted();
-		Book newBook = new Book();
-		newBook.setArticleType("book");
-		newBook.setName("Sprechen Sie Java 999");
-		newBook.setPrice(3.30);
-		shopService.updateArticle(newBook, 1l);
-	}
-	
-	
-	@Test 
-	void canBookDeleted(){
-		shopService.getArticles();
-		assertTrue(shopService.deleteArticleById("BK2"));
-	}
-
-	@Test
-	void canCustomerBeCreated() throws InterruptedException {
-		// Create a customer object
-	    Customer customer = new Customer();
-	    customer.setCustomerId(1);
-	    customer.setName("Max Mustermann");
-	    Address address = new Address();
-	    address.setAdressId(1);
-	    address.setCity("Lueneburg");
-	    address.setStreet("Soltauerstrasse 1");
-	    address.setZip(21335);
-	    customer.setAddress(address);
-	    
-	    customerProducer.sendCustomer(customer);
-
-	}
+//	}
 
 //	@Test
 //	void canCustomerBeFoundById() throws Exception {

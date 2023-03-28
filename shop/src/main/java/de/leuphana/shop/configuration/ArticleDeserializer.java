@@ -29,34 +29,35 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
 		if (typeNode != null) {
 			String type = node.get("articleType").asText();
 
+			Article article = null;
+			
 			if (type.equals("cd")) {
-				CD cd = new CD();
-				cd.setArticleType(node.get("articleType").asText());
-				cd.setId(node.get("id").asLong());
-				cd.setManufactor(node.get("manufactor").asText());
-				cd.setArtist(node.get("artist").asText());
-				cd.setName(node.get("name").asText());
-				cd.setPrice(node.get("price").asDouble());
+				article = new CD();
+				article.setArticleType(node.get("articleType").asText());
+				Long id = node.get("articleId") == null ? null : node.get("articleId").asLong();
+				if(id != null) article.setArticleId(id);
+				article.setManufactor(node.get("manufactor").asText());
+				((CD) article).setArtist(node.get("artist").asText());
+				article.setName(node.get("name").asText());
+				article.setPrice(node.get("price").asDouble());
 
 				System.out.println("Deserizalied to an CD");
-
-				return cd;
 			}
 
 			else if (type.equals("book")) {
-				Book book = new Book();
-				book.setArticleType(node.get("articleType").asText());
-//				book.setId(node.get("id").asLong());
-				book.setManufactor(node.get("manufactor").asText());
-				book.setBookCategory(node.get("bookCategory").asText());
-				book.setName(node.get("name").asText());
-				book.setPrice(node.get("price").asDouble());
-				book.setAuthor(node.get("author").asText());
-
-				return book;
+				article = new Book();
+				article.setArticleType(node.get("articleType").asText());
+				Long id = node.get("articleId") == null ? null : node.get("articleId").asLong();
+				if(id != null) article.setArticleId(id);
+				article.setManufactor(node.get("manufactor").asText());
+				((Book) article).setBookCategory(node.get("bookCategory").asText());
+				article.setName(node.get("name").asText());
+				article.setPrice(node.get("price").asDouble());
+				((Book) article).setAuthor(node.get("author").asText());
 
 			}
 			// TODO: ExceptionHandling
+			return article;
 		} 
 		// GET-Mapping
 //		else {

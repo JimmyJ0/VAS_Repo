@@ -1,6 +1,7 @@
 package de.leuphana.article.configuration;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.kafka.support.converter.ByteArrayJsonMessageConverter;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
@@ -28,19 +30,18 @@ public class ArticleDeserializer implements Deserializer<Object> {
 			String json = new String(data, "UTF-8");
 			switch (topic) {
 			case "book_topic":
-				object = (Book) mapper.readValue(json, Book.class);
+				object = mapper.readValue(json, Book.class);
 				break;
 			case "cd_topic":
-				object = (CD) mapper.readValue(json, CD.class);
+				object = mapper.readValue(json, CD.class);
 				break;
 			case "article_topic": {
-				JsonNode node = mapper.readTree(data);
-				String articleType = node.get("articleType").asText();
-				if(articleType.equals("book")) object = (Book) mapper.readValue(json, Book.class);
-				else if(articleType.equals("cd")) object = (CD) mapper.readValue(json, CD.class);
+				object = mapper.readValue(data, new TypeReference<Map<String, String>>() {});
 				break;
-
+				
 			}
+			default:
+				System.out.println("ASDKJASD");
 			}
 
 		} catch (IOException e) {

@@ -1,17 +1,10 @@
 package de.leuphana.shop.structure.article;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class CD extends Article {
 
 	private String artist;
-	private Long id;
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public CD() {
 		super();

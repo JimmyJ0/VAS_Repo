@@ -38,7 +38,8 @@ public class ArticleSpringDataConnectorRequester {
 
 	@GetMapping("/getArticleById/{articleType}/{id}")
 	public ResponseEntity<Article> getArticleById(@PathVariable String id, @PathVariable String articleType) {
-		Article article = articleService.getArticleById(articleType, id);
+		Long numId = Long.parseLong(id.replaceAll("[^0-9]", ""));
+		Article article = articleService.getArticleById(articleType, numId);
 		if (article != null) {
 			return new ResponseEntity<Article>(article, HttpStatus.OK);
 		}

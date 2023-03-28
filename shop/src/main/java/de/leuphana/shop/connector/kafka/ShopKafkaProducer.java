@@ -1,5 +1,8 @@
 package de.leuphana.shop.connector.kafka;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,14 @@ public class ShopKafkaProducer {
 
 	@Autowired
 	private KafkaTemplate<String, Article> kafkaTemplate;
+	
+	@Autowired
+	private KafkaTemplate<String, Map<String, String>> mapKafkaTemplate;
 
-	public ShopKafkaProducer(KafkaTemplate<String, Article> kafkaTemplate) {
-		this.kafkaTemplate = kafkaTemplate;
+	public ShopKafkaProducer(KafkaTemplate<String, Article> kafkaTemplate,
+			KafkaTemplate<String, Map<String, String>> mapKafkaTemplate) {
+	    this.kafkaTemplate = kafkaTemplate;
+	    this.mapKafkaTemplate = mapKafkaTemplate;
 	}
 
 	public boolean sendArticle(Article article) {
@@ -35,12 +43,20 @@ public class ShopKafkaProducer {
 		return false;
 	}
 	
-	public boolean deleteArticle(Article article) {
-		if(article != null) {
-			kafkaTemplate.send("article_topic", article);
-			return true;
-		}
-		return false;
+//	public boolean deleteArticle(Article article) {
+//		if(article != null) {
+//			kafkaTemplate.send("article_topic", article);
+//			return true;
+//		}
+//		return false;
+//	}
+
+	public void deleteArticle(String articleType, String id) {
+		Map<String, String> articleData = new HashMap<>();
+		articleData.put("articleType", articleType);
+		articleData.put("id", id);
+		mapKafkaTemplate.send("article_topic", articleData);
+		
 	}
 
 }

@@ -69,8 +69,8 @@ public class ArticleService implements IArticleService {
 	}
 
 	@Override
-	public Article<?> getArticleById(String articleType, String articleId) {
-		Article<?> article = null;
+	public Article getArticleById(String articleType, Long articleId) {
+		Article article = null;
 
 		switch (articleType) {
 		case "book":
@@ -85,14 +85,14 @@ public class ArticleService implements IArticleService {
 	}
 
 	@Override
-	public boolean deleteArticle(Article article) {
-		if (article instanceof Book) {
-			articleRepository.deleteBookById(article.getId());
+	public boolean deleteArticle(String articleType, Long id) {
+		if (articleType.equals("book")) {
+			articleRepository.deleteBookById(id);
 			messageShop();
 			return true;
 		}
-		if (article instanceof CD) {
-			articleRepository.deleteCdById(article.getId());
+		if (articleType.equals("cd")) {
+			articleRepository.deleteCdById(id);
 			messageShop();
 			return true;
 		}

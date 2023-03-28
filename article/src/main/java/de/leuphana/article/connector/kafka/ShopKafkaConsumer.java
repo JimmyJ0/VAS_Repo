@@ -1,5 +1,7 @@
 package de.leuphana.article.connector.kafka;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ public class ShopKafkaConsumer {
 
     @KafkaListener(topics = {"book_topic", "cd_topic"}, groupId = "shop_group")
     public void receiveArticle(Article article) {
+    	LOG.info("KAJHSDKJASJDKAJKSDJKASDJKASJKDAKJSDKJASDKJASDKJ");
     	if(article instanceof Book) {
             articleService.saveBook((Book) article);
     	}
@@ -35,13 +38,11 @@ public class ShopKafkaConsumer {
     	}
     }
     
-    @KafkaListener(topics ="article_topic", groupId = "shop_group")
-    public void delete(Article article) {
-    	if(article instanceof Book) {
-            articleService.deleteArticle((Book)article);
-    	}
-    	else if(article instanceof CD) {
-            articleService.deleteArticle((CD)article);
-    	}
+    @KafkaListener(topics = "article_topic", groupId = "group_id")
+    public void deleteArticle(Map<String, String> articleData) {
+        String articleType = articleData.get("articleType");
+        String catalogId = articleData.get("id");
+        Long id = Long.parseLong(catalogId.replaceAll("[^0-9]", ""));
+        articleService.deleteArticle(articleType, id);
     }
 }
