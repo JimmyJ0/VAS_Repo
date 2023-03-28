@@ -1,6 +1,5 @@
 package de.leuphana.shop.structure.sales;
 
-
 public class Customer {
 
 	private Integer customerId;

@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +34,14 @@ public class OrderSpringDataConnectorRequester {
 	}
 
 	@PostMapping("/createOrder")
-	public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+	public ResponseEntity<String> createOrder(@RequestBody Order order) {
 		Span span = tracer.spanBuilder("createOrder-span").startSpan();
 		try (Scope scope = span.makeCurrent()) {
 			logger.info("Creating order");
 			Order savedOrder = orderService.createOrder(order);
 			span.setAttribute("orderId", String.valueOf(savedOrder.getOrderId()));
-			return ResponseEntity.created(URI.create("/order/" + savedOrder.getOrderId())).body(savedOrder);
+//			return ResponseEntity.created(URI.create("/order/" + savedOrder.getOrderId())).body(savedOrder);
+			return new ResponseEntity<String>(HttpStatus.OK);
 		} finally {
 			span.end();
 		}

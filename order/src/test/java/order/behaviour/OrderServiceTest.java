@@ -36,7 +36,7 @@ public class OrderServiceTest {
     public void setUp() {
         order = new Order();
         order.setOrderId(1L);
-        order.setCustomerId(100L);
+        order.setCustomerId(100);
     }
 
     @Test

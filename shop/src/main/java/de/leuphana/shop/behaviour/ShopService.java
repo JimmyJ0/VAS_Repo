@@ -1,25 +1,21 @@
 package de.leuphana.shop.behaviour;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import de.leuphana.shop.connector.kafka.ShopKafkaController;
-import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
-import de.leuphana.shop.connector.rest.CustomerRestConnectorRequester;
-import de.leuphana.shop.services.SupplierServices;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
 import de.leuphana.shop.structure.sales.Cart;
 import de.leuphana.shop.structure.sales.CartItem;
 import de.leuphana.shop.structure.sales.Customer;
+import de.leuphana.shop.structure.sales.Order;
+import de.leuphana.shop.structure.sales.OrderPosition;
 
 @Service
 public class ShopService {
@@ -57,6 +53,7 @@ public class ShopService {
 	
 	public void insertCustomers(List<Customer> customerList) {
 		customers.clear();
+		LOG.info("\n\n" + customerList + "\n\n");
 		
 		for(Customer customer : customerList) {
 			customer.setCart(new Cart());
@@ -66,7 +63,7 @@ public class ShopService {
 //		customerList.forEach(customer -> customers.put(customer.getCustomerId(), customer));
 	}
 	
-	
+	// CHECK!
 	public void addArticleToCart(Integer customerId, String articleId) {
 		Article foundArticle = catalog.get(articleId);
 		Cart cart = customers.get(customerId).getCart();
@@ -85,123 +82,28 @@ public class ShopService {
 		
 	}
 
-	public void checkOutCart(Integer customerId) {
+	public Order checkOutCart(Integer customerId) {
 		Customer customer = customers.get(customerId);
 		Cart cart = customer.getCart();
+		Order order = new Order();
 		
+		List<OrderPosition> orderPositions = new ArrayList<OrderPosition>();
+		int orderPos = 1;
 		for(CartItem cartItem: cart.getCartItems()) {
-			System.out.println("ID:" + cartItem.getArticleId() + " " + cartItem.getQuantity() + " " + cartItem.getPrice());
+			System.out.println("ID:" + orderPos + " " + cartItem.getQuantity() + " " + cartItem.getPrice());
+			OrderPosition orderPosition = new OrderPosition();
+			orderPosition.setArticleId(cartItem.getArticleId());
+			orderPosition.setPrice(cartItem.getPrice());
+			orderPosition.setArticleQuantity(cartItem.getQuantity());
+			orderPosition.setPositionId(orderPos);
+			
+			orderPositions.add(orderPosition);
+			orderPos++;
+			
 		}
-		
+		order.setCustomerId(customerId);
+		order.setOrderPositions(orderPositions);
+		return order;
 	}
-	
-	
-	
-
-//	@Autowired
-//	public void setArticleRestConnector(ArticleRestConnectorRequester articleRestConnector) {
-//		this.articleRestConnector = articleRestConnector;
-//	}
-//	@Autowired
-//	public void setKafkaArticleController(ShopKafkaController kafkaController) {
-//		this.kafkaController = kafkaController;
-//	}
-
-//	@Autowired
-//	public void setCustomerRestConnector(CustomerRestConnectorRequester customerRestConnectorRequester) {
-//		this.customerRestConnectorRequester = customerRestConnectorRequester;
-//	}
-//	
-//
-//
-
-//	
-//	
-
-//	@Override
-//	public boolean saveArticleInDB(Article article) {
-//		ResponseEntity<String> response = kafkaController.saveArticle(article);
-//		if(response.getBody().equals("article sent")) {
-//			return true;
-//		}
-//		return false;
-//	}
-
-//	@Override
-//	public Article getArticleByIdFromDB(String articleType, Long id) {
-//		Article foundArticle = articleRestConnector.getArticleById(articleType, String.valueOf(id));
-//		if (foundArticle != null)
-//			return foundArticle;
-//		return null;
-//	}
-//
-
-
-//
-//	// Creepy, but working
-//	@Override
-//	public boolean updateArticle(Article article, Long id) {
-//		Article oldArticle = null;
-//		switch(article.getArticleType()) {
-//		case "book": oldArticle = catalog.get("BK"+String.valueOf(id));break;
-//		case "cd": oldArticle = catalog.get("CD"+String.valueOf(id));break;
-//			}
-//		
-//		if (oldArticle != null) {
-//			oldArticle.setName(article.getName() == null ? oldArticle.getName() : article.getName());
-//			oldArticle.setManufactor(
-//					article.getManufactor() == null ? oldArticle.getManufactor() : article.getManufactor());
-//			oldArticle.setPrice(article.getPrice() == 0.0 ? oldArticle.getPrice() : article.getPrice());
-//			if (article instanceof Book) {
-//				((Book) oldArticle).setAuthor(((Book) article).getAuthor() == null ? ((Book) oldArticle).getAuthor()
-//						: ((Book) article).getAuthor());
-//				((Book) oldArticle).setBookCategory(
-//						((Book) article).getBookCategory() == null ? ((Book) oldArticle).getBookCategory()
-//								: ((Book) article).getBookCategory());
-//			} else if (article instanceof CD) {
-//				((CD) oldArticle).setArtist(((CD) article).getArtist() == null ? ((CD) oldArticle).getArtist()
-//						: ((CD) article).getArtist());
-//			}
-//		}
-//		if (saveArticleInDB(oldArticle)) return true;
-//		return false;
-//	}
-
-//	public boolean deleteArticleById(String articleid) {
-//		Article articleToDelete = catalog.get(articleid);
-//		if(articleToDelete != null) {
-//			ResponseEntity<String> response = kafkaController.deleteArticle(articleToDelete);
-//			if(response.getBody().equals("article deleted"))return true;
-//		}
-//		return false;
-//	}
-
-	// Customer CRUD methods
-
-//	public Customer createCustomer(Customer customer) {
-//		return customerRestConnectorRequester.createCustomer(customer);
-//
-//	}
-
-//	public List<Customer> getAllCustomers() {
-//		return customerRestConnectorRequester.getAllCustomers();
-//
-//	}
-//
-//	public Customer getCustomerById(Integer customerId){
-//		return customerRestConnectorRequester.getCustomerById(customerId);
-//
-//	}
-//
-//
-//	public Customer updateCustomerById(Integer customerId, Customer customer){
-//		return customerRestConnectorRequester.updateCustomerById(customerId, customer);
-//
-//	}
-
-//	public void deleteCustomerById(Integer customerId){
-//		customerRestConnectorRequester.deleteCustomerById(customerId);
-//
-//	}
 
 }

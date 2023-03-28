@@ -45,7 +45,7 @@ public class CustomerRestConnectorRequester {
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 	    ResponseEntity<List<Customer>> response = restTemplate.exchange(
-	        "http://api-gateway:9000/shop/customer/getCustomers", HttpMethod.GET, requestEntity, 
+	        "http://localhost:9000/shop/customer/getCustomers", HttpMethod.GET, requestEntity, 
 	        new ParameterizedTypeReference<List<Customer>>() {
 	        });
 	    try {
@@ -71,7 +71,7 @@ public class CustomerRestConnectorRequester {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<Integer> requestEntity = new HttpEntity<>(customerId, headers);
 		ResponseEntity<Customer> response = restTemplate.exchange(
-				"http://api-gateway:9000/shop/customer/getCustomerById/{customerId}", HttpMethod.GET, requestEntity,
+				"http://localhost:9000/shop/customer/getCustomerById/{customerId}", HttpMethod.GET, requestEntity,
 				Customer.class, customerId);
 		try {
 			LOGGER.info("Getting customer with id {}", customerId);
@@ -95,7 +95,7 @@ public class CustomerRestConnectorRequester {
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<Customer> requestEntity = new HttpEntity<>(customer, headers);
 	    ResponseEntity<Customer> response = restTemplate.exchange(
-	            "http://api-gateway:9000/shop/customer/updateCustomerById/{customerId}", HttpMethod.PUT, requestEntity,
+	            "http://localhost:9000/shop/customer/updateCustomerById/{customerId}", HttpMethod.PUT, requestEntity,
 	            Customer.class, customerId);
 	    try {
 	        LOGGER.info("Updating customer with id {}", customerId);

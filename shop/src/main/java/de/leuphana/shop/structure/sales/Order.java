@@ -46,7 +46,7 @@ public class Order {
 		double totalPrice = 0.0;
 
 		for (OrderPosition orderPosition : orderPositions) {
-			totalPrice += orderPosition.getArticleQuantity() * orderPosition.getArticlePrice();
+			totalPrice += orderPosition.getArticleQuantity() * orderPosition.getPrice();
 		}
 
 		return totalPrice;

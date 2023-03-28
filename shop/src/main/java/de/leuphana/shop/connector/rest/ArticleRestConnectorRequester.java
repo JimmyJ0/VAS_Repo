@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 import de.leuphana.shop.behaviour.ShopService;
 import de.leuphana.shop.structure.article.Article;
 
-@EnableDiscoveryClient
 @RestController
 @RequestMapping("/shop/article")
 public class ArticleRestConnectorRequester {
@@ -43,7 +42,7 @@ public class ArticleRestConnectorRequester {
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<Article>> response = restTemplate.exchange(
-				"http://api-gateway:9000/shop/article/getAllArticles", HttpMethod.GET, requestEntity,
+				"http://localhost:9000/shop/article/getAllArticles", HttpMethod.GET, requestEntity,
 				new ParameterizedTypeReference<List<Article>>() {
 				});
 		if (response.getStatusCode() == HttpStatus.OK) {
@@ -65,7 +64,7 @@ public class ArticleRestConnectorRequester {
 		RestTemplate restTemplate = new RestTemplate();
 
 		ResponseEntity<Article> response = restTemplate.exchange(
-				"http://api-gateway:9000/shop/article/getArticleById/{articleType}/{id}", HttpMethod.GET, requestEntity, Article.class,
+				"http://localhost:9000/shop/article/getArticleById/{articleType}/{id}", HttpMethod.GET, requestEntity, Article.class,
 				articleType, id);
 		if (response.getStatusCode() == HttpStatus.OK)
 			return response.getBody();

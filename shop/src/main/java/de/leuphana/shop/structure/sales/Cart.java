@@ -25,6 +25,8 @@ public class Cart {
 		} else {
 			cartItem = new CartItem();
 			cartItem.setPrice(article.getPrice()); //Neu
+			cartItem.setArticleId(articleId);
+			cartItem.setCartItemId(cartItems.size() + 1);
 			cartItems.put(articleId, cartItem);
 		}
 		numberOfArticles++;
@@ -33,7 +35,7 @@ public class Cart {
 	public void deleteCartItem(String articleId) {
 		for (CartItem cartItem : cartItems.values()) {
 			if (cartItem.getArticleId().equals(articleId)) {
-				cartItems.remove(cartItem.getCartItemId());
+				cartItems.remove(articleId);
 				break;
 			}
 		}

@@ -1,7 +1,7 @@
 package de.leuphana.shop.structure.sales;
 
 public class CartItem {
-	private String cartItemId;
+	private int cartItemId;
 	private String articleId;
 	private int quantity;
 	private Double price;
@@ -10,8 +10,11 @@ public class CartItem {
 		quantity = 1;
 	}
 
-	public String getCartItemId() {
+	public int getCartItemId() {
 		return cartItemId;
+	}
+	public void setCartItemId(int cartId) {
+		this.cartItemId = cartId;
 	}
 
 	public String getArticleId() {
