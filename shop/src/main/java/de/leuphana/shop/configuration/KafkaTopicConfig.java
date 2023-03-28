@@ -23,6 +23,21 @@ public class KafkaTopicConfig {
 		return TopicBuilder.name("article_topic").build();
 	}
 	
+	@Bean
+	public NewTopic customerTopic() {
+		return TopicBuilder.name("customer_topic").build();
+	}
+	
+	@Bean
+    public NewTopic customerCreateTopic() {
+        return TopicBuilder.name("customer_topic_create").build();
+    }
+
+    @Bean
+    public NewTopic customerDeleteTopic() {
+        return TopicBuilder.name("customer_topic_delete").build();
+    }
+	
 	
 	
 	

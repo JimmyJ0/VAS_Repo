@@ -42,14 +42,6 @@ public class ShopKafkaProducer {
 		}
 		return false;
 	}
-	
-//	public boolean deleteArticle(Article article) {
-//		if(article != null) {
-//			kafkaTemplate.send("article_topic", article);
-//			return true;
-//		}
-//		return false;
-//	}
 
 	public void deleteArticle(String articleType, String id) {
 		Map<String, String> articleData = new HashMap<>();

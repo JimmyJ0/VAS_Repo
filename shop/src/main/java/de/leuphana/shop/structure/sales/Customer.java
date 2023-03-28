@@ -1,18 +1,14 @@
 package de.leuphana.shop.structure.sales;
 
-public class Customer {
 
-	//private static Integer lastGeneratedCustomerId = 0;
+public class Customer {
 
 	private Integer customerId;
 	private String name;
-//	private Cart cart;
-//	private Map<Integer, Order> orders;
-
-	public Customer() {
-
-	}
-
+	private Cart cart;
+	
+	private Address address;
+	
 	public Integer getCustomerId() {
 		return customerId;
 	}
@@ -29,8 +25,6 @@ public class Customer {
 		this.name = name;
 	}
 
-	private Address address;
-
 	public Address getAddress() {
 		return address;
 	}
@@ -39,27 +33,11 @@ public class Customer {
 		this.address = address;
 	}
 
-	@Override
-	public String toString() {
-		return "Customer [customerId=" + customerId + ", name=" + name + ", address=" + address + "]";
+	public Cart getCart() {
+		return cart;
 	}
-//	public Map<Integer, Order> getOrders() {
-//		return orders;
-//	}
-//
-//	public void setOrders(Map<Integer, Order> orders) {
-//		this.orders = orders;
-//	}
-//
-//	public void addOrder(Order order) {
-//		orders.put(order.getOrderId(), order);
-//	}
-//
-//	public Cart getCart() {
-//		return cart;
-//	}
-//
-//	public void setCart(Cart cart) {
-//		this.cart = cart;
-//	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
 }

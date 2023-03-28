@@ -1,24 +1,24 @@
 package de.leuphana.shop.structure.sales;
 
 public class CartItem {
-	private int cartItemId;
-	private Integer articleId;
+	private String cartItemId;
+	private String articleId;
 	private int quantity;
-	private Float price;
+	private Double price;
 
 	public CartItem() {
 		quantity = 1;
 	}
 
-	public int getCartItemId() {
+	public String getCartItemId() {
 		return cartItemId;
 	}
 
-	public Integer getArticleId() {
+	public String getArticleId() {
 		return articleId;
 	}
 
-	public void setArticleId(Integer articleId) {
+	public void setArticleId(String articleId) {
 		this.articleId = articleId;
 	}
 
@@ -34,11 +34,11 @@ public class CartItem {
 		quantity--;
 	}
 
-	public Float getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Float price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 }

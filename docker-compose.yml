@@ -86,13 +86,20 @@ services:
     - kafka
     
  
-#  customer:
-#    build: ./customer
-#    restart: always
-#    image: customer-image
-#    container_name: customer-container
-#    ports:
-#      - "8000:8000"
+  customer:
+    build: ./customer
+    restart: always
+    image: customer-image
+    networks:
+     - vas_repo_shop-network
+    container_name: customer-container
+    ports:
+      - "8000:8000"
+    environment:
+    - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    - SPRING_KAFKA_CONSUMER_GROUP_ID=shop_group
+    depends_on:
+    - kafka
       
   zipkin-server:
     image: openzipkin/zipkin

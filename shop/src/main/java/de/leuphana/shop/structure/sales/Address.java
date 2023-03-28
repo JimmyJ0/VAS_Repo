@@ -1,7 +1,5 @@
 package de.leuphana.shop.structure.sales;
 
-import java.util.Objects;
-
 public class Address {
 	
 	private Integer addressId;
@@ -33,19 +31,5 @@ public class Address {
 	public void setStreet(String street) {
 		this.street = street;
 	}
-	
-	@Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Address)) {
-            return false;
-        }
-        Address other = (Address) obj;
-        return Objects.equals(city, other.city) &&
-                Objects.equals(street, other.street) &&
-                zip == other.zip;
-    }
 
 }

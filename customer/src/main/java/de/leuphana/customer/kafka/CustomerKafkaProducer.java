@@ -1,27 +1,22 @@
 package de.leuphana.customer.kafka;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import de.leuphana.customer.component.structure.Customer;
+
+@Service
 public class CustomerKafkaProducer {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerKafkaProducer.class);
+    
+    @Autowired
+    private KafkaTemplate<String, Customer> kafkaTemplate;
 
-	@Autowired
-	private KafkaTemplate<String, String> kafkaTemplate;
-
-	public CustomerKafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
-		super();
-		this.kafkaTemplate = kafkaTemplate;
-	}
-	
-	public void sendToTopic(String message) {
-		kafkaTemplate.send("customer-topic", message);
-		
-	}
-
+    public void sendCustomer(Customer customer) {
+        kafkaTemplate.send("customer_topic_create", customer);
+    }
+    
+    public void deleteCustomer(Integer customerId) {
+        kafkaTemplate.send("customer_topic_delete", customerId.toString(), null);
+    }
 }

@@ -15,10 +15,13 @@ public class Address {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="address_id")
 	private Integer addressId;
+	
 	@Column(name="zip")
 	private int zip;
+	
 	@Column(name="city",nullable=false)
 	private String city;
+	
 	@Column(name="street",nullable=false)
 	private String street;
 	
@@ -45,10 +48,6 @@ public class Address {
 	}
 	public void setStreet(String street) {
 		this.street = street;
-	}
-	@Override
-	public String toString() {
-		return "Address [addressId=" + addressId + ", zip=" + zip + ", city=" + city + ", street=" + street + "]";
 	}
 
 }

@@ -2,46 +2,56 @@ package de.leuphana.customer.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import de.leuphana.customer.component.behaviour.CustomerService;
 import de.leuphana.customer.component.structure.Customer;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 
 @Service
 public class ShopKafkaConsumer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShopKafkaConsumer.class);
 	
+	@Autowired
 	private CustomerService customerService;
 
-
+	@Autowired
+	private Tracer tracer;
+	
+	
     public ShopKafkaConsumer(CustomerService customerService) {
 		super();
 		this.customerService = customerService;
 	}
 
 
-	@KafkaListener(topics = "customer-send-topic", groupId = "shop_group")
-    public void receiveCustomer(Customer customer) {
-        try {
-            LOGGER.info("Received customer: {}", customer);
+	@KafkaListener(topics = "customer_topic_create", groupId = "shop_group")
+    public void consumeCustomer(Customer customer) {
+		Span span = tracer.spanBuilder("createCustomer-span").startSpan();
+        try(Scope scope = span.makeCurrent()){
             customerService.createCustomer(customer);
-            LOGGER.info("Created customer successfully: {}", customer);
-        } catch (KafkaException e) {
-            LOGGER.error("Error processing customer: {}", customer, e);
-        }
+        }catch (KafkaException e) {
+            LOGGER.error("Error creating customer: {}", customer, e);
+        }finally {
+			span.end();
+		}
     }
 
-    @KafkaListener(topics = "customer-delete-topic", groupId = "shop_group")
+    @KafkaListener(topics = "customer_topic_delete", groupId = "shop_group")
     public void deleteCustomer(Integer customerId) {
-        try {
-        	LOGGER.info("Deleting customer with ID: {}", customerId);
-            customerService.deleteCustomerById(customerId);
-            LOGGER.info("Deleted customer successfully with ID: {}", customerId);
-        } catch (KafkaException e) {
-        	LOGGER.error("Error deleting customer with ID: {}", customerId, e);
-        }
+    	Span span = tracer.spanBuilder("deleteCustomer-span").startSpan();
+        try(Scope scope = span.makeCurrent()){
+            customerService.deleteCustomer(customerId);
+        }catch (KafkaException e) {
+        	LOGGER.error("Error deleting customer with id: {}", customerId, e);
+        }finally {
+			span.end();
+		}
     }
 }

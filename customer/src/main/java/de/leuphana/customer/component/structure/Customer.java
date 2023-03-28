@@ -14,24 +14,26 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="customers")
 public class Customer {
-
-	private static Integer lastGeneratedCustomerId = 0;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="customer_id")
 	private Integer customerId;
+	
 	@Column(name="customer_name",nullable=false)
 	private String name;
+	
 	@Column(name="address_id",insertable=false,updatable=false)
 	private Integer addressId;
-//	private Map<Integer, Order> orders;
 	
-//	public Customer(Cart cart) {
-//		this.customerId = ++lastGeneratedCustomerId;
-//		this.cart = cart;
-//		//orders = new HashMap<Integer, Order>();
-//	}
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id")
+	private Address address;
+	
+	
+	public Customer() {
+		super();
+	}
 	
 	public Integer getCustomerId() {
 		return customerId;
@@ -48,10 +50,6 @@ public class Customer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id")
-	private Address address;
 
 	public Address getAddress() {
 		return address;
@@ -61,22 +59,4 @@ public class Customer {
 		this.address = address;
 	}
 
-	@Override
-	public String toString() {
-		return "Customer [customerId=" + customerId + ", name=" + name + ", addressId=" + addressId + ", address="
-				+ address + "]";
-	}
-
-	
-//	public Map<Integer, Order> getOrders() {
-//		return orders;
-//	}
-//
-//	public void setOrders(Map<Integer, Order> orders) {
-//		this.orders = orders;
-//	}
-	
-//	public void addOrder(Order order) {
-//	orders.put(order.getOrderId(), order);
-//}
 }

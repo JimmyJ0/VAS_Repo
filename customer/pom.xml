@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.3</version>
+		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 		<groupId>de.leuphana</groupId>
@@ -16,7 +16,6 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
-	
 	<dependencies>
 		<!-- Spring Boot -->
 		<dependency>
@@ -61,8 +60,26 @@
     		<groupId>com.fasterxml.jackson.core</groupId>
     		<artifactId>jackson-databind</artifactId>
 		</dependency>
+		
+		<!-- Open Telemetry -->
+		<dependency>
+  			<groupId>io.opentelemetry</groupId>
+  			<artifactId>opentelemetry-api</artifactId>
+		</dependency>
+		<dependency>
+  			<groupId>io.opentelemetry</groupId>
+  			<artifactId>opentelemetry-sdk</artifactId>
+		</dependency>
+		<dependency>
+  			<groupId>io.opentelemetry</groupId>
+  			<artifactId>opentelemetry-exporter-zipkin</artifactId>
+		</dependency>
+		<dependency>
+  			<groupId>io.opentelemetry</groupId>
+  			<artifactId>opentelemetry-semconv</artifactId>
+  			<version>1.24.0-alpha</version>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

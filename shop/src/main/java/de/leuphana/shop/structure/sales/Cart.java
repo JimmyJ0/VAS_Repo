@@ -4,39 +4,42 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.leuphana.shop.structure.article.Article;
+
 public class Cart {
 	
-	private Map<Integer, CartItem> cartItems;
+	private Map<String, CartItem> cartItems;
 	private int numberOfArticles;
 
 	public Cart() {
-		cartItems = new HashMap<Integer, CartItem>();
+		cartItems = new HashMap<String, CartItem>();
 		numberOfArticles = 0;
 	}
 
-//	public void addCartItem(Article article) {
-////		String id = article.getArticleId();
-//		CartItem cartItem;
-//		if (cartItems.containsKey(id)) {
-//			cartItem = cartItems.get(id);
-//			cartItem.incrementQuantity();
-//		} else {
-//			cartItem = new CartItem();
-//			cartItems.put(id, cartItem);
-//		}
-//		numberOfArticles++;
-//	}
+	//article kann weg glaub ich
+	public void addCartItem(String articleId, Article article) {
+		CartItem cartItem;
+		if (cartItems.containsKey(articleId)) {
+			cartItem = cartItems.get(articleId);
+			cartItem.incrementQuantity();
+		} else {
+			cartItem = new CartItem();
+			cartItem.setPrice(article.getPrice()); //Neu
+			cartItems.put(articleId, cartItem);
+		}
+		numberOfArticles++;
+	}
 
-	public void deleteCartItem(int articleId) {
+	public void deleteCartItem(String articleId) {
 		for (CartItem cartItem : cartItems.values()) {
-			if (cartItem.getArticleId() == (articleId)) {
+			if (cartItem.getArticleId().equals(articleId)) {
 				cartItems.remove(cartItem.getCartItemId());
 				break;
 			}
 		}
 	}
 
-	public void decrementArticleQuantity(Integer articleId) {
+	public void decrementArticleQuantity(String articleId) {
 		if (cartItems.containsKey(articleId)) {
 			CartItem cartItem = (CartItem) cartItems.get(articleId);
 			cartItem.decrementQuantity();
@@ -65,5 +68,7 @@ public class Cart {
 
 		return totalPrice;
 	}
+
+
 
 }

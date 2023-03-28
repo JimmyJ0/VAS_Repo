@@ -17,6 +17,8 @@ import de.leuphana.shop.services.SupplierServices;
 import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.article.Book;
 import de.leuphana.shop.structure.article.CD;
+import de.leuphana.shop.structure.sales.Cart;
+import de.leuphana.shop.structure.sales.CartItem;
 import de.leuphana.shop.structure.sales.Customer;
 
 @Service
@@ -25,10 +27,9 @@ public class ShopService {
 	// TODO: Anhand der Response Entity Exception Handling machen.
 	private static final Logger LOG = LoggerFactory.getLogger(ShopService.class);
 
-	// TODO: Anhand der Response Entity Exception Handling machen.
 //	private ArticleRestConnectorRequester articleRestConnector;
 //	private ShopKafkaController kafkaController;
-	private CustomerRestConnectorRequester customerRestConnectorRequester;
+//	private CustomerRestConnectorRequester customerRestConnectorRequester;
 
 	private HashMap<String, Article> catalog = new HashMap<>();
 	private HashMap<Integer, Customer> customers = new HashMap<>();
@@ -41,7 +42,9 @@ public class ShopService {
 	public HashMap<String, Article> getCatalog() {
 		return this.catalog;
 	}
-	
+	public HashMap<Integer, Customer> getCustomer() {
+		return this.customers;
+	}
 	
 	public void catalogingArticles(List<Article> articleList) {
 		catalog.clear();
@@ -49,8 +52,47 @@ public class ShopService {
 			String catalogId = article instanceof Book ? "BK"+String.valueOf(((Book)article).getArticleId()): "CD"+String.valueOf(((CD)article).getArticleId());
 			catalog.put(catalogId, article);
 		}
-		
 		catalog.values().forEach(x -> System.out.println(x.getName()));
+	}
+	
+	public void insertCustomers(List<Customer> customerList) {
+		customers.clear();
+		
+		for(Customer customer : customerList) {
+			customer.setCart(new Cart());
+			customers.put(customer.getCustomerId(), customer);
+		}
+		
+//		customerList.forEach(customer -> customers.put(customer.getCustomerId(), customer));
+	}
+	
+	
+	public void addArticleToCart(Integer customerId, String articleId) {
+		Article foundArticle = catalog.get(articleId);
+		Cart cart = customers.get(customerId).getCart();
+		cart.addCartItem(articleId, foundArticle);
+	}
+
+	public void removeArticleFromCart(Integer customerId, String articleId) {
+		Cart cart = customers.get(customerId).getCart();
+		cart.deleteCartItem(articleId);
+		
+	}
+
+	public void changeArticleQuantity(Integer customerId, String articleId) {
+		Cart cart = customers.get(customerId).getCart();
+		cart.decrementArticleQuantity(articleId);
+		
+	}
+
+	public void checkOutCart(Integer customerId) {
+		Customer customer = customers.get(customerId);
+		Cart cart = customer.getCart();
+		
+		for(CartItem cartItem: cart.getCartItems()) {
+			System.out.println("ID:" + cartItem.getArticleId() + " " + cartItem.getQuantity() + " " + cartItem.getPrice());
+		}
+		
 	}
 	
 	

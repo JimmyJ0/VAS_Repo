@@ -18,7 +18,7 @@ public class KafkaDeserializerConfig {
 	@Bean
 	public ConsumerFactory<String, Object> consumerFactory() {
 	    Map<String, Object> props = new HashMap<>();
-	    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-server:9092");
+	    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
 	    props.put(ConsumerConfig.GROUP_ID_CONFIG, "shop_group");
 	    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 	    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class); 

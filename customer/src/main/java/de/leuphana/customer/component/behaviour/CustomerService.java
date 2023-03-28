@@ -1,8 +1,6 @@
 package de.leuphana.customer.component.behaviour;
 
-
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,24 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.leuphana.customer.component.structure.Address;
 import de.leuphana.customer.component.structure.Customer;
-import de.leuphana.customer.connector.CustomerSpringDataConnectorRequester;
+import de.leuphana.customer.configuration.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CustomerService implements ICustomerService{
 
 	private static Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
-	 
+
 	@Autowired
-	private CustomerSpringDataConnectorRequester customerSpringDataConnectorRequester;
+	private CustomerRepository customerRepository;
 
 	//CRUD operations
-	@Transactional
 	public Customer createCustomer(Customer customer) {
 		try {
 			LOGGER.info("Creating customer: {}", customer);
-			Customer createdCustomer = customerSpringDataConnectorRequester.createCustomer(customer);
+			Customer createdCustomer = customerRepository.save(customer);
 			LOGGER.info("Customer created successfully: {}", createdCustomer);
 			return createdCustomer;
 		} catch (EntityNotFoundException e) {
@@ -35,11 +33,11 @@ public class CustomerService implements ICustomerService{
 			throw e;
 		}
 	}
-	@Transactional
+
 	public List<Customer> getAllCustomers() {
 		try {
 			LOGGER.info("Getting all customers");
-			List<Customer> customers = customerSpringDataConnectorRequester.getAllCustomers();
+			List<Customer> customers = customerRepository.findAll();
 			LOGGER.info("Retrieved {} customers", customers.size());
 			return customers;
 		}catch (EntityNotFoundException e) {
@@ -47,40 +45,40 @@ public class CustomerService implements ICustomerService{
 			throw e;
 		} 
 	}
-	@Transactional
-	public Customer getCustomerById(Integer customerId){
-		Optional<Customer> customerOptional = Optional.ofNullable(customerSpringDataConnectorRequester.getCustomerById(customerId));
-		try {
-			LOGGER.info("Getting customer with id {}", customerId);
-			return customerOptional.get();
 
-		}catch(EntityNotFoundException e) {
-			LOGGER.error("Error retrieving customer with id {}", customerId, e);
-			throw e;
-		} 
+	public Customer getCustomerById(Integer customerId) throws Exception{
+		LOGGER.info("Getting customer with id {}", customerId);
+		return customerRepository.findById(customerId)
+				.orElseThrow(() -> new Exception("... customer with id " + customerId + " not found."));
 
 	}
 
-	@Transactional
-	public Customer updateCustomerById(Integer customerId, Customer updatedCustomer){
-	    try {
-	        LOGGER.info("Updating customer with id {}", customerId);
-	        return customerSpringDataConnectorRequester.updateCustomerById(customerId, updatedCustomer);
-	    }catch(EntityNotFoundException e) {
-	        LOGGER.error("Error updating customer with id {}", customerId, e);
-	        throw e;
-	    } 
+
+	public Customer updateCustomerById(Integer customerId, Customer updatedCustomer) throws Exception{
+	    LOGGER.info("Updating customer with id {}", customerId);
+	    
+	    // Check if customer exists
+	    Customer customer = customerRepository.findById(customerId)
+	            .orElseThrow(() -> new Exception("Customer with id " + customerId + " not found"));
+
+	    // Update customer details
+	    customer.setName(updatedCustomer.getName());
+	    customer.setAddress(updatedCustomer.getAddress());
+
+	    // Save updated customer to database
+	    Customer savedCustomer = customerRepository.save(customer);
+	    LOGGER.info("Customer with id {} updated successfully", customerId);
+	    return savedCustomer;
 	}
 
-	@Transactional
-	public void deleteCustomerById(Integer customerId) {
+	public void deleteCustomer(Integer customerId) {
 		try {
-			LOGGER.info("Deleting customer with id {}", customerId);
-			customerSpringDataConnectorRequester.deleteCustomerById(customerId);
-			LOGGER.info("Customer with id {}", customerId, "deleted successfully");
+			LOGGER.info("Deleting customer: {}", customerId);
+			customerRepository.deleteById(customerId);
+			LOGGER.info("Customer deleted successfully: {}", customerId);
 
 		}catch(EntityNotFoundException e) {
-			LOGGER.error("Error deleting customer with id {}", customerId, e);
+			LOGGER.error("Error deleting customer {}", customerId, e);
 			throw e;
 		} 
 	}

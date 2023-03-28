@@ -1,104 +1,113 @@
 package de.leuphana.customer.behaviour;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.leuphana.customer.component.behaviour.CustomerService;
+import de.leuphana.customer.component.structure.Address;
 import de.leuphana.customer.component.structure.Customer;
-import de.leuphana.customer.kafka.ShopKafkaConsumer;
+import de.leuphana.customer.configuration.CustomerRepository;
 
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
+
+	private Customer customer;
+	private Address address;
+
+	@Mock
+	private CustomerRepository customerRepository;
+
+	@InjectMocks
+	private CustomerService customerService;
+
+	@BeforeEach
+	public void setUp() {
+		customer = new Customer();
+		customer.setCustomerId(1);
+		customer.setName("Naveen Vimalan");
+		address = new Address();
+		address.setAdressId(1);
+		address.setCity("Lueneburg");
+		address.setStreet("Soltauerstrasse 1");
+		address.setZip(21335);
+	}
 	
-    @Autowired
-    private CustomerService customerService;
-    
-    @Autowired
-    private ShopKafkaConsumer shopKafkaConsumer;
-    
-    @Test
-    void canCustomerBeCreated() {
-    	Customer customer = new Customer();
-//    	customer.setCustomerId(1);
-//    	customer.setName("John Doe");
-//    	Address address = new Address();
-//    	address.setAdressId(1);
-//    	address.setCity("Lueneburg");
-//    	address.setStreet("Soltauerstrasse 1");
-//    	address.setZip(21335);
-//    	customer.setAddress(address);
-    	shopKafkaConsumer.receiveCustomer(customer);
-    }
-    
-//    @Test
-//    void canCustomerBeFoundById() throws Exception {
-//    	Customer customer = new Customer();
-//    	customer.setName("Naveen Vimalan");
-//    	Address address = new Address();
-//    	address.setCity("Lueneburg");
-//    	address.setStreet("Rotenbleicher Weg 32");
-//    	address.setZip(21335);
-//    	customer.setAddress(address);
-//    	customerKafkaProcuder.sendCustomer(customer);
-//    	Integer customerId = customer.getCustomerId();
-//    	
-//    	assertNotNull(customerService.getCustomerById(customerId));
-//    	
-//    }
-//   
-//    @Test
-//    void canCustomerBeUpdated() throws Exception {
-//    	//create customer
-//	    Customer customer = new Customer();
-//	    customer.setName("Justus");
-//	    Address address = new Address();
-//	    address.setCity("Hamburg");
-//	    address.setStreet("Mönckebergstrasse 1");
-//	    address.setZip(21234);
-//	    customer.setAddress(address);
-//	    customerKafkaProcuder.sendCustomer(customer);
-//
-//	    //update customer
-//	    customerKafkaProcuder.updateCustomer(customer);
-//	    updatedCustomer.setName("Max");
-//	    Address updatedAddress = new Address();
-//	    updatedAddress.setCity("Berlin");
-//	    updatedAddress.setStreet("Potsdamer Platz 1");
-//	    updatedAddress.setZip(10785);
-//	    updatedCustomer.setAddress(updatedAddress);
-//	    customerService.updateCustomerById(updatedCustomer.getCustomerId(), updatedCustomer);
-//
-//	    Customer retrievedCustomer = customerService.getCustomerById(createdCustomer.getCustomerId());
-//
-//	    assertEquals("Max", retrievedCustomer.getName());
-//	    assertEquals("Berlin", retrievedCustomer.getAddress().getCity());
-//	    assertEquals("Potsdamer Platz 1", retrievedCustomer.getAddress().getStreet());  
-//    }
-//   
-//    @Test
-//    void canAllCustomersBeFound() {
-//    	assertNotNull(customerService.getAllCustomers());
-//    }
-//   
-//    @Test
-//    void canCustomerBeDeleted() throws Exception{
-//    	// Create a new customer
-//        Customer customer = new Customer();
-//        customer.setName("Mustermann");
-//        Address address = new Address();
-//        address.setCity("Lueneburg");
-//        address.setStreet("Soltauerstrasse");
-//        address.setZip(21335);
-//        customer.setAddress(address);
-//        customerService.createCustomer(customer);
-//
-//        // Delete the customer
-//        Integer customerId = customer.getCustomerId();
-//        customerService.deleteCustomerById(customerId);
-//    	  
-//    }
-    
+	@Test
+	void canCustomerBeCreated() {
+		when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+		Customer createdCustomer = customerService.createCustomer(customer);
+		assertNotNull(createdCustomer);
+		assertEquals(createdCustomer.getName(),customer.getName());
+	}
+
+	@Test
+	void canCustomerBeFoundById() throws Exception {
+		when(customerRepository.findById(customer.getCustomerId())).thenReturn(Optional.of(customer));
+		assertNotNull(customerRepository.findById(customer.getCustomerId()));
+	}
+
+	@Test
+	void canCustomerBeUpdated() throws Exception {
+	    // Retrieve existing customer from database
+	    when(customerRepository.findById(customer.getCustomerId())).thenReturn(Optional.of(customer));
+	    Address oldAddress = customer.getAddress();
+
+	    // Update customer address
+	    Address newAddress = new Address();
+	    newAddress.setCity("Berlin");
+	    newAddress.setStreet("Potsdamer Platz 1");
+	    newAddress.setZip(10785);
+	    customer.setAddress(newAddress);
+
+	    // Call updateCustomerById method
+	    when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+	    Customer updatedCustomer = customerService.updateCustomerById(customer.getCustomerId(), customer);
+
+	    // Retrieve updated customer from database
+	    Address updatedAddress = updatedCustomer.getAddress();
+
+	    // Verify if customer details have been updated correctly in the database
+	    assertEquals("Berlin", updatedAddress.getCity());
+	    assertEquals("Potsdamer Platz 1", updatedAddress.getStreet());
+	    assertEquals(10785, updatedAddress.getZip());
+	    assertNotEquals(oldAddress, updatedAddress);
+	}
+
+	@Test
+	void canAllCustomersBeFound() {
+		List <Customer> allCustomers = customerService.getAllCustomers();
+		assertNotNull(allCustomers);
+	}
+
+	@Test
+	void canCustomerBeDeleted() throws Exception{
+		//Create customer
+		customerService.createCustomer(customer);
+
+		// Delete the customer
+	    customerService.deleteCustomer(customer.getCustomerId());
+
+	    // Assert that the customer has been deleted
+	    Integer customerId = customer.getCustomerId();
+	    Customer deletedCustomer = customerRepository.findById(customerId).orElse(null);
+	    assertNull(deletedCustomer);
+
+	}
+
 }
 

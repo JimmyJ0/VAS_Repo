@@ -5,10 +5,10 @@ import java.util.List;
 import de.leuphana.customer.component.structure.Customer;
 
 public interface ICustomerService {
-//	Customer createCustomer(Customer customer);
-	List<Customer> getAllCustomers();
-	Customer getCustomerById(Integer customerId);
-	Customer updateCustomerById(Integer customerId, Customer customer);
-//	void deleteCustomerById(Integer customerId);
+	public Customer createCustomer(Customer customer);
+	public List<Customer> getAllCustomers();
+	public Customer getCustomerById(Integer customerId) throws Exception;
+	public Customer updateCustomerById(Integer customerId, Customer customer) throws Exception;
+	public void deleteCustomer(Integer customerId);
 
 }
