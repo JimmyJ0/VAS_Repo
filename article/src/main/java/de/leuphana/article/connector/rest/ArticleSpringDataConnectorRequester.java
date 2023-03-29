@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.leuphana.article.component.behaviour.ArticleService;
 import de.leuphana.article.component.structure.Article;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 
 @RestController
 @RequestMapping("/shop/article")
@@ -20,6 +23,8 @@ public class ArticleSpringDataConnectorRequester {
 
 	org.slf4j.Logger log = LoggerFactory.getLogger(ArticleSpringDataConnectorRequester.class);
 
+	@Autowired
+	private Tracer tracer;
 	private ArticleService articleService;
 
 	@Autowired
@@ -30,18 +35,32 @@ public class ArticleSpringDataConnectorRequester {
 
 	@GetMapping("/getAllArticles")
 	public ResponseEntity<List<Article>> getAllArticles() {
-		List<Article> articles = articleService.getArticles();
-		if (articles.size() > -1)
-			return new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
+		Span span = tracer.spanBuilder("getArticles-span").startSpan();
+		try (Scope scope = span.makeCurrent()) {
+			List<Article> articles = articleService.getArticles();
+			if (articles.size() > -1)
+				return new ResponseEntity<List<Article>>(articles, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			span.end();
+		}
 		return new ResponseEntity<List<Article>>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/getArticleById/{articleType}/{id}")
 	public ResponseEntity<Article> getArticleById(@PathVariable String id, @PathVariable String articleType) {
-		Long numId = Long.parseLong(id.replaceAll("[^0-9]", ""));
-		Article article = articleService.getArticleById(articleType, numId);
-		if (article != null) {
-			return new ResponseEntity<Article>(article, HttpStatus.OK);
+		Span span = tracer.spanBuilder("getArticleById-span").startSpan();
+		try (Scope scope = span.makeCurrent()) {
+			Long numId = Long.parseLong(id.replaceAll("[^0-9]", ""));
+			Article article = articleService.getArticleById(articleType, numId);
+			if (article != null) {
+				return new ResponseEntity<Article>(article, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			span.end();
 		}
 		return new ResponseEntity<Article>(HttpStatus.BAD_REQUEST);
 	}

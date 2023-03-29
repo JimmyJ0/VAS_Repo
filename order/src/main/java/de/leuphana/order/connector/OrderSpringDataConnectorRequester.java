@@ -1,6 +1,5 @@
 package de.leuphana.order.connector;
 
-import java.net.URI;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,7 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import de.leuphana.order.component.behaviour.OrderService;
 import de.leuphana.order.component.structure.Order;
@@ -34,14 +40,14 @@ public class OrderSpringDataConnectorRequester {
 	}
 
 	@PostMapping("/createOrder")
-	public ResponseEntity<String> createOrder(@RequestBody Order order) {
+	public ResponseEntity<Order> createOrder(@RequestBody Order order) {
 		Span span = tracer.spanBuilder("createOrder-span").startSpan();
 		try (Scope scope = span.makeCurrent()) {
 			logger.info("Creating order");
 			Order savedOrder = orderService.createOrder(order);
 			span.setAttribute("orderId", String.valueOf(savedOrder.getOrderId()));
 //			return ResponseEntity.created(URI.create("/order/" + savedOrder.getOrderId())).body(savedOrder);
-			return new ResponseEntity<String>(HttpStatus.OK);
+			return new ResponseEntity<Order>(savedOrder, HttpStatus.OK);
 		} finally {
 			span.end();
 		}

@@ -2,8 +2,8 @@ package de.leuphana.shop.structure.billing;
 
 public class InvoicePosition {
 	private Integer positionId;
-	private Integer articleId;
-	private Float articlePrice;
+	private String articleId;
+	private Double articlePrice;
 	private int articleQuantity;
 	private Double totalPrice;
 
@@ -15,19 +15,19 @@ public class InvoicePosition {
 		this.positionId = positionId;
 	}
 
-	public Integer getArticleId() {
+	public String getArticleId() {
 		return articleId;
 	}
 
-	public void setArticleId(Integer articleId) {
+	public void setArticleId(String articleId) {
 		this.articleId = articleId;
 	}
 
-	public Float getArticlePrice() {
+	public Double getArticlePrice() {
 		return articlePrice;
 	}
 
-	public void setArticlePrice(Float articlePrice) {
+	public void setArticlePrice(Double articlePrice) {
 		this.articlePrice = articlePrice;
 	}
 
@@ -39,7 +39,7 @@ public class InvoicePosition {
 		this.articleQuantity = articleQuantity;
 	}
 
-	public Float getTotalPrice() {
+	public Double getTotalPrice() {
 		return articleQuantity * articlePrice;
 	}
 

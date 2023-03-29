@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,8 +31,6 @@ public class ArticleRestConnectorRequester {
 		this.shopService = shopService;
 	}
 
-	
-	// KANN ZU VOID, WENN NUN IN SHOP WEITERGELEITET
 	// Holt alle Artikel aus der Datenbank
 	@GetMapping("/getArticles")
 	public ResponseEntity<List<Article>> getArticles() {
@@ -52,8 +49,9 @@ public class ArticleRestConnectorRequester {
 		}
 
 		return new ResponseEntity<List<Article>>(HttpStatus.BAD_REQUEST);
-
 	}
+	
+	
 // Docker: http://api-gateway:9000/shop/article/getArticleById/{articleType}/{id}
 // Eclipse: http://localhost:9000/shop/article/getAllArticles
 	@GetMapping("/article/{articleType}/{id}")
@@ -76,18 +74,6 @@ public class ArticleRestConnectorRequester {
 	@GetMapping("/getCatalog")
 	public  ResponseEntity<Map<String, Article>> getCatalog(){
 		Map<String, Article> catalog = shopService.getCatalog();
-		
-		
 		return new ResponseEntity<Map<String, Article>>(catalog, HttpStatus.OK);	
 	}
-	
-	
-//	@GetMapping("/getCatalog")
-//	public  ResponseEntity<Map<String, Article>> getCatalog(){
-//		Map<String, Article> catalog = shopService.getCatalog();
-//		
-//		
-//		return new ResponseEntity<Map<String, Article>>(catalog, HttpStatus.OK);	
-//	}
-	
 }

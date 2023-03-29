@@ -1,4 +1,4 @@
-package de.leuphana.shop.connector.rest;
+package de.leuphana.shop.behaviour;
 
 import java.util.List;
 
@@ -20,13 +20,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import de.leuphana.shop.behaviour.ShopService;
 import de.leuphana.shop.structure.article.Article;
+import de.leuphana.shop.structure.sales.Cart;
 import de.leuphana.shop.structure.sales.Customer;
 import de.leuphana.shop.structure.sales.Order;
 
 @RestController
-@RequestMapping("/shop/order")
+@RequestMapping("/shop")
 public class ShopServiceRestConnector {
 	
 	
@@ -36,6 +36,7 @@ public class ShopServiceRestConnector {
 	public ShopServiceRestConnector(ShopService shopService) {
 		this.shopService = shopService;
 	}
+	
 	
 	
 	@GetMapping("/addArticle/{customerId}/{articleId}")
@@ -50,32 +51,30 @@ public class ShopServiceRestConnector {
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/changeArticleQuantity/{customerId}/{articleId}")
+	@GetMapping("/decrementArticle/{customerId}/{articleId}")
 	public ResponseEntity<String> changeArticleQuantity(@PathVariable Integer customerId, @PathVariable String articleId){
 		shopService.changeArticleQuantity(customerId, articleId);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/checkOutCart/{customerId}")
-	public ResponseEntity<String> checkOutCart(@PathVariable Integer customerId){
-		Order order = shopService.checkOutCart(customerId);
-		ResponseEntity<String> response = createOrder(order);
-		if(response.getStatusCode() == HttpStatus.OK) return null;
-		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+	@GetMapping("/getCartFromCustomer/{customerId}")
+	public ResponseEntity<String> getCartFromCustomer(@PathVariable Integer customerId){
+		Cart cart = shopService.getCustomers().get(customerId).getCart();
+		if(cart != null) {
+			StringBuilder sb = new StringBuilder();
+			cart.getCartItems().forEach(cartItem -> sb.append("Article Id: " + cartItem.getArticleId() + " Quantity: " + cartItem.getQuantity() + " Price: " + cartItem.getPrice() + "\n"));
+			return new ResponseEntity<String>(sb.toString(), HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("There are no items in the cart!", HttpStatus.BAD_REQUEST);
 	}
 	
-	public ResponseEntity<String> createOrder(@RequestBody Order order){
-		HttpHeaders headers = new HttpHeaders();
-		
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<Order> requestEntity = new HttpEntity<>(order,headers);
-		System.out.println(requestEntity.getBody());
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> response = restTemplate.exchange("http://localhost:9000/shop/order/createOrder", HttpMethod.POST, requestEntity, String.class);
-		
-		if(response.getStatusCode() == HttpStatus.OK) return response;
-		return null;
-		
-	}
+//	@GetMapping("/checkOutCart/{customerId}")
+//	public ResponseEntity<String> checkOutCart(@PathVariable Integer customerId){
+//		Order order = shopService.checkOutCart(customerId);
+//		ResponseEntity<String> response = createOrder(order);
+//		if(response.getStatusCode() == HttpStatus.OK) return null;
+//		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+//	}
+	
 
 }

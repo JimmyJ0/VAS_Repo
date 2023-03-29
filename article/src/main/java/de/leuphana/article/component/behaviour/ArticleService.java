@@ -12,8 +12,8 @@ import de.leuphana.article.component.structure.Article;
 import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 import de.leuphana.article.configuration.ArticleRepository;
-import de.leuphana.article.connector.kafka.ShopKafkaConsumer;
 import de.leuphana.article.connector.kafka.ArticleKafkaController;
+import de.leuphana.article.connector.kafka.ShopKafkaConsumer;
 
 @Service
 public class ArticleService implements IArticleService {
@@ -24,15 +24,14 @@ public class ArticleService implements IArticleService {
 	private static final Logger LOG = LoggerFactory.getLogger(ShopKafkaConsumer.class);
 
 	@Autowired
-	public ArticleService(ArticleRepository articleRepository,ArticleKafkaController articleKafkaController) {
+	public ArticleService(ArticleRepository articleRepository, ArticleKafkaController articleKafkaController) {
 		this.articleRepository = articleRepository;
 		this.articleKafkaController = articleKafkaController;
 	}
-	
+
 	public void messageShop() {
 		articleKafkaController.sendMessage("The article database has been updated");
 	}
-	
 
 	@Override
 	public boolean saveCD(CD cd) {
@@ -51,6 +50,7 @@ public class ArticleService implements IArticleService {
 			messageShop();
 			return true;
 		}
+
 		return false;
 	}
 
@@ -65,13 +65,13 @@ public class ArticleService implements IArticleService {
 		if (allArticles.size() > -1) {
 			return allArticles;
 		}
+
 		return null;
 	}
 
 	@Override
 	public Article getArticleById(String articleType, Long articleId) {
 		Article article = null;
-
 		switch (articleType) {
 		case "book":
 			article = articleRepository.getBookById(Long.valueOf(articleId));
@@ -99,6 +99,5 @@ public class ArticleService implements IArticleService {
 		return false;
 
 	}
-
 
 }
