@@ -111,4 +111,10 @@ public class OrderSpringDataConnectorRequester {
 			span.end();
 		}
 	}
+	
+	@GetMapping("/getOrdersByCustomerId/{customerId}")
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable Integer customerId) {
+        List<Order> orders = orderService.getOrdersByCustomerId(customerId);
+        return ResponseEntity.ok(orders);
+    }
 }

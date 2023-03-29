@@ -1,18 +1,23 @@
 package de.leuphana.order.component.behaviour;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.leuphana.order.component.structure.Order;
+import de.leuphana.order.component.structure.OrderPosition;
+import de.leuphana.order.configuration.OrderPositionRepository;
 import de.leuphana.order.configuration.OrderRepository;
 
 @Service
 public class OrderService implements IOrderService {
 
+	@Autowired
     private OrderRepository orderRepository;
+	
+	@Autowired
+	private OrderPositionRepository orderPositionRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
@@ -21,7 +26,15 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order createOrder(Order order) {
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        for (OrderPosition orderPosition : order.getOrderPositions()) {
+            orderPosition.setOrder(savedOrder);
+        }
+
+        orderPositionRepository.saveAll(order.getOrderPositions());
+
+        return savedOrder;
     }
 
     @Override
@@ -31,7 +44,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() { // Add this method implementation
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
@@ -39,4 +52,10 @@ public class OrderService implements IOrderService {
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
+
+	@Override
+	public List<Order> getOrdersByCustomerId(Integer customerId) {
+		// TODO Auto-generated method stub
+		return orderRepository.findByCustomerId(customerId);
+	}
 }

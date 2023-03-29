@@ -9,4 +9,5 @@ public interface IOrderService {
     Order getOrder(Long id) throws Exception;
     List<Order> getAllOrders(); // Add this method
     void deleteOrder(Long id);
+    List<Order> getOrdersByCustomerId(Integer customerId);
 }
