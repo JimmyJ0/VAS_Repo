@@ -47,18 +47,18 @@ public class CustomerRestConnectorRequester {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<Customer> requestEntity = new HttpEntity<>(customer, headers);
 		ResponseEntity<Customer> response = restTemplate.exchange(
-				"http://api-gateway:9000/shop/customer/getCustomerById/{customerId}", HttpMethod.POST, requestEntity,
+				"http://api-gateway:9000/shop/customer/createCustomer", HttpMethod.POST, requestEntity,
 				Customer.class, customer);
 		try {
-			LOGGER.info("Getting customer: {}", customer);
-			Customer customerById = response.getBody();
-			LOGGER.info("Retrieved customer: {}", customer);
-			return customerById;
+			LOGGER.info("Creating customer: {}", customer);
+			Customer createdCustomer = response.getBody();
+			LOGGER.info("Created customer: {}", customer);
+			return createdCustomer;
 		} catch(HttpClientErrorException | HttpServerErrorException e) {
-			LOGGER.error("Error retrieving customer: {}", customer, e);
+			LOGGER.error("Error creating customer: {}", customer, e);
 			throw e;
 		} catch (Exception e) {
-	        LOGGER.error("Unexpected error occurred while retrieving customer: {}", customer, e);
+	        LOGGER.error("Unexpected error occurred while creating customer: {}", customer, e);
 	        throw e;
 	    } 
 
