@@ -29,11 +29,11 @@ public class OrderService implements IOrderService {
     public Order createOrder(Order order) {
         Order savedOrder = orderRepository.save(order);
 
-//        for (OrderPosition orderPosition : order.getOrderPositions()) {
-//            orderPosition.setOrder(savedOrder);
-//        }
-//
-//        orderPositionRepository.saveAll(order.getOrderPositions());
+        for (OrderPosition orderPosition : order.getOrderPositions()) {
+            orderPosition.setOrder(savedOrder);
+        }
+
+        orderPositionRepository.saveAll(order.getOrderPositions());
 
         return savedOrder;
     }
@@ -56,7 +56,6 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<Order> getOrdersByCustomerId(Integer customerId) {
-		// TODO Auto-generated method stub
 		return orderRepository.findByCustomerId(customerId);
 	}
 }

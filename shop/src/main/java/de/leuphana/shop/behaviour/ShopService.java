@@ -23,10 +23,6 @@ public class ShopService {
 	// TODO: Anhand der Response Entity Exception Handling machen.
 	private static final Logger LOG = LoggerFactory.getLogger(ShopService.class);
 
-//	private ArticleRestConnectorRequester articleRestConnector;
-//	private ShopKafkaController kafkaController;
-//	private CustomerRestConnectorRequester customerRestConnectorRequester;
-
 	private HashMap<String, Article> catalog = new HashMap<>();
 	private HashMap<Integer, Customer> customers = new HashMap<>();
 
