@@ -47,13 +47,15 @@ services:
     ports:
       - "8761:8761"
 
-#  order:
-#    build: ./order
-#    restart: always
-#    image: order-image
-#    container_name: order-container
-#   ports:
-#      - "9091:9091"
+  order:
+    build: ./order
+    restart: always
+    image: order-image
+    networks:
+     - vas_repo_shop-network
+    container_name: order-container
+    ports:
+      - "9091:9091"
      
   article:
     build: ./article
