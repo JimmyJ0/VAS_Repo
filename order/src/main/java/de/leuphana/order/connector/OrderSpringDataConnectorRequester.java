@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.leuphana.order.component.behaviour.OrderService;
 import de.leuphana.order.component.structure.Order;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 
@@ -40,31 +41,40 @@ public class OrderSpringDataConnectorRequester {
 	}
 
 	@PostMapping("/createOrder")
-	public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-		Span span = tracer.spanBuilder("createOrder-span").startSpan();
-		try (Scope scope = span.makeCurrent()) {
-			logger.info("Creating order");
-			Order savedOrder = orderService.createOrder(order);
-			span.setAttribute("orderId", String.valueOf(savedOrder.getOrderId()));
-//			return ResponseEntity.created(URI.create("/order/" + savedOrder.getOrderId())).body(savedOrder);
-			return new ResponseEntity<Order>(savedOrder, HttpStatus.OK);
-		} finally {
-			span.end();
-		}
-	}
+    public ResponseEntity<String> createOrder(@RequestBody Order order) {
+        Span span = tracer.spanBuilder("createOrder-span").startSpan();
+        try (Scope scope = span.makeCurrent()) {
+            logger.info("Creating order");
+            Order savedOrder = orderService.createOrder(order);
+            span.setAttribute("orderId", String.valueOf(savedOrder.getOrderId()));
+            span.setStatus(StatusCode.OK);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Order created");
+        } catch (Exception e) {
+            logger.error("Error creating order", e);
+            span.setStatus(StatusCode.ERROR, "Error creating order");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } finally {
+            span.end();
+        }
+    }
 
 	@GetMapping("/getAllOrders")
-	public List<Order> getAllOrders() {
-		Span span = tracer.spanBuilder("getAllOrders-span").startSpan();
-		try (Scope scope = span.makeCurrent()) {
-			logger.info("Retrieving all orders");
-			List<Order> orders = orderService.getAllOrders();
-			span.setAttribute("ordersCount", orders.size());
-			return orders;
-		} finally {
-			span.end();
-		}
-	}
+    public ResponseEntity<List<Order>> getAllOrders() {
+        Span span = tracer.spanBuilder("getAllOrders-span").startSpan();
+        try (Scope scope = span.makeCurrent()) {
+            logger.info("Retrieving all orders");
+            List<Order> orders = orderService.getAllOrders();
+            span.setAttribute("ordersCount", orders.size());
+            span.setStatus(StatusCode.OK);
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            logger.error("Error retrieving all orders", e);
+            span.setStatus(StatusCode.ERROR, "Error retrieving all orders");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } finally {
+            span.end();
+        }
+    }
 
 	@GetMapping("/getOrderById/{id}")
 	public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
@@ -72,11 +82,19 @@ public class OrderSpringDataConnectorRequester {
 		try (Scope scope = span.makeCurrent()) {
 			logger.info("Retrieving order by id: {}", id);
 			Order order = orderService.getOrder(id);
-			span.setAttribute("orderId", String.valueOf(order.getOrderId()));
-			return ResponseEntity.ok(order);
+			if (order != null) {
+				span.setAttribute("orderId", String.valueOf(order.getOrderId()));
+				span.setStatus(StatusCode.OK);
+				return ResponseEntity.ok(order);
+			} else {
+				logger.error("Order not found: {}", id);
+				span.setStatus(StatusCode.ERROR, "Order not found");
+				return ResponseEntity.notFound().build();
+			}
 		} catch (Exception e) {
-			logger.error("Order not found: {}", id);
-			return ResponseEntity.notFound().build();
+			logger.error("Error retrieving order by id: {}", id, e);
+			span.setStatus(StatusCode.ERROR, "Error retrieving order");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} finally {
 			span.end();
 		}
@@ -84,43 +102,71 @@ public class OrderSpringDataConnectorRequester {
 
 	@PutMapping("/updateOrderById/{id}")
 	public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
-		Span span = tracer.spanBuilder("updateOrder-span").startSpan();
-		try (Scope scope = span.makeCurrent()) {
-			logger.info("Updating order with id: {}", id);
-			Order existingOrder = orderService.getOrder(id);
-			existingOrder.setCustomerId(order.getCustomerId());
-//			existingOrder.setOrderPositions(order.getOrderPositions());
-			existingOrder = orderService.createOrder(existingOrder);
-			span.setAttribute("orderId", String.valueOf(existingOrder.getOrderId()));
-			return ResponseEntity.ok(existingOrder);
-		} catch (Exception e) {
-			logger.error("Failed to update order with id: {}", id);
-			return ResponseEntity.notFound().build();
-		} finally {
-			span.end();
-		}
+	    Span span = tracer.spanBuilder("updateOrder-span").startSpan();
+	    try (Scope scope = span.makeCurrent()) {
+	        logger.info("Updating order with id: {}", id);
+	        Order existingOrder = orderService.getOrder(id);
+	        if (existingOrder != null) {
+	            existingOrder.setCustomerId(order.getCustomerId());
+	            // existingOrder.setOrderPositions(order.getOrderPositions());
+	            existingOrder = orderService.createOrder(existingOrder);
+	            span.setAttribute("orderId", String.valueOf(existingOrder.getOrderId()));
+	            span.setStatus(StatusCode.OK);
+	            return ResponseEntity.ok(existingOrder);
+	        } else {
+	            logger.error("Order not found: {}", id);
+	            span.setStatus(StatusCode.ERROR, "Order not found");
+	            return ResponseEntity.notFound().build();
+	        }
+	    } catch (Exception e) {
+	        logger.error("Error updating order with id: {}", id, e);
+	        span.setStatus(StatusCode.ERROR, "Error updating order");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    } finally {
+	        span.end();
+	    }
 	}
 
 	@DeleteMapping("/deleteOrder/{id}")
 	public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-		Span span = tracer.spanBuilder("deleteOrder-span").startSpan();
-		try (Scope scope = span.makeCurrent()) {
-			logger.info("Deleting order with id: {}", id);
-			orderService.getOrder(id);
-			orderService.deleteOrder(id);
-			span.setAttribute("orderId", String.valueOf(id));
-			return ResponseEntity.noContent().build();
-		} catch (Exception e) {
-			logger.error("Failed to delete order with id: {}", id);
-			return ResponseEntity.notFound().build();
-		} finally {
-			span.end();
-		}
+	    Span span = tracer.spanBuilder("deleteOrder-span").startSpan();
+	    try (Scope scope = span.makeCurrent()) {
+	        logger.info("Deleting order with id: {}", id);
+	        Order order = orderService.getOrder(id);
+	        if (order != null) {
+	            orderService.deleteOrder(id);
+	            span.setAttribute("orderId", String.valueOf(id));
+	            span.setStatus(StatusCode.OK);
+	            return ResponseEntity.noContent().build();
+	        } else {
+	            logger.error("Order not found: {}", id);
+	            span.setStatus(StatusCode.ERROR, "Order not found");
+	            return ResponseEntity.notFound().build();
+	        }
+	    } catch (Exception e) {
+	        logger.error("Error deleting order with id: {}", id, e);
+	        span.setStatus(StatusCode.ERROR, "Error deleting order");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    } finally {
+	        span.end();
+	    }
 	}
-	
+
 	@GetMapping("/getOrdersByCustomerId/{customerId}")
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable Integer customerId) {
-        List<Order> orders = orderService.getOrdersByCustomerId(customerId);
-        return ResponseEntity.ok(orders);
-    }
+	public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable Integer customerId) {
+	    Span span = tracer.spanBuilder("getOrdersByCustomerId-span").startSpan();
+	    try (Scope scope = span.makeCurrent()) {
+	        logger.info("Retrieving orders by customer id: {}", customerId);
+	        List<Order> orders = orderService.getOrdersByCustomerId(customerId);
+	        span.setAttribute("ordersCount", orders.size());
+	        span.setStatus(StatusCode.OK);
+	        return ResponseEntity.ok(orders);
+	    } catch (Exception e) {
+	        logger.error("Error retrieving orders by customer id: {}", customerId, e);
+	        span.setStatus(StatusCode.ERROR, "Error retrieving orders");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    } finally {
+	        span.end();
+	    }
+	}
 }

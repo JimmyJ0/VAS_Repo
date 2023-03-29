@@ -25,7 +25,7 @@ import de.leuphana.shop.structure.article.Article;
 public class ArticleRestConnectorRequester {
 
 	private ShopService shopService;
-	
+
 	@Autowired
 	public ArticleRestConnectorRequester(ShopService shopService) {
 		this.shopService = shopService;
@@ -39,12 +39,12 @@ public class ArticleRestConnectorRequester {
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<Article>> response = restTemplate.exchange(
-				"http://localhost:9000/shop/article/getAllArticles", HttpMethod.GET, requestEntity,
+				"http://api-gateway:9000/shop/article/getAllArticles", HttpMethod.GET, requestEntity,
 				new ParameterizedTypeReference<List<Article>>() {
 				});
 		if (response.getStatusCode() == HttpStatus.OK) {
 			shopService.catalogingArticles(response.getBody());
-			
+
 			return response;
 		}
 
@@ -62,15 +62,14 @@ public class ArticleRestConnectorRequester {
 		RestTemplate restTemplate = new RestTemplate();
 
 		ResponseEntity<Article> response = restTemplate.exchange(
-				"http://localhost:9000/shop/article/getArticleById/{articleType}/{id}", HttpMethod.GET, requestEntity, Article.class,
+				"http://api-gateway:9000/shop/article/getArticleById/{articleType}/{id}", HttpMethod.GET, requestEntity, Article.class,
 				articleType, id);
 		if (response.getStatusCode() == HttpStatus.OK)
 			return response.getBody();
 		return null;
 	}
-	
-	
-//	 testing
+
+
 	@GetMapping("/getCatalog")
 	public  ResponseEntity<Map<String, Article>> getCatalog(){
 		Map<String, Article> catalog = shopService.getCatalog();

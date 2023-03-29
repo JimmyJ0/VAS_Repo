@@ -10,12 +10,6 @@ import de.leuphana.shop.behaviour.ShopService;
 import de.leuphana.shop.connector.kafka.ShopKafkaController;
 import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
 import de.leuphana.shop.connector.rest.CustomerRestConnectorRequester;
-import de.leuphana.shop.kafka.CustomerProducer;
-import de.leuphana.shop.structure.article.Article;
-import de.leuphana.shop.structure.article.Book;
-import de.leuphana.shop.structure.article.CD;
-import de.leuphana.shop.structure.sales.Address;
-import de.leuphana.shop.structure.sales.Customer;
 
 @SpringBootTest
 class ShopServiceTest{

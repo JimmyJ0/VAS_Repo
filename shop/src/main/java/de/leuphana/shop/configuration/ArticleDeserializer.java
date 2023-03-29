@@ -1,5 +1,6 @@
 package de.leuphana.shop.configuration;
 
+
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JacksonException;

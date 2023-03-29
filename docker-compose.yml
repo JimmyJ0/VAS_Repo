@@ -47,13 +47,15 @@ services:
     ports:
       - "8761:8761"
 
-#  order:
-#    build: ./order
-#    restart: always
-#    image: order-image
-#    container_name: order-container
-#   ports:
-#      - "9091:9091"
+  order:
+    build: ./order
+    restart: always
+    image: order-image
+    networks:
+     - vas_repo_shop-network
+    container_name: order-container
+    ports:
+      - "9091:9091"
      
   article:
     build: ./article
@@ -85,7 +87,6 @@ services:
     depends_on:
     - kafka
     
- 
   customer:
     build: ./customer
     restart: always
@@ -128,8 +129,7 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CONSUMER_GROUP: shop_group
-    
-      
+     
 volumes:
   mariadb_data:
     driver: local
