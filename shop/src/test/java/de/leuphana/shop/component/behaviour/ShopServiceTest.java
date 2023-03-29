@@ -1,39 +1,25 @@
 package de.leuphana.shop.component.behaviour;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Map;
-
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import de.leuphana.shop.behaviour.ShopService;
 import de.leuphana.shop.connector.rest.ArticleRestConnectorRequester;
 import de.leuphana.shop.connector.rest.CustomerRestConnectorRequester;
-import de.leuphana.shop.kafka.CustomerProducer;
-import de.leuphana.shop.structure.article.Article;
-import de.leuphana.shop.structure.article.Book;
-import de.leuphana.shop.structure.article.CD;
-import de.leuphana.shop.structure.sales.Address;
-import de.leuphana.shop.structure.sales.Customer;
 
 @SpringBootTest
 class ShopServiceTest{
 
-//	@Autowired
-//	ArticleRestConnectorRequester restConnector;
-//
-//	@Autowired
-//	CustomerRestConnectorRequester customerRestConnector;
-//
-//	@Autowired
-//	private ShopService shopService;
-//	
-//	@Autowired
-//	private CustomerProducer customerProducer;
-//
+	@Autowired
+	ArticleRestConnectorRequester restConnector;
+
+	@Autowired
+	CustomerRestConnectorRequester customerRestConnector;
+
+	@Autowired
+	private ShopService shopService;
+	
+
 //	@Test
 //	void canNewArticleBeInserted() {
 //		Book book = new Book();
@@ -99,9 +85,9 @@ class ShopServiceTest{
 //	    customer.setAddress(address);
 //	    
 //	    customerProducer.sendCustomer(customer);
-
+//
 //	}
-
+//
 //	@Test
 //	void canCustomerBeFoundById() throws Exception {
 //		Customer customer = new Customer();
