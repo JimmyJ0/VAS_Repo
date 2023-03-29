@@ -14,26 +14,26 @@ import de.leuphana.shop.structure.article.Article;
 
 @RestController
 @RequestMapping("/shop/article")
-public class ShopKafkaController {
+public class ArticleKafkaController {
 	
-	private ShopKafkaProducer shopKafkaProducer;
+	private ArticleKafkaProducer articleKafkaProducer;
 	private ShopService shopService;
 	
 	@Autowired
-	public ShopKafkaController(ShopKafkaProducer shopKafkaProducer, ShopService shopService) {
-		this.shopKafkaProducer = shopKafkaProducer;
+	public ArticleKafkaController(ArticleKafkaProducer articleKafkaProducer, ShopService shopService) {
+		this.articleKafkaProducer = articleKafkaProducer;
 		this.shopService = shopService;
 	}
 	
 	@PostMapping("/saveArticle")
 	public ResponseEntity<String> saveArticle(@RequestBody Article article) {
-		shopKafkaProducer.sendArticle(article);
+		articleKafkaProducer.sendArticle(article);
 		return ResponseEntity.ok("article sent");
 	}
 	
 	@PostMapping("/updateArticle")
 	public ResponseEntity<String> updateArticle(@RequestBody Article article) {
-		shopKafkaProducer.sendArticle(article);
+		articleKafkaProducer.sendArticle(article);
 		return ResponseEntity.ok("article updated");
 	}
 	
@@ -41,7 +41,7 @@ public class ShopKafkaController {
 	@PostMapping("/deleteArticle/{articleType}/{id}")
 	public ResponseEntity<String> deleteArticle(@PathVariable String articleType, @PathVariable String id ) {
 		if(shopService.getCatalog().get(id) != null) {
-			shopKafkaProducer.deleteArticle(articleType, id);
+			articleKafkaProducer.deleteArticle(articleType, id);
 			return ResponseEntity.ok("article deleted");
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("catalog does not contain this article");

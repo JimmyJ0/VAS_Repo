@@ -5,9 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.KafkaException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +40,23 @@ public class CustomerRestConnectorProvider {
 		this.customerService = customerService;
 	}
 
+	
+	@PostMapping("/createCustomer")
+	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+		Customer newCustomer = customerService.createCustomer(customer);
+		return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+	}
+
+	@DeleteMapping("/deleteCustomer/{customerId}")
+	public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) {
+		if (customerId != null) {
+			customerService.deleteCustomer(customerId);
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
 	@GetMapping("/getCustomers")
 	public List<Customer> getAllCustomers() {
 		Span span = tracer.spanBuilder("getCustomers-span").startSpan();
