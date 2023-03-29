@@ -43,7 +43,9 @@ public class CustomerRestConnectorProvider {
 	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
 		Span span = tracer.spanBuilder("createCustomer-span").startSpan();
 		try (Scope scope = span.makeCurrent()){
+			logger.info("Creating customer: {}", customer);
 			Customer newCustomer = customerService.createCustomer(customer);
+			logger.info("Created customer: {}", customer);
 			return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
 		}catch (EntityNotFoundException e) {
 			logger.error("Error creating customer: {}", customer, e);
@@ -58,7 +60,9 @@ public class CustomerRestConnectorProvider {
 		Span span = tracer.spanBuilder("getCustomers-span").startSpan();
 		try (Scope scope = span.makeCurrent()) {
 			logger.info("Getting all customers");
-			return customerService.getAllCustomers();
+			List<Customer> allCustomers = customerService.getAllCustomers();
+			logger.info("Retrieved all customers");
+			return allCustomers;
 		}catch (EntityNotFoundException e) {
 			logger.error("Error getting customers", e);
 		}finally {
@@ -72,7 +76,9 @@ public class CustomerRestConnectorProvider {
 		Span span = tracer.spanBuilder("getCustomerById-span").startSpan();
 		try (Scope scope = span.makeCurrent()) {
 			logger.info("Getting customer with id {}: ", customerId);
-			return customerService.getCustomerById(customerId);
+			Customer getCustomer = customerService.getCustomerById(customerId);
+			logger.info("Retrieved customer with id {}: ", customerId);
+			return getCustomer;
 		}catch (EntityNotFoundException e) {
 			logger.error("Error getting customer with id {}: ", customerId, e);
 		}finally {
@@ -86,7 +92,9 @@ public class CustomerRestConnectorProvider {
 		Span span = tracer.spanBuilder("updateCustomerById-span").startSpan();
 		try (Scope scope = span.makeCurrent()) {
 			logger.info("Updating customer with id {}: ", customerId);
-			return customerService.updateCustomerById(customerId, customer);
+			Customer updatedCustomer = customerService.updateCustomerById(customerId, customer);
+			logger.info("Updated customer with id {}: ", customerId);
+			return updatedCustomer;
 		}catch (EntityNotFoundException e) {
 			logger.error("Error updating customer with id {}: ", customerId, e);
 		}finally {
@@ -101,6 +109,7 @@ public class CustomerRestConnectorProvider {
 		Span span = tracer.spanBuilder("deleteCustomer-span").startSpan();
 		try (Scope scope = span.makeCurrent()){
 			if (customerId != null) {
+				logger.info("Deleting customer with id {}: ", customerId);
 				customerService.deleteCustomer(customerId);
 				return ResponseEntity.noContent().build();
 			} else {
