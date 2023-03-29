@@ -1,7 +1,5 @@
 package de.leuphana.shop.structure.article;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 public class Book extends Article {
 
 	private String author;

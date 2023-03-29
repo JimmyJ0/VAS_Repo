@@ -7,7 +7,7 @@ import java.util.List;
 public interface IOrderService {
     Order createOrder(Order order);
     Order getOrder(Long id) throws Exception;
-    List<Order> getAllOrders(); // Add this method
+    List<Order> getAllOrders(); 
     void deleteOrder(Long id);
     List<Order> getOrdersByCustomerId(Integer customerId);
 }

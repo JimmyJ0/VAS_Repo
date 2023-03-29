@@ -27,7 +27,6 @@ import io.opentelemetry.context.Scope;
 @Service
 public class ShopService implements CustomerServices {
 
-	// TODO: Anhand der Response Entity Exception Handling machen.
 	private static final Logger LOG = LoggerFactory.getLogger(ShopService.class);
 
 	private HashMap<String, Article> catalog = new HashMap<>();
@@ -133,17 +132,14 @@ public class ShopService implements CustomerServices {
 	}
 	
 	public Invoice createInvoice(Order order) {
-		
 		Invoice invoice = new Invoice();
 		for (OrderPosition orderPosition : order.getOrderPositions()) {
-			
 			InvoicePosition invoicePosition = new InvoicePosition();
 			invoicePosition.setArticleId(orderPosition.getArticleId());
 			invoicePosition.setArticlePrice(orderPosition.getPrice());
 			invoicePosition.setArticleQuantity(orderPosition.getArticleQuantity());
 			invoice.addInvoicePosition(invoicePosition);
 		}
-		
 		return invoice;
 	}
 

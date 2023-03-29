@@ -41,18 +41,18 @@ public class OrderSpringDataConnectorRequester {
 	}
 
 	@PostMapping("/createOrder")
-    public ResponseEntity<String> createOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         Span span = tracer.spanBuilder("createOrder-span").startSpan();
         try (Scope scope = span.makeCurrent()) {
             logger.info("Creating order");
             Order savedOrder = orderService.createOrder(order);
             span.setAttribute("orderId", String.valueOf(savedOrder.getOrderId()));
             span.setStatus(StatusCode.OK);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Order created");
+            return new ResponseEntity<Order>(savedOrder, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error creating order", e);
             span.setStatus(StatusCode.ERROR, "Error creating order");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
         } finally {
             span.end();
         }
@@ -108,7 +108,6 @@ public class OrderSpringDataConnectorRequester {
 	        Order existingOrder = orderService.getOrder(id);
 	        if (existingOrder != null) {
 	            existingOrder.setCustomerId(order.getCustomerId());
-	            // existingOrder.setOrderPositions(order.getOrderPositions());
 	            existingOrder = orderService.createOrder(existingOrder);
 	            span.setAttribute("orderId", String.valueOf(existingOrder.getOrderId()));
 	            span.setStatus(StatusCode.OK);

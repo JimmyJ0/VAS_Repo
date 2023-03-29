@@ -31,7 +31,6 @@ public class ArticleRestConnectorRequester {
 		this.shopService = shopService;
 	}
 
-	// Holt alle Artikel aus der Datenbank
 	@GetMapping("/getArticles")
 	public ResponseEntity<List<Article>> getArticles() {
 		HttpHeaders headers = new HttpHeaders();

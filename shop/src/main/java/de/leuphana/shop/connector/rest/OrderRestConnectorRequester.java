@@ -37,7 +37,7 @@ public class OrderRestConnectorRequester {
 		HttpEntity<Order> requestEntity = new HttpEntity<>(order,headers);
 		System.out.println(requestEntity.getBody());
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Order> response = restTemplate.exchange("http://localhost:9000/shop/order/createOrder", HttpMethod.POST, requestEntity, Order.class);
+		ResponseEntity<Order> response = restTemplate.exchange("http://api-gateway:9000/shop/order/createOrder", HttpMethod.POST, requestEntity, Order.class);
 		Invoice invoice = shopService.createInvoice(response.getBody());
 		printInvoice(invoice);
 		if(response.getStatusCode() == HttpStatus.OK) return response;

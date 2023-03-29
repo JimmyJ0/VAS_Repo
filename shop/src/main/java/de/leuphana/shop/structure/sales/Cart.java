@@ -16,7 +16,6 @@ public class Cart {
 		numberOfArticles = 0;
 	}
 
-	//article kann weg glaub ich
 	public void addCartItem(String articleId, Article article) {
 		CartItem cartItem;
 		if (cartItems.containsKey(articleId)) {
@@ -24,7 +23,7 @@ public class Cart {
 			cartItem.incrementQuantity();
 		} else {
 			cartItem = new CartItem();
-			cartItem.setPrice(article.getPrice()); //Neu
+			cartItem.setPrice(article.getPrice()); 
 			cartItem.setArticleId(articleId);
 			cartItem.setCartItemId(cartItems.size() + 1);
 			cartItems.put(articleId, cartItem);

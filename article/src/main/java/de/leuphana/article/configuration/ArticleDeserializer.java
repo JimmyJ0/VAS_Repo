@@ -6,15 +6,10 @@ import java.util.Map;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
-import org.springframework.kafka.support.converter.ByteArrayJsonMessageConverter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
-import de.leuphana.article.component.structure.Article;
 import de.leuphana.article.component.structure.Book;
 import de.leuphana.article.component.structure.CD;
 
@@ -41,7 +36,7 @@ public class ArticleDeserializer implements Deserializer<Object> {
 				
 			}
 			default:
-				System.out.println("ASDKJASD");
+				LOG.info("Fallback - Topic not available");
 			}
 
 		} catch (IOException e) {

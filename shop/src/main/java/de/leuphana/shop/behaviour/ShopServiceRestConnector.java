@@ -1,25 +1,14 @@
 package de.leuphana.shop.behaviour;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import de.leuphana.shop.structure.article.Article;
 import de.leuphana.shop.structure.sales.Cart;
-import de.leuphana.shop.structure.sales.Customer;
-import de.leuphana.shop.structure.sales.Order;
 
 @RestController
 @RequestMapping("/shop")
@@ -63,14 +52,4 @@ public class ShopServiceRestConnector {
 		}
 		return new ResponseEntity<String>("There are no items in the cart!", HttpStatus.BAD_REQUEST);
 	}
-	
-//	@GetMapping("/checkOutCart/{customerId}")
-//	public ResponseEntity<String> checkOutCart(@PathVariable Integer customerId){
-//		Order order = shopService.checkOutCart(customerId);
-//		ResponseEntity<String> response = createOrder(order);
-//		if(response.getStatusCode() == HttpStatus.OK) return null;
-//		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-//	}
-	
-
 }
