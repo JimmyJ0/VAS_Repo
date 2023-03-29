@@ -8,8 +8,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.leuphana.order.component.behaviour.OrderService;
 import de.leuphana.order.component.structure.Order;
+import de.leuphana.order.component.structure.OrderPosition;
+import de.leuphana.order.configuration.OrderPositionRepository;
 import de.leuphana.order.configuration.OrderRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +30,9 @@ public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+    
+    @Mock
+    private OrderPositionRepository orderPositionRepository;
 
     @InjectMocks
     private OrderService orderService;
@@ -37,8 +44,28 @@ public class OrderServiceTest {
         order = new Order();
         order.setOrderId(1L);
         order.setCustomerId(100);
-    }
 
+//        ArrayList<OrderPosition> orderPositions = new ArrayList<>();
+//        orderPositions.add(new OrderPosition());
+//        OrderPosition pos1 = new OrderPosition();
+//        pos1.setArticleId("BK1");
+//        pos1.setArticleQuantity(1);
+//        pos1.setPrice(3.30);
+//        pos1.setOrder(order);
+//        
+//        OrderPosition pos2 = new OrderPosition();
+//        pos2.setArticleId("CD1");
+//        pos2.setArticleQuantity(1);
+//        pos2.setPrice(7.30);
+//        pos2.setOrder(order);
+//        
+//        ArrayList<OrderPosition> orderPositions = new ArrayList<>();
+//        orderPositions.add(pos1);
+//        orderPositions.add(pos2);
+        
+//        order.setOrderPositions(orderPositions);
+        
+    }     
     @Test
     public void testCreateOrder() {
         when(orderRepository.save(any(Order.class))).thenReturn(order);

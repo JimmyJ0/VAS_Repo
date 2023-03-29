@@ -7,6 +7,9 @@ import de.leuphana.order.configuration.OrderPositionKey;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -17,8 +20,13 @@ import jakarta.persistence.Table;
 @Table(name = "order_position")
 public class OrderPosition {
 
-    @EmbeddedId
-    private OrderPositionKey id;
+//    @EmbeddedId
+//    private OrderPositionKey id;
+	
+	@Id
+	@Column(name = "orderPosId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long orderPosId;
 
     @Column(name = "positionId", nullable = false, insertable = false, updatable = false)
     private Long positionId;
@@ -32,9 +40,13 @@ public class OrderPosition {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @MapsId("orderId")
+//    @MapsId("orderId")
+//    @ManyToOne
+//    @JoinColumn(name="orderId")
+//    private Order order;
+    
     @ManyToOne
-    @JoinColumn(name="orderId")
+    @JoinColumn(name="orderId", nullable=false)
     private Order order;
 
 	public Long getPositionId() {

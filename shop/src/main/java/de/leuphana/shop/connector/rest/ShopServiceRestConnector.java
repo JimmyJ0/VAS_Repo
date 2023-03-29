@@ -62,7 +62,6 @@ public class ShopServiceRestConnector {
 		ResponseEntity<String> response = createOrder(order);
 		if(response.getStatusCode() == HttpStatus.OK) return null;
 		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-		
 	}
 	
 	public ResponseEntity<String> createOrder(@RequestBody Order order){

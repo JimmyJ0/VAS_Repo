@@ -83,7 +83,7 @@ public class OrderSpringDataConnectorRequester {
 			logger.info("Updating order with id: {}", id);
 			Order existingOrder = orderService.getOrder(id);
 			existingOrder.setCustomerId(order.getCustomerId());
-			existingOrder.setOrderPositions(order.getOrderPositions());
+//			existingOrder.setOrderPositions(order.getOrderPositions());
 			existingOrder = orderService.createOrder(existingOrder);
 			span.setAttribute("orderId", String.valueOf(existingOrder.getOrderId()));
 			return ResponseEntity.ok(existingOrder);

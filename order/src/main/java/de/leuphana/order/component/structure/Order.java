@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -24,7 +25,7 @@ import jakarta.persistence.Table;
 public class Order{
 	
 	@Id
-	@Column(name = "ID")
+	@Column(name = "orderId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
 	
@@ -34,17 +35,38 @@ public class Order{
 	@Column(name = "OrderDate", nullable = false)
 	private LocalDate orderDate = LocalDate.now();
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderPosition> orderPositions;
+//	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private ArrayList<OrderPosition> orderPositions;
+//	
+//	public Order() {
+//		orderPositions = new ArrayList<OrderPosition>();
+//	}
+//	
+//	@Column(name="order_pos_id")
+//	private Long orderPosId;
 	
-	public Order() {
-		orderPositions = new ArrayList<OrderPosition>();
-	}
-	
+	@OneToMany(mappedBy="order")
+	private ArrayList<OrderPosition> orderPositions;
 	public Long getOrderId() {
 		return orderId;
 	}
 	
+	
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
+	}
+
+//
+//	public void setOrderPosId(Long orderPosId) {
+//		this.orderPosId = orderPosId;
+//	}
+
+
+	public void setOrderPositions(ArrayList<OrderPosition> orderPositions) {
+		this.orderPositions = orderPositions;
+	}
+
+
 	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
@@ -57,16 +79,12 @@ public class Order{
 		this.customerId = customerId;
 	}
 	
-	public List<OrderPosition> getOrderPositions() {
+	public ArrayList<OrderPosition> getOrderPositions() {
 		return orderPositions;
 	}
 
-	public void setOrderPositions(List<OrderPosition> orderPositions) {
-		this.orderPositions = orderPositions;
-	}
 
 	public Object getOrderDate() {
-		// TODO Auto-generated method stub
 		return this.orderDate;
 	}
 }
